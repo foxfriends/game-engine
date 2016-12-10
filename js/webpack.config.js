@@ -1,15 +1,14 @@
 'use strict';
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./demo/index.js",
   output: {
-    path: "./",
-    filename: "engine.js"
+    path: "./public_html",
+    filename: "demo.js"
   },
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel?plugins[]=transform-es2015-modules-commonjs' },
+      { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
     ],
-  },
-  devtool: ['source-map']
+  }
 };

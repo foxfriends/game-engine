@@ -18,11 +18,11 @@ namespace Game {
         // occurs before inputs are processed
         virtual void prestep();
         // process each inputs
+        virtual void mousemove(const Position &where);
         virtual void keydown(const int which);
         virtual void mousedown(const int which);
         virtual void keyup(const int which);
         virtual void mouseup(const int which);
-        virtual void mousemove(const Position &where);
         // occurs after inputs are processed
         virtual void step();
         // occurs after all objects have moved once

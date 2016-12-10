@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "transform-exponentiation-operator",
+    "transform-class-properties",
+  ]
+}
