@@ -1,0 +1,29 @@
+{
+  "name": "game-engine",
+  "version": "1.0.0",
+  "description": "Game engine in JS",
+  "main": "engine.js",
+  "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.20.0",
+    "babel-loader": "^6.2.9",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "webpack": "^1.14.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "game",
+    "engine",
+    "video",
+    "game",
+    "2d",
+    "rpg",
+    "platform"
+  ],
+  "author": "Cameron Eldridge",
+  "license": "ISC"
+}
