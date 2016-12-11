@@ -15,6 +15,7 @@ class Sprite extends Rectangle {
   set frame(frame) { this[FRAME] = frame; }
   get frame() { return this[FRAME]; }
 
+  get texture() { return this[PAGE]; }
   get src() { return this[PAGE].frame(this[FRAMES][this[FRAME]]); }
   get dest() { return this; }
 }

@@ -1,29 +1,49 @@
 'use strict';
-import Draw from './draw';
 
-const [ROOM, OBJECTS, RAF] = [Symbol(), Symbol(), Symbol()];
+import Draw from './draw';
+import { Dimension } from './struct';
+import GameEvent from './game-event';
+import Drawble from './drawable';
+import Room from './room';
+import Input from './input';
+
+const [ROOM, OBJECTS, RAF, CANVAS, CONTEXT, INPUT] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
   [ROOM] = null;
   [OBJECTS] = [];
   [RAF] = null;
 
-  constructor() {}
+  constructor(canvas, {w, h}) {
+    this[CANVAS] = document.querySelector(canvas);
+    this[CANVAS].width = w;
+    this[CANVAS].height = h;
+    this[CONTEXT] = this[CANVAS].getContext('2d');
+    this[INPUT] = new Input(this[CANVAS]);
+  }
+  get size() { return new Dimension(this[CANVAS].width, this[CANVAS].height); }
+
+  proc(event) {
+    for(let obj of this[OBJECTS]) {
+      obj.proc(event);
+    }
+    this[ROOM] && this[ROOM].proc(event);
+  }
 
   start() {}
   step() {
-    let event = null;
-    while(event = null) { // TODO: parse the events here
-      for(let obj of this[OBJECTS]) {
-        obj.proc(event);
-      }
-      this[ROOM] && this[ROOM].proc(event);
+    this.proc(new GameEvent('stepstart'));
+    for(let event of this[INPUT]) { // TODO: parse the events here
+      this.proc(event);
     }
+    this.proc(new GameEvent('step'));
+    this.proc(new GameEvent('stepend'));
   }
   draw() {
-    const drawer = new Draw();
+    this[CONTEXT].clearRect(0, 0, ...this.size);
+    const drawer = new Draw(this[CONTEXT]);
     for(let obj of this[OBJECTS]) {
-      obj.draw && obj.draw(drawer);
+      obj instanceof Drawable && obj.draw(drawer);
     }
     this[ROOM] && this[ROOM].draw(drawer);
     drawer.render();
@@ -43,8 +63,13 @@ class Engine {
   // utilities
   get room() {
     return {
-      goto: (room) => {
+      goto: (R) => {
         this[ROOM] && this[ROOM].end();
+        this[ROOM] = new R(this);
+        if(!(this[ROOM] instanceof Room)) {
+          throw `${this[ROOM].constructor.name} is not a Room`;
+        }
+        this[ROOM].start();
       }
     }
   }

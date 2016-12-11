@@ -1,7 +1,10 @@
 'use strict';
 
+const [ENGINE, ROOM] = [Symbol(), Symbol()];
+
 class GameObject {
-  constructor() {}
+  constructor(room = null, engine = null) { this[ROOM] = room; this[ENGINE] = engine; }
+  init() {}
 
   roomstart() {}
   stepstart() {}
@@ -18,10 +21,21 @@ class GameObject {
   roomend() {}
 
   proc(event) {
-    this[event.type](event.data);
+    this[event.type]  && this[event.type](event.data);
+  }
+
+  get game() {
+    return new Proxy(this[ENGINE], {
+      get(target, prop) {
+        if(prop === 'room') {
+          return target.room;
+        } else {
+          return target.game[prop];
+        }
+      }
+    });
   }
 }
 
 export { GameObject };
-
 export default GameObject;

@@ -1,11 +1,11 @@
 'use strict';
 
-import { Engine } from '../src';
+import { Engine, Dimension } from '../engine';
 import Splash from './rooms/splash';
 
 class Demo extends Engine {
   constructor() {
-    super('#game');
+    super('#game', new Dimension(1024, 768));
   }
 
   start() {

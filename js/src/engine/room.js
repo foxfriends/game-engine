@@ -1,28 +1,39 @@
 'use strict';
 
-class Room {
-  objects = [];
+import Drawable from './drawable';
 
-  constructor() {}
+const [OBJECTS, ENGINE] = [Symbol(), Symbol()];
+
+class Room {
+  [OBJECTS] = [];
+
+  constructor(engine) { this[ENGINE] = engine; }
 
   start() {}
   proc(event) {
-    for(let obj of objects) {
+    for(let obj of this[OBJECTS]) {
       obj.proc(event);
     }
   }
   end() {}
 
   spawn(Obj, ...args) {
-    const o = new Obj(...args);
-    objects.push(o);
+    const o = new Obj(this, this[ENGINE]);
+    o.init(...args);
+    this[OBJECTS].push(o);
     return o;
   }
 
   destroy(obj) {
-    const i = objects.indexOf(o);
+    const i = this[OBJECTS].indexOf(o);
     if(i >= 0) {
-      objects.splice(i, 1);
+      this[OBJECTS].splice(i, 1);
+    }
+  }
+
+  draw(draw) {
+    for(let obj of this[OBJECTS]) {
+      obj instanceof Drawable && obj.draw(draw);
     }
   }
 }

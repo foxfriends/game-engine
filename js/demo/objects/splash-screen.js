@@ -1,27 +1,39 @@
 'use strict';
 
-import { GameObject, SECOND } from '../../src';
+import { Drawable, GameObject, override, SECOND } from '../../engine';
 import MainMenu from '../rooms/main-menu.js';
-import Demo from '../engine.js';
 
-class SplashScreen extends GameObject {
+class SplashScreen extends Drawable(GameObject) {
   fade = 0;
   duration = 4 * SECOND;
   peak = 1 * SECOND;
 
+  @override
   stepend() {
-    fade++;
-    if(fade === duration) {
-      Demo.room.goto(MainMenu);
+    this.fade++;
+    if(this.fade >= this.duration) {
+      super.game.room.goto(MainMenu);
     }
   }
 
+  @override
+  keydown() {
+    this.fade = this.duration;
+  }
+
+  @override
   draw(draw) {
-    const amt = Math.min(1, ((duration / 2) - Math.abs(duration / 2 - fade)) / peak);
     draw
-      .alpha(Math.sin(amt *  Math.PI) ** 2)
-      .sprite(sprite);
+      .alpha(this.alpha)
+      .text("Hello world", [30, 30]);
+  }
+
+  get alpha() {
+    const amt = Math.min(1, ((this.duration / 2) - Math.abs(this.duration / 2 - this.fade)) / this.peak);
+    return Math.sin(amt * Math.PI / 2) ** 2;
   }
 }
+
+console.log(new SplashScreen() instanceof Drawable);
 
 export default SplashScreen;
