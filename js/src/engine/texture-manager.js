@@ -6,15 +6,21 @@ class TextureManager {
   old = [];
   pages = {};
 
+  constructor(sources = []) {
+    this.sources = sources;
+  }
+
   // load a set of texture pages
   load(textures) {
     this.old = Object.keys(this.pages).filter(key => textures.includes(key));
+    const loaded = [];
     for(let texture of textures) {
       if(!this.pages[texture]) {
-        this.pages[texture] = new TexturePage(texture);
+        this.pages[texture] = new TexturePage(this.sources[texture]);
+        loaded.push(this.pages[texture].loaded);
       }
     }
-    return this;
+    return Promise.all(loaded);
   }
 
   // remove all texture pages in the list given

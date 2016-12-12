@@ -47,7 +47,13 @@ class GameObject {
 
   // the current sprite for this object (if any)
   get sprite() { return this[SPRITE]; }
-  set sprite(sprite) { this[SPRITE] = sprite ? this[ENGINE].texture.sprite(sprite) : null; }
+  set sprite(sprite) {
+    if(this[SPRITE] && this[SPRITE].name === sprite) { return; }
+    const {x, y} = this[SPRITE] || {x: 0, y: 0};
+    this[SPRITE] = sprite ? this[ENGINE].texture.sprite(sprite) : null;
+    this[SPRITE].x = x;
+    this[SPRITE].y = y;
+  }
 
   // utilities
   get game() {

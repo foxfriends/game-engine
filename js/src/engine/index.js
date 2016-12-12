@@ -7,18 +7,17 @@ import Drawable from './drawable';
 import Room from './room';
 import Input from './input';
 import TextureManager from './texture-manager';
+import { PAGES } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOM, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, PAGES, SPRITES, TEXTURE_MANAGER] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOM, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
   [ROOM] = null;
   [OBJECTS] = [];
-  [PAGES] = {};
   [SPRITES] = {};
   [RAF] = null;
-  [TEXTURE_MANAGER] = new TextureManager();
 
   constructor(canvas, {w, h}) {
     this[CANVAS] = document.querySelector(canvas);
@@ -26,6 +25,7 @@ class Engine {
     this[CANVAS].height = h;
     this[CONTEXT] = this[CANVAS].getContext('2d');
     this[INPUT] = new Input(this[CANVAS]);
+    this[TEXTURE_MANAGER] = new TextureManager(this.constructor[PAGES]);
   }
   get size() { return new Dimension(this[CANVAS].width, this[CANVAS].height); }
 
@@ -113,9 +113,19 @@ class Engine {
           if(!(this[ROOM] instanceof Room)) {
             throw `${this[ROOM].constructor.name} is not a Room`;
           }
-          this[ROOM].start();
-          this.proc(new GameEvent('roomstart'));
+          (async () => {
+            this[ROOM].load();
+            await this[ROOM].loaded;
+            this[ROOM].start();
+            this.proc(new GameEvent('roomstart'));
+          })();
         }
+      },
+      mousestate: (button) => {
+        return this[INPUT].mousestate(button);
+      },
+      keystate: (key) => {
+        return this[INPUT].keystate(key);
       },
       // end the game
       end: () => {

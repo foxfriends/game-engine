@@ -3,20 +3,30 @@
 import Drawable from './drawable';
 import { PERSISTENT, PAGES } from './const';
 
-const [OBJECTS, ENGINE] = [Symbol(), Symbol()];
+const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
 
 class Room {
   [OBJECTS] = [];
-  [PAGES] = [];
+  [LOADED] = new Promise(() => {});
+
 
   constructor(engine) {
     this[ENGINE] = engine;
-    this[ENGINE].texture
-      .load(this[PAGES])
-      .purge();
+    this[LOADED] = (async () => {
+      await this[ENGINE].texture.load(this.constructor[PAGES] || []);
+      this[ENGINE].texture.purge();
+    })();
   }
 
-  // run at the start of the room
+  // resolves when all required resources for the room have loaded
+  // HACK : internalize
+  get loaded() {
+    return this[LOADED];
+  }
+
+  // run when the room starts loading
+  load() {}
+  // run at the start of the room (after loading)
   start() {}
   // trigger an event for each object in the room
   // HACK : internalize

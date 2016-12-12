@@ -13,9 +13,14 @@ function persistent(target) {
   Object.defineProperty(target, PERSISTENT, { value: true });
 }
 
-// @texturepage names texture pages required by a room
+// @texturepages defines the texture page mapping used by the game { [name] : 'url' }
+function texturepages(map) {
+  return function(target) { Object.defineProperty(target, PAGES, { value: map }); };
+}
+
+// @texturepage lists texture pages required by a room
 function texturepage(...names) {
-  return function(target) { Object.defineProperty(target, PAGES, { value: [...names] }); };
+  return function(target) { Object.defineProperty(target, PAGES, { value: names }); };
 }
 
 // @sprite names the initial sprite for this Object
@@ -23,4 +28,4 @@ function sprite(name) {
   return function(target) { Object.defineProperty(target, SPRITE, { value: name }); };
 }
 
-export { override, persistent, texturepage, sprite };
+export { override, persistent, texturepage, texturepages, sprite };

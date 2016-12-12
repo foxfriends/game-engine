@@ -2,14 +2,21 @@
 
 import GameEvent from './game-event';
 
+const [QUEUE, STATE] = [Symbol(), Symbol()];
+
 class Input {
-  queue = {
+  [QUEUE] = {
     keydown: [],
     keyup: [],
     mousedown: [],
     mouseup: [],
     mousemove: [0, 0]
   };
+
+  [STATE] = {
+    mouse: {},
+    key: {}
+  }
 
   constructor(canvas) {
     this.canvas = canvas;
@@ -20,30 +27,42 @@ class Input {
     window.addEventListener('mousemove', this.mousemove.bind(this), true);
   }
 
+  keystate(key) {
+    return !!this[STATE].key[key];
+  }
+
+  mousestate(button) {
+    return !!this[STATE].mouse[button];
+  }
+
   keydown(event) {
-    this.queue.keydown.push(new GameEvent('keydown', event.key));
+    this[QUEUE].keydown.push(new GameEvent('keydown', event.key));
+    this[STATE].key[event.key] = true;
   }
   keyup(event) {
-    this.queue.keyup.push(new GameEvent('keyup', event.key));
+    this[QUEUE].keyup.push(new GameEvent('keyup', event.key));
+    this[STATE].key[event.key] = false;
   }
   mousedown(event) {
-    this.queue.mousedown.push(new GameEvent('mousedown', event.button));
+    this[QUEUE].mousedown.push(new GameEvent('mousedown', event.button));
+    this[STATE].mouse[event.button] = true;
   }
   mouseup(event) {
-    this.queue.mouseup.push(new GameEvent('mouseup', event.button));
+    this[QUEUE].mouseup.push(new GameEvent('mouseup', event.button));
+    this[STATE].mouse[event.button] = false;
   }
   mousemove(event) {
     const {left: x, top: y} = this.canvas.getBoundingClientRect();
-    this.queue.mousemove = [event.clientX - x, event.clientY - y];
+    this[QUEUE].mousemove = [event.clientX - x, event.clientY - y];
   }
 
   *[Symbol.iterator] () {
     yield* [
-      ...this.queue.keydown.splice(0),
-      ...this.queue.mousedown.splice(0),
-      ...this.queue.keyup.splice(0),
-      ...this.queue.mouseup.splice(0),
-      new GameEvent('mousemove', this.queue.mousemove)
+      ... this[QUEUE].keydown.splice(0),
+      ... this[QUEUE].mousedown.splice(0),
+      ... this[QUEUE].keyup.splice(0),
+      ... this[QUEUE].mouseup.splice(0),
+      new GameEvent('mousemove', this[QUEUE].mousemove)
     ];
   }
 }

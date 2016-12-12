@@ -4,7 +4,7 @@ import { Room } from '../../engine';
 import Player from '../objects/player';
 import { texturepage } from '../../engine';
 
-@texturepage('house')
+@texturepage('castle', 'sarah')
 class Home extends Room {
   start() {
     super.spawn(Player);
