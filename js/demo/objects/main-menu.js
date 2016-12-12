@@ -1,5 +1,6 @@
 'use strict';
 import { Drawable, GameObject, override } from '../../engine';
+import Home from '../rooms/home';
 
 class MainMenu extends Drawable(GameObject) {
   opts = {};
@@ -9,7 +10,7 @@ class MainMenu extends Drawable(GameObject) {
   init() {
     this.opts = {
       ['New game']: () => {
-        super.game.restart();
+        super.game.room.goto(Home);
       },
       ['Continue']: () => {
         super.game.restart();

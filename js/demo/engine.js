@@ -9,7 +9,7 @@ class Demo extends Engine {
   }
 
   start() {
-    this.room.goto(Splash);
+    this.util.room.goto(Splash);
   }
 }
 

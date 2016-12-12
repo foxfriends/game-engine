@@ -1,14 +1,21 @@
 'use strict';
 
-const [STACK, COLOR, ALPHA, FONT, CONTEXT] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [STACK, COLOR, ALPHA, FONT, CONTEXT, WHO] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Draw {
   [STACK] = {};
   [COLOR] = '#000000';
   [ALPHA] = 1;
   [FONT] = '14px Arial';
+  [WHO] = null;
 
   constructor(context) { this[CONTEXT] = context; }
+
+  // REVIEW : HACK : internalize
+  object(who) {
+    this[WHO] = who;
+    return this;
+  }
 
   // settings
   alpha(alpha) {
@@ -20,7 +27,7 @@ class Draw {
     return this;
   }
 
-  // drawing
+  // draw a rectangle
   rect(rect, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const [alpha, color] = [this[COLOR], this[ALPHA]];
@@ -31,6 +38,7 @@ class Draw {
     });
     return this;
   }
+  // draw a pixel
   point(point, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const [alpha, color] = [this[COLOR], this[ALPHA]];
@@ -41,6 +49,7 @@ class Draw {
     });
     return this;
   }
+  // draw a sprite
   sprite(sprite, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const alpha = this[ALPHA];
@@ -50,6 +59,7 @@ class Draw {
     });
     return this;
   }
+  // draw some text
   text(str, where, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const [font, alpha, color] = [this[FONT], this[ALPHA], this[COLOR]]
@@ -61,7 +71,14 @@ class Draw {
     });
     return this;
   }
+  // draw the current GameObject sensibly from defaults
+  self(depth = 0) {
+    if(this[WHO] && this[WHO].sprite) {
+      this.sprite(this[WHO].sprite, depth);
+    }
+  }
 
+  // actually draw each item in the stack at the right depth
   render() {
     for(let depth of Object.keys(this[STACK]).map(x=>+x).sort((a,b)=>a-b)) {
       for(let item of this[STACK][depth]) {

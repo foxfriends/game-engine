@@ -1,8 +1,9 @@
 'use strict';
 
-function Drawable(Base) {
+function Drawable(Base = class{}) {
   return class extends Base {
-    draw() {}
+    // draw this thing using a Draw (./draw.js)
+    draw(draw) { draw.self(); }
   };
 }
 

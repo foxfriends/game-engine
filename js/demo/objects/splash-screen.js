@@ -34,6 +34,4 @@ class SplashScreen extends Drawable(GameObject) {
   }
 }
 
-console.log(new SplashScreen() instanceof Drawable);
-
 export default SplashScreen;
