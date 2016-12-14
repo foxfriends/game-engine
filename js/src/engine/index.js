@@ -30,7 +30,7 @@ class Engine {
   get size() { return new Dimension(this[CANVAS].width, this[CANVAS].height); }
 
   // triggers the event for all objects currently active
-  // HACK : internalize
+  // HACK: internalize
   proc(event) {
     for(let obj of this[OBJECTS][0]) {
       obj.proc(event);
@@ -41,7 +41,7 @@ class Engine {
   // specifies how to start a game
   start() {}
   // processes all events for one frame
-  // HACK : internalize
+  // HACK: internalize
   step() {
     this.proc(new GameEvent('stepstart'));
     for(let event of this[INPUT]) {
@@ -51,7 +51,7 @@ class Engine {
     this.proc(new GameEvent('stepend'));
   }
   // refreshes the game screen
-  // HACK : internalize
+  // HACK: internalize
   draw() {
     this[CONTEXT].clearRect(0, 0, ...this.size);
     const drawer = new Draw(this[CONTEXT]);
@@ -73,12 +73,19 @@ class Engine {
   end() {}
 
   // runs the game
-  // HACK : internalize
+  // HACK: internalize
   run() {
+    let me = 0;
     const takeStep = () => {
+      me = this[RAF];
       this.step();
       this.draw();
-      this[RAF] = window.requestAnimationFrame(takeStep);
+      if(this[RAF] === me) {
+        // NB: guard against the game being re-run by just stopping it
+        // behaviour is undefined if there are still rooms/objects in the game
+        // and the game is re-run
+        this[RAF] = window.requestAnimationFrame(takeStep);
+      }
     };
     this.start();
     this.proc(new GameEvent('gamestart'));
@@ -86,7 +93,7 @@ class Engine {
   }
 
   // spawns a persistent object
-  // HACK : internalize
+  // HACK: internalize
   spawn(Obj, ...args) {
     const o = new Obj(this);
     o.init(...args);
@@ -94,7 +101,7 @@ class Engine {
     return o;
   }
   // destroys a persistent object
-  // HACK : internalize
+  // HACK: internalize
   destroy(obj) {
     if(typeof obj === 'function') {
       this[OBJECTS][0].filter(o => !(o instanceof obj));
@@ -131,7 +138,8 @@ class Engine {
           (async () => {
             this[ROOMS][0].load();
             await this[ROOMS][0].loaded;
-            this[ROOMS].splice(1, 1); // remove the old room, which was temporarily shifted
+            // remove the old room, which was temporarily shifted
+            this[ROOMS].splice(1, 1);
             this[OBJECTS].splice(1, 1);
             this[ROOMS][0].start();
             this.proc(new GameEvent('roomstart', old, Rm));
@@ -168,13 +176,15 @@ class Engine {
         return this[INPUT].keystate(key);
       },
       // end the game
+      // NOTE: for JS version of this engine, this function isn't all that
+      //       useful since you can't really 'close' a canvas
       end: () => {
         this.proc(new GameEvent('gameend'));
+        this.end();
         window.cancelAnimationFrame(this[RAF]);
         this[RAF] = null;
         this[ROOMS] = [];
         this[OBJECTS] = [[]];
-        this.end();
       },
       // end the game and run it again
       restart: () => {

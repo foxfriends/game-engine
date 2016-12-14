@@ -11,7 +11,7 @@ class Draw {
 
   constructor(context) { this[CONTEXT] = context; }
 
-  // REVIEW : HACK : internalize
+  // REVIEW: HACK: internalize
   object(who) {
     this[WHO] = who;
     return this;
