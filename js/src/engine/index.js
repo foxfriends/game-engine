@@ -10,12 +10,12 @@ import TextureManager from './texture-manager';
 import { PAGES } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOM, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER] =
+const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER] =
       [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
-  [ROOM] = null;
-  [OBJECTS] = [];
+  [ROOMS] = [];
+  [OBJECTS] = [[]];
   [SPRITES] = {};
   [RAF] = null;
 
@@ -32,10 +32,10 @@ class Engine {
   // triggers the event for all objects currently active
   // HACK : internalize
   proc(event) {
-    for(let obj of this[OBJECTS]) {
+    for(let obj of this[OBJECTS][0]) {
       obj.proc(event);
     }
-    this[ROOM] && this[ROOM].proc(event);
+    this[ROOMS][0] && this[ROOMS][0].proc(event);
   }
 
   // specifies how to start a game
@@ -55,13 +55,21 @@ class Engine {
   draw() {
     this[CONTEXT].clearRect(0, 0, ...this.size);
     const drawer = new Draw(this[CONTEXT]);
-    for(let obj of this[OBJECTS]) {
+    // draw under layers first
+    for(let i = this[ROOMS].length - 1; i > 0; --i) {
+      for(let obj of this[OBJECTS][i]) {
+        obj instanceof Drawable && obj.draw(drawer.object(obj));
+      }
+      this[ROOMS][i] && this[ROOMS][i].draw(drawer);
+      drawer.render();
+    }
+    for(let obj of this[OBJECTS][0]) {
       obj instanceof Drawable && obj.draw(drawer.object(obj));
     }
-    this[ROOM] && this[ROOM].draw(drawer);
+    this[ROOMS][0] && this[ROOMS][0].draw(drawer);
     drawer.render();
   }
-  // specifies how to end a game
+  // run at the end of a game
   end() {}
 
   // runs the game
@@ -82,15 +90,19 @@ class Engine {
   spawn(Obj, ...args) {
     const o = new Obj(this);
     o.init(...args);
-    this[OBJECTS].push(o);
+    this[OBJECTS][0].push(o);
     return o;
   }
   // destroys a persistent object
   // HACK : internalize
   destroy(obj) {
-    const i = this[OBJECTS].indexOf(o);
-    if(i >= 0) {
-      this[OBJECTS].splice(i, 1);
+    if(typeof obj === 'function') {
+      this[OBJECTS][0].filter(o => !(o instanceof obj));
+    } else {
+      const i = this[OBJECTS][0].indexOf(obj);
+      if(i >= 0) {
+        this[OBJECTS][0].splice(i, 1);
+      }
     }
   }
 
@@ -105,20 +117,48 @@ class Engine {
       room: {
         // go to the given room
         goto: (Rm) => {
-          if(this[ROOM]) {
-            this.proc(new GameEvent('roomend'));
-            this[ROOM].end();
+          let old = null;
+          if(this[ROOMS][0]) {
+            old = this[ROOMS][0].constructor;
+            this.proc(new GameEvent('roomend', old, Rm));
+            this[ROOMS][0].end();
           }
-          this[ROOM] = new Rm(this);
-          if(!(this[ROOM] instanceof Room)) {
-            throw `${this[ROOM].constructor.name} is not a Room`;
+          this[ROOMS].unshift(new Rm(this));
+          this[OBJECTS].splice(1, 1, []);
+          if(!(this[ROOMS][0] instanceof Room)) {
+            throw `${this[ROOMS][0].constructor.name} is not a Room`;
           }
           (async () => {
-            this[ROOM].load();
-            await this[ROOM].loaded;
-            this[ROOM].start();
-            this.proc(new GameEvent('roomstart'));
+            this[ROOMS][0].load();
+            await this[ROOMS][0].loaded;
+            this[ROOMS].splice(1, 1); // remove the old room, which was temporarily shifted
+            this[OBJECTS].splice(1, 1);
+            this[ROOMS][0].start();
+            this.proc(new GameEvent('roomstart', old, Rm));
           })();
+        },
+        // freeze the current room and put this one over top
+        overlay: (Rm) => {
+          const old = this[ROOMS][0].constructor;
+          this[ROOMS].unshift(new Rm(this));
+          this[OBJECTS].unshift([]);
+          if(!(this[ROOMS][0] instanceof Room)) {
+            throw `${this[ROOMS][0].constructor.name} is not a Room`;
+          }
+          (async () => {
+            this[ROOMS][0].load();
+            await this[ROOMS][0].loaded;
+            this[ROOMS][0].start();
+            this.proc(new GameEvent('roomstart', old, Rm));
+          })();
+        },
+        // closes the current room overlay
+        close: () => {
+          this[ROOMS].shift();
+          this[OBJECTS].shift();
+          if(this[ROOMS].length === 0) {
+            throw `You closed the last room... please don't do that`;
+          }
         }
       },
       mousestate: (button) => {
@@ -132,14 +172,20 @@ class Engine {
         this.proc(new GameEvent('gameend'));
         window.cancelAnimationFrame(this[RAF]);
         this[RAF] = null;
-        this[ROOM] = null;
-        this[OBJECTS] = [];
+        this[ROOMS] = [];
+        this[OBJECTS] = [[]];
         this.end();
       },
       // end the game and run it again
       restart: () => {
-        this.game.end();
+        this.util.end();
         this.run();
+      },
+      spawn: (...args) => {
+        this[ROOMS][0].spawn(...args);
+      },
+      destroy: (obj) => {
+        this[ROOMS][0].destroy(obj);
       }
     };
   }

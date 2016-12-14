@@ -9,7 +9,6 @@ class Room {
   [OBJECTS] = [];
   [LOADED] = new Promise(() => {});
 
-
   constructor(engine) {
     this[ENGINE] = engine;
     this[LOADED] = (async () => {
@@ -49,11 +48,16 @@ class Room {
 
   // destroy an object in this room
   destroy(obj) {
-    const i = this[OBJECTS].indexOf(o);
-    if(i >= 0) {
-      this[OBJECTS].splice(i, 1);
-    } else {
+    if(typeof obj === 'function') {
+      this[OBJECTS].filter(o => !(o instanceof obj));
       this[ENGINE].destroy(obj);
+    } else {
+      const i = this[OBJECTS].indexOf(obj);
+      if(i >= 0) {
+        this[OBJECTS].splice(i, 1);
+      } else {
+        this[ENGINE].destroy(obj);
+      }
     }
   }
 

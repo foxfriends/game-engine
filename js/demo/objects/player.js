@@ -1,6 +1,8 @@
 'use strict';
 
 import { Drawable, GameObject, override, persistent, sprite } from '../../engine';
+import PauseMenu from '../rooms/pause-menu';
+import MainMenu from '../rooms/main-menu';
 
 @persistent
 @sprite('sarah_idle_south')
@@ -9,9 +11,23 @@ class Player extends Drawable(GameObject) {
   dir = 'south';
 
   @override
+  roomend(_, room) {
+    if(room === MainMenu) {
+      super.game.destroy(this);
+    }
+  }
+
+  @override
   init() {
     this.sprite.x = 0;
     this.sprite.y = 0;
+  }
+
+  @override
+  keydown(which) {
+    if(which === 'p') {
+      super.game.room.overlay(PauseMenu);
+    }
   }
 
   @override

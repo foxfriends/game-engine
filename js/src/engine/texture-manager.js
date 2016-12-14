@@ -12,7 +12,7 @@ class TextureManager {
 
   // load a set of texture pages
   load(textures) {
-    this.old = Object.keys(this.pages).filter(key => textures.includes(key));
+    this.old = Object.keys(this.pages).filter(key => !textures.includes(key));
     const loaded = [];
     for(let texture of textures) {
       if(!this.pages[texture]) {

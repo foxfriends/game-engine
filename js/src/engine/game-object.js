@@ -16,7 +16,7 @@ class GameObject {
   init() {}
 
   // run at the beginning of each room
-  roomstart() {}
+  roomstart(old, room) {}
   // run at the beginning of the game
   gamestart() {}
 
@@ -36,13 +36,13 @@ class GameObject {
   stepend() {}
 
   // run at the end of each room
-  roomend() {}
+  roomend(old, room) {}
   // run at the end of the game
   gameend() {}
 
   // trigger an event
   proc(event) {
-    this[event.type] && this[event.type](event.data);
+    this[event.type] && this[event.type](...event.data);
   }
 
   // the current sprite for this object (if any)
