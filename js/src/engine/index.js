@@ -58,7 +58,7 @@ class Engine {
     // draw under layers first
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
-    //      haven't changed at all
+    //       haven't changed at all
     for(let i = this[ROOMS].length - 1; i > 0; --i) {
       for(let obj of this[OBJECTS][i]) {
         obj instanceof Drawable && obj.draw(drawer.object(obj));

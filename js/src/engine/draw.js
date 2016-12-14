@@ -59,6 +59,16 @@ class Draw {
     });
     return this;
   }
+  // draw a tilemap
+  image(image, src, dest, depth = 0) {
+    this[STACK][depth] = this[STACK][depth] || [];
+    const alpha = this[ALPHA];
+    this[STACK][depth].push(con => {
+      con.globalAlpha = alpha;
+      con.drawImage(image, ...src, ...dest);
+    });
+    return this;
+  }
   // draw some text
   text(str, where, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];

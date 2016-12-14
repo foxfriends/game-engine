@@ -19,8 +19,8 @@ class Player extends Drawable(GameObject) {
 
   @override
   init() {
-    this.sprite.x = 0;
-    this.sprite.y = 0;
+    this.sprite.x = 32;
+    this.sprite.y = 32;
   }
 
   @override

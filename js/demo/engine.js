@@ -1,13 +1,16 @@
 'use strict';
 
 import path from 'path';
-import { Engine, Dimension, override, texturepages } from '../engine';
+import { Engine, Dimension, override, texturepages, tilemaps } from '../engine';
 import Splash from './rooms/splash';
 
 
 @texturepages({
   'castle': path.resolve('resources', 'texture-pages', 'castle.json'),
   'sarah': path.resolve('resources', 'texture-pages', 'sarah.json')
+})
+@tilemaps({
+  'home': path.resolve('resources', 'tile-maps', 'home.json')
 })
 class Demo extends Engine {
   constructor() {

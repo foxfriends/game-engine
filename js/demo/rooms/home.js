@@ -1,10 +1,10 @@
 'use strict';
 
-import { Room } from '../../engine';
+import { Room, texturepage, tilemap } from '../../engine';
 import Player from '../objects/player';
-import { texturepage } from '../../engine';
 
-@texturepage('castle', 'sarah')
+@texturepage('sarah')
+@tilemap('home')
 class Home extends Room {
   start() {
     super.spawn(Player);

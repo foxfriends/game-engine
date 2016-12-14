@@ -11,6 +11,7 @@ module.exports = [{
     module: {
       loaders: [
         { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
+        { test: /\.json$/, exclude: /node_modules.*\.json/, loader: 'json-loader' },
       ],
     }
   }, {
@@ -22,6 +23,7 @@ module.exports = [{
     module: {
       loaders: [
         { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
+        { test: /\.json$/, exclude: /node_modules.*\.json/, loader: 'json-loader' },
       ],
     }
   }

@@ -1,19 +1,33 @@
 'use strict';
 
 import Drawable from './drawable';
-import { PERSISTENT, PAGES } from './const';
+import TileMap from './tile-map';
+import loadJSON from './load-json';
+import { PERSISTENT, PAGES, TILEMAP } from './const';
 
 const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
 
 class Room {
   [OBJECTS] = [];
   [LOADED] = new Promise(() => {});
+  [TILEMAP] = null;
 
   constructor(engine) {
     this[ENGINE] = engine;
     this[LOADED] = (async () => {
-      await this[ENGINE].texture.load(this.constructor[PAGES] || []);
+      let tm = null;
+      const pages = this.constructor[PAGES] || [];
+      if(this.constructor[TILEMAP]) {
+        const url = this[ENGINE].constructor[TILEMAP][this.constructor[TILEMAP]];
+        if(!url) { throw `TileMap ${this.constructor[TILEMAP]} does not exist`; }
+        tm = await loadJSON(url);
+        pages.push(...tm.meta.pages.map(({name}) => name));
+      }
+      await this[ENGINE].texture.load(new Set(pages));
       this[ENGINE].texture.purge();
+      if(tm) {
+        this[TILEMAP] = new TileMap(this[ENGINE].texture, tm);
+      }
     })();
   }
 
@@ -67,6 +81,7 @@ class Room {
     for(let obj of this[OBJECTS]) {
       obj instanceof Drawable && obj.draw(draw);
     }
+    this[TILEMAP] && this[TILEMAP].draw(draw);
   }
 }
 

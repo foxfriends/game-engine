@@ -1,34 +1,22 @@
 'use strict';
 
 import { Rectangle } from './struct';
+import loadJSON from './load-json';
 import Sprite from './sprite';
 import path from 'path';
 
-const [TEXTURE, FRAMES, SPRITES, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol()];
-
-function loadFile(url) {
-  return new Promise((resolve, reject) => {
-    const req = new XMLHttpRequest();
-    req.open('GET', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.addEventListener('load', () => {
-      try {
-        const data = JSON.parse(req.responseText);
-        resolve(data);
-      } catch(error) {
-        reject(`Invalid JSON received from ${url}`);
-      }
-    });
-    req.send();
-  });
-}
+const [FRAMES, SPRITES, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol()];
 
 class TexturePage extends Image {
-  constructor(file) {
+  [FRAMES] = null;
+  [SPRITES] = null;
+  [LOADED] = new Promise(() => {});
+
+  constructor(url) {
     super();
     this[LOADED] = (async () => {
       // make a texture page from the json
-      const json = await loadFile(file);
+      const json = await loadJSON(url);
       this.src = json.image;
       this.width = json.width;
       this.height = json.height;

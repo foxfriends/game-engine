@@ -1,6 +1,6 @@
 'use strict';
 
-import { SPRITE, PAGES, PERSISTENT } from './const';
+import { SPRITE, PAGES, TILEMAP, PERSISTENT } from './const';
 
 // @override methods must have a superclass method they are overriding
 function override(target, prop, descriptor) {
@@ -28,4 +28,15 @@ function sprite(name) {
   return function(target) { Object.defineProperty(target, SPRITE, { value: name }); };
 }
 
-export { override, persistent, texturepage, texturepages, sprite };
+// @tilemap defines the layout of the static background and collision tiles in a room
+function tilemap(name) {
+  return function(target) { Object.defineProperty(target, TILEMAP, { value: name }) ; };
+}
+
+// @tilemap defines the layout of the static background and collision tiles in a room
+function tilemaps(map) {
+  return function(target) { Object.defineProperty(target, TILEMAP, { value: map }) ; };
+}
+
+
+export { override, persistent, texturepage, texturepages, sprite, tilemap, tilemaps };
