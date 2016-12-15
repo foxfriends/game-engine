@@ -7,7 +7,8 @@ import Splash from './rooms/splash';
 
 @texturepages({
   'castle': path.resolve('resources', 'texture-pages', 'castle.json'),
-  'sarah': path.resolve('resources', 'texture-pages', 'sarah.json')
+  'sarah': path.resolve('resources', 'texture-pages', 'sarah.json'),
+  'inside': path.resolve('resources', 'texture-pages', 'inside.json'),
 })
 @tilemaps({
   'home': path.resolve('resources', 'tile-maps', 'home.json')

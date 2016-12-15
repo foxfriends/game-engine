@@ -7,6 +7,7 @@ export * from './engine/timing';
 export * from './engine/decorator';
 export * from './engine';
 export * from './engine/drawable';
+export * from './engine/collider';
 export * from './engine/texture-page';
 export * from './engine/sprite';
 export * from './engine/game-object';

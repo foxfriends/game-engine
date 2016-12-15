@@ -17,13 +17,14 @@ class TileMap {
         if(page.min <= n && n < page.max) {
           n -= page.min;
           const tp = tm.pages[page.name];
+          if(!tp) { return null; }
           const src = new Rectangle(this.tw * (n % (tp.width / this.tw)), this.th * Math.floor(n / (tp.width / this.tw)), this.tw, this.th);
           return [tp, src];
         }
       }
     }
-    const dest = new Rectangle(0, 0, this.tw, this.th);
     for(let depth of Object.keys(images)) {
+      const dest = new Rectangle(0, 0, this.tw, this.th);
       const layer = document.createElement('CANVAS');
       layer.width = images[depth][0].length * this.tw;
       layer.height = images[depth].length * this.th;
@@ -31,8 +32,11 @@ class TileMap {
       this[IMAGES].push([+depth, layer]);
       for(let row of images[depth]) {
         for(let n of row) {
-          const [tp, src] = tile(+n);
-          ctx.drawImage(tp, ...src, ...dest);
+          const t = tile(+n);
+          if(t) {
+            const [tp, src] = t;
+            ctx.drawImage(tp, ...src, ...dest);
+          }
           dest.x += this.tw;
         }
         dest.x = 0;
@@ -50,8 +54,18 @@ class TileMap {
   }
 
   // check if a given Rectangle collides with the collision map
-  collision({x, y, w, h}) {
-
+  collides(box) {
+    box = [...box];
+    box[2] = Math.ceil((box[0] + box[2]) / this.tw);
+    box[3] = Math.ceil((box[1] + box[3]) / this.th);
+    box[0] = Math.floor(box[0] / this.tw);
+    box[1] = Math.floor(box[1] / this.th);
+    for(let i = box[0]; i < box[2]; ++i) {
+      for(let j = box[1]; j < box[3]; ++j) {
+        if(this[COLLISIONS][j] && this[COLLISIONS][j][i]) { return true; }
+      }
+    }
+    return false;
   }
 }
 

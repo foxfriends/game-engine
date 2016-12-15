@@ -8,7 +8,7 @@ function Drawable(Base = class{}) {
 }
 
 Object.defineProperty(Drawable, Symbol.hasInstance, {
-  value: (instance) => {
+  value(instance) {
     return typeof instance.draw === 'function';
   }
 });

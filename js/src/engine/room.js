@@ -83,6 +83,26 @@ class Room {
     }
     this[TILEMAP] && this[TILEMAP].draw(draw);
   }
+
+  // check if there is a collision in this room
+  collides(where, what) {
+    if(what === 'room' || what === 'any') {
+      if(this[TILEMAP] && this[TILEMAP].collides(where)) {
+        return true;
+      }
+    }
+    if(what !== 'room') {
+      what = what === 'any'
+        ? this[OBJECTS]
+        : this[OBJECTS].filter(o => o instanceof what);
+      for(let it of what) {
+        if(it.collides(where)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 export { Room };

@@ -4,6 +4,7 @@ import Draw from './draw';
 import { Dimension } from './struct';
 import GameEvent from './game-event';
 import Drawable from './drawable';
+import Collider from './collider';
 import Room from './room';
 import Input from './input';
 import TextureManager from './texture-manager';
@@ -194,11 +195,30 @@ class Engine {
         this.util.end();
         this.run();
       },
+      // spaw an object
       spawn: (...args) => {
         this[ROOMS][0].spawn(...args);
       },
+      // destroy an object
       destroy: (obj) => {
         this[ROOMS][0].destroy(obj);
+      },
+      // checks if two colliders are colliding
+      collides: (where, what) => {
+        if(this[ROOMS][0].collides(where, what)) {
+          return true;
+        }
+        if(what !== 'room') {
+          what = what === 'any'
+            ? this[OBJECTS][0]
+            : this[OBJECTS][0].filter(o => o instanceof what);
+          for(let it of what) {
+            if(it.collides(where)) {
+              return true;
+            }
+          }
+        }
+        return false;
       }
     };
   }
