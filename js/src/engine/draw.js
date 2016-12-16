@@ -1,6 +1,7 @@
 'use strict';
 
-const [STACK, COLOR, ALPHA, FONT, CONTEXT, WHO] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [STACK, COLOR, ALPHA, FONT, WHO, CONTEXT, VIEWPORT] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Draw {
   [STACK] = {};
@@ -8,12 +9,23 @@ class Draw {
   [ALPHA] = 1;
   [FONT] = '14px Arial';
   [WHO] = null;
+  [VIEWPORT] = null;
 
-  constructor(context) { this[CONTEXT] = context; }
+  constructor(context) {
+    this[CONTEXT] = context;
+  }
 
-  // REVIEW: HACK: internalize
+  // the current object being drawn
+  // HACK: internalize
   object(who) {
     this[WHO] = who;
+    return this;
+  }
+
+  // the current viewport rectangle
+  // HACK: internalize
+  view(view) {
+    this[VIEWPORT] = [...view];
     return this;
   }
 
@@ -90,11 +102,18 @@ class Draw {
 
   // actually draw each item in the stack at the right depth
   render() {
+    this[CONTEXT].save();
+    if(this[VIEWPORT]) {
+      const { width, height } = this[CONTEXT].canvas;
+      this[CONTEXT].scale(width / this[VIEWPORT][2], height / this[VIEWPORT][3]);
+      this[CONTEXT].translate(-this[VIEWPORT][0], -this[VIEWPORT][1]);
+    }
     for(let depth of Object.keys(this[STACK]).map(x=>+x).sort((a,b)=>a-b)) {
       for(let item of this[STACK][depth]) {
         item(this[CONTEXT]);
       }
     }
+    this[CONTEXT].restore();
     this[STACK] = {};
   }
 }

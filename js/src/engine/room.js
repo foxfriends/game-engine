@@ -1,8 +1,10 @@
 'use strict';
 
 import Drawable from './drawable';
+import Collider from './collider';
 import TileMap from './tile-map';
 import loadJSON from './load-json';
+import { Dimension } from './struct';
 import { PERSISTENT, PAGES, TILEMAP } from './const';
 
 const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
@@ -29,6 +31,24 @@ class Room {
         this[TILEMAP] = new TileMap(this[ENGINE].texture, tm);
       }
     })();
+  }
+
+  // utilities
+  // TODO: reduce duplication of GameObject#game
+  get game() {
+    return new Proxy(this[ENGINE], {
+      get(target, prop) {
+        return target.util[prop];
+      }
+    });
+  }
+
+  get size() {
+    if(this[TILEMAP]) {
+      return this[TILEMAP].size;
+    } else {
+      return new Dimension(Infinity, Infinity)
+    }
   }
 
   // resolves when all required resources for the room have loaded
@@ -93,7 +113,7 @@ class Room {
     }
     if(what !== 'room') {
       what = what === 'any'
-        ? this[OBJECTS]
+        ? this[OBJECTS].filter(o => o instanceof Collider)
         : this[OBJECTS].filter(o => o instanceof what);
       for(let it of what) {
         if(it.collides(where)) {

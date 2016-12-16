@@ -1,6 +1,6 @@
 'use strict';
 
-import { Drawable, Collider, GameObject, override, persistent, sprite, Rectangle } from '../../engine';
+import { Drawable, Collider, GameObject, override, persistent, sprite, Rectangle, Position } from '../../engine';
 import PauseMenu from '../rooms/pause-menu';
 import MainMenu from '../rooms/main-menu';
 
@@ -59,6 +59,7 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
     } else {
       this.sprite = `sarah_idle_${this.dir}`;
     }
+    super.game.view(new Position(this.sprite.x + 32, this.sprite.y + 32));
   }
 }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-import { Rectangle } from './struct';
+import { Dimension, Rectangle } from './struct';
 const [COLLISIONS, IMAGES, LOADED] = [Symbol(), Symbol(), Symbol()];
 
 // a TileMap provides an efficient way to store and render a static tile map
@@ -44,6 +44,10 @@ class TileMap {
       }
     }
     this[COLLISIONS] = collisions.map(l => l.split('').map(i => !!+i));
+  }
+
+  get size() {
+    return new Dimension(this.tw * this[COLLISIONS][0].length, this.th * this[COLLISIONS].length);
   }
 
   // copy the tile map to the main canvas

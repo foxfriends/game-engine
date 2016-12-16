@@ -56,6 +56,7 @@ class GameObject {
   }
 
   // utilities
+  // TODO: reduce duplication of Room#game
   get game() {
     return new Proxy(this[ENGINE], {
       get(target, prop) {

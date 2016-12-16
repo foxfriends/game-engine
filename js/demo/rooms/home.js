@@ -1,6 +1,6 @@
 'use strict';
 
-import { Room, texturepage, tilemap } from '../../engine';
+import { Room, texturepage, tilemap, Rectangle } from '../../engine';
 import Player from '../objects/player';
 
 @texturepage('sarah')

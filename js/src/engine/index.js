@@ -1,7 +1,7 @@
 'use strict';
 
 import Draw from './draw';
-import { Dimension } from './struct';
+import { Position, Dimension, Rectangle } from './struct';
 import GameEvent from './game-event';
 import Drawable from './drawable';
 import Collider from './collider';
@@ -11,19 +11,22 @@ import TextureManager from './texture-manager';
 import { PAGES } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER, VIEWS] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
   [ROOMS] = [];
   [OBJECTS] = [[]];
   [SPRITES] = {};
   [RAF] = null;
+  [VIEWS] = [new Rectangle(0, 0, 300, 150)];
 
   constructor(canvas, {w, h}) {
     this[CANVAS] = document.querySelector(canvas);
     this[CANVAS].width = w;
     this[CANVAS].height = h;
+    this[VIEWS][0].w = w;
+    this[VIEWS][0].h = h;
     this[CONTEXT] = this[CANVAS].getContext('2d');
     this[INPUT] = new Input(this[CANVAS]);
     this[TEXTURE_MANAGER] = new TextureManager(this.constructor[PAGES]);
@@ -61,12 +64,14 @@ class Engine {
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
     for(let i = this[ROOMS].length - 1; i > 0; --i) {
+      drawer.view(this[VIEWS][i])
       for(let obj of this[OBJECTS][i]) {
         obj instanceof Drawable && obj.draw(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].draw(drawer);
       drawer.render();
     }
+    drawer.view(this[VIEWS][0]);
     for(let obj of this[OBJECTS][0]) {
       obj instanceof Drawable && obj.draw(drawer.object(obj));
     }
@@ -85,9 +90,9 @@ class Engine {
       this.step();
       this.draw();
       if(this[RAF] === me) {
-        // NB: guard against the game being re-run by just stopping it
-        // behaviour is undefined if there are still rooms/objects in the game
-        // and the game is re-run
+        // guard against the game being re-run by just stopping it.
+        // NOTE: behaviour is undefined if there are still rooms/objects in the
+        // game when it is re-run
         this[RAF] = window.requestAnimationFrame(takeStep);
       }
     };
@@ -125,6 +130,38 @@ class Engine {
   // utilities
   get util() {
     return {
+      // get/set the view port, optionally constrained within the room
+      // boundaries if possible, and with the entire room centred if not
+      view: (view, constrain = true) => {
+        if(view === undefined) {
+          return this[VIEWS][0];
+        }
+        if(view instanceof Position) {
+          view = new Rectangle(view.x - this[VIEWS][0].w / 2, view.y - this[VIEWS][0].h / 2, this[VIEWS][0].w, this[VIEWS][0].h);
+        }
+        if(constrain) {
+          const { w, h } = this[ROOMS][0].size;
+          const [ r, b ] = [
+            view.x + view.w,
+            view.y + view.h
+          ];
+          if(view.w > w) {
+            view.x = (w - view.w) / 2;
+          } else if(view.x < 0) {
+            view.x = 0;
+          } else if(r > w) {
+            view.x = w - view.w;
+          }
+          if(view.h > h) {
+            view.y = (h - view.h) / 2;
+          } else if(view.y < 0) {
+            view.y = 0;
+          } else if(b > h) {
+            view.y = h - view.h;
+          }
+        }
+        return this[VIEWS][0] = view;
+      },
       room: {
         // go to the given room
         goto: (Rm) => {
@@ -136,6 +173,7 @@ class Engine {
           }
           this[ROOMS].unshift(new Rm(this));
           this[OBJECTS].splice(1, 1, []);
+          this[VIEWS].unshift(new Rectangle(0, 0, ...this.size))
           if(!(this[ROOMS][0] instanceof Room)) {
             throw `${this[ROOMS][0].constructor.name} is not a Room`;
           }
@@ -145,6 +183,7 @@ class Engine {
             // remove the old room, which was temporarily shifted
             this[ROOMS].splice(1, 1);
             this[OBJECTS].splice(1, 1);
+            this[VIEWS].splice(1, 1);
             this[ROOMS][0].start();
             this.proc(new GameEvent('roomstart', old, Rm));
           })();
@@ -154,6 +193,7 @@ class Engine {
           const old = this[ROOMS][0].constructor;
           this[ROOMS].unshift(new Rm(this));
           this[OBJECTS].unshift([]);
+          this[VIEWS].unshift(new Rectangle(0, 0, ...this.size));
           if(!(this[ROOMS][0] instanceof Room)) {
             throw `${this[ROOMS][0].constructor.name} is not a Room`;
           }
@@ -168,6 +208,7 @@ class Engine {
         close: () => {
           this[ROOMS].shift();
           this[OBJECTS].shift();
+          this[VIEWS].shift();
           if(this[ROOMS].length === 0) {
             throw `You closed the last room... please don't do that`;
           }
@@ -181,7 +222,7 @@ class Engine {
       },
       // end the game
       // NOTE: for JS version of this engine, this function isn't all that
-      //       useful since you can't really 'close' a canvas
+      // useful since you can't really 'close' a canvas
       end: () => {
         this.proc(new GameEvent('gameend'));
         this.end();
@@ -210,7 +251,7 @@ class Engine {
         }
         if(what !== 'room') {
           what = what === 'any'
-            ? this[OBJECTS][0]
+            ? this[OBJECTS][0].filter(o => o instanceof Collider)
             : this[OBJECTS][0].filter(o => o instanceof what);
           for(let it of what) {
             if(it.collides(where)) {
