@@ -1,4 +1,5 @@
 #include "texture-page.h"
+#include "sprite.h"
 
 namespace Game {
     TexturePage::TexturePage(const std::string &file, SDL_Renderer &ren) {
@@ -18,5 +19,13 @@ namespace Game {
 
     TexturePage::operator SDL_Texture * () const {
         return _texture.get();
+    }
+
+    bool TexturePage::hasSprite(const std::string & name) const {
+        return !!_sprites.count(name);
+    }
+
+    Sprite TexturePage::make(const std::string & name) const {
+        return Sprite{*this, _sprites.at(name), name};
     }
 };

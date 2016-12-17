@@ -12,12 +12,19 @@
 
 namespace Game {
     class Sprite : public Rectangle {
-        std::shared_ptr<TexturePage> _texpage;
-        std::vector<TexturePage::Key> _frames;
-        int _frame;
+        const TexturePage & _page;
+        std::vector<int> _frames;
+        int _frame = 0;
+        std::string _name;
     public:
-        Sprite(const std::shared_ptr<TexturePage> &tp, const std::initializer_list<int> &frames);
-        virtual ~Sprite();
+        Sprite(const TexturePage & page, const std::vector<int> & frames, const std::string & name);
+
+        int frame() const;
+        void frame(int n);
+
+        TexturePage & texture() const;
+        Rectangle src() const;
+        Rectangle dest() const;
     };
 };
 
