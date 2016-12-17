@@ -11,13 +11,12 @@ import TextureManager from './texture-manager';
 import { PAGES } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, SPRITES, TEXTURE_MANAGER, VIEWS] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, VIEWS] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
   [ROOMS] = [];
   [OBJECTS] = [[]];
-  [SPRITES] = {};
   [RAF] = null;
   [VIEWS] = [new Rectangle(0, 0, 300, 150)];
 
@@ -201,11 +200,13 @@ class Engine {
             this[ROOMS][0].load();
             await this[ROOMS][0].loaded;
             this[ROOMS][0].start();
-            this.proc(new GameEvent('roomstart', old, Rm));
+            this.proc(new GameEvent('roomstart', null, Rm));
           })();
         },
         // closes the current room overlay
         close: () => {
+          this.proc(new GameEvent('roomend', this[ROOMS][0].constructor, null));
+          this[ROOMS][0].end();
           this[ROOMS].shift();
           this[OBJECTS].shift();
           this[VIEWS].shift();

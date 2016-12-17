@@ -1,0 +1,3 @@
+[submodule "c++/vendor/json"]
+	path = c++/vendor/json
+	url = git@github.com:nlohmann/json.git

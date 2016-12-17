@@ -1,24 +1,59 @@
 #include "object.h"
 
 namespace Game {
+    bool Object::persistent = false;
+
+    Object::Object() {}
     Object::~Object() {}
 
-    void roomstart() {}
+    void Object::gamestart() {}
+    void Object::roomstart(int prev, int next) {}
 
-    void stepstart() {}
+    void Object::stepstart() {}
 
-    void mousemove(const Position &where) {}
-    void keydown(const int which) {}
-    void mousedown(const int which) {}
-    void keyup(const int which) {}
-    void mouseup(const int which) {}
+    void Object::mousemove(const Position & where) {}
+    void Object::keydown(const int which) {}
+    void Object::mousedown(const int which) {}
+    void Object::keyup(const int which) {}
+    void Object::mouseup(const int which) {}
 
-    void step() {}
-    void stepend() {}
+    void Object::step() {}
+    void Object::stepend() {}
 
-    void roomend() {}
+    void Object::roomend(int prev, int next) {}
+    void Object::gameend() {}
 
-    void proc(const Event &data) {
-        // process an event..?
+    void Object::proc(const Event & event) {
+        switch(event.type) {
+        case Event::KeyDown:
+            keydown(event.data[0]);
+            break;
+        case Event::KeyUp:
+            keyup(event.data[0]);
+            break;
+        case Event::MouseDown:
+            mousedown(event.data[0]);
+            break;
+        case Event::MouseUp:
+            mouseup(event.data[0]);
+            break;
+        case Event::MouseMove:
+            mousemove({event.data[0], event.data[1]});
+            break;
+        case Event::RoomStart:
+            roomstart(event.data[0], event.data[1]);
+            break;
+        case Event::RoomEnd:
+            roomend(event.data[0], event.data[1]);
+            break;
+        case Event::GameStart:
+            gamestart();
+            break;
+        case Event::GameEnd:
+            gameend();
+            break;
+        default:
+            break;
+        }
     }
 };

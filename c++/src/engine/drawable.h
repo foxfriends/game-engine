@@ -6,7 +6,7 @@
 namespace Game {
     class Drawable {
     public:
-        virtual void draw(Draw &draw) = 0;
+        virtual void draw(Draw &draw) const = 0;
     };
 };
 

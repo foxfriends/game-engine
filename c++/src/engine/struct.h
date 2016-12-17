@@ -2,10 +2,16 @@
 #define __GAME_POSITION_H__
 
 #include <SDL.h>
+#include <climits>
 
 namespace Game {
     typedef SDL_Point Position;
-    typedef SDL_Point Dimension;
+    struct Dimension {
+        int w, h;
+        Dimension(int w, int h) : w{ w }, h{ h } {}
+        static Dimension infinite() { return { INT_MAX, INT_MAX }; }
+        operator SDL_Point() { return {w, h}; }
+    };
     typedef SDL_Rect Rectangle;
     // struct Position {
     //     int x, y;
