@@ -5,11 +5,16 @@
 #include "event.h"
 
 namespace Game {
+    class Engine;
+    class GameUtility;
     class Object {
+        Engine * _eng;
     protected:
         Object();
     public:
         static bool persistent;
+        void init(Engine * eng);
+
         virtual ~Object() = 0;
         // potential events to trigger (in step-chronological order)
         // occurs only once per game
@@ -34,6 +39,8 @@ namespace Game {
         virtual void gameend();
         // general handle to process an event
         void proc(const Event & event);
+
+        GameUtility & game();
     };
 };
 

@@ -1,10 +1,13 @@
 #include "object.h"
+#include "engine.h"
 
 namespace Game {
     bool Object::persistent = false;
 
     Object::Object() {}
     Object::~Object() {}
+
+    void Object::init(Engine * eng) { _eng = eng; }
 
     void Object::gamestart() {}
     void Object::roomstart(int prev, int next) {}
@@ -56,4 +59,6 @@ namespace Game {
             break;
         }
     }
+
+    GameUtility & Object::game() { return _eng->util(); }
 };

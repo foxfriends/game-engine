@@ -3,7 +3,10 @@
 #include "drawable.h"
 
 namespace Game {
-    Room::Room(int id, Engine & eng) : _eng{ eng }, id{ id } {}
+    Room::Room(int id) : id{ id } {}
+    void Room::init(Engine * eng) {
+        _eng = eng;
+    }
     Room::~Room() {}
     void Room::start() {}
     void Room::proc(const Event &event) {
@@ -27,7 +30,7 @@ namespace Game {
                 return;
             }
         }
-        _eng.destroy(who);
+        _eng->destroy(who);
     }
 
     bool Room::collides(const Rectangle & where) const {

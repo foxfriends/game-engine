@@ -1,14 +1,9 @@
-#include "engine/engine.h"
+#include "demo/engine.h"
 #include <string>
 #include <iostream>
 
-class Engine : public Game::Engine {
-public:
-    Engine() : Game::Engine{"Game", { 1024, 768 }} {}
-};
-
 int main(int argc, char *argv[]) {
-    Engine g{};
+    Demo::Engine g{};
     try {
         return g.run();
     } catch(std::string err) {

@@ -12,6 +12,10 @@ namespace Game {
     Input::iterator::iterator() : _event{ Event::None } {}
     Input::iterator::iterator(const SDL_Event && event) {
         // TODO: actually parse SDL events
+        if(event.type == SDL_QUIT) {
+            _event.type = Event::Quit;
+            _event.data = {};
+        }
     }
     Input::iterator::iterator(const iterator & o) {
         _event = o._event;
@@ -19,7 +23,7 @@ namespace Game {
 
     Input::iterator & Input::iterator::operator = (const iterator & o) {
         auto c = iterator(o);
-        std::swap(*this, c);
+        std::swap(_event, c._event);
         return *this;
     }
 

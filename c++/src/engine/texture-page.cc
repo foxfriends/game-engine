@@ -25,7 +25,18 @@ namespace Game {
         return !!_sprites.count(name);
     }
 
-    Sprite TexturePage::make(const std::string & name) const {
+    Sprite TexturePage::make(const std::string & name) {
         return Sprite{*this, _sprites.at(name), name};
     }
+
+    void TexturePage::setAlpha(Uint8 a) {
+        SDL_SetTextureAlphaMod(_texture.get(), a);
+    }
+
+    void TexturePage::resetAlpha() { setAlpha(255); }
+
+    void TexturePage::setBlend(Uint8 r, Uint8 g, Uint8 b) {
+        SDL_SetTextureColorMod(_texture.get(), r, g, b);
+    }
+    void TexturePage::resetBlend() { setBlend(255, 255, 255); }
 };

@@ -12,12 +12,12 @@
 
 namespace Game {
     class Sprite : public Rectangle {
-        const TexturePage & _page;
+        TexturePage & _page;
         std::vector<int> _frames;
         int _frame = 0;
         std::string _name;
     public:
-        Sprite(const TexturePage & page, const std::vector<int> & frames, const std::string & name);
+        Sprite(TexturePage & page, const std::vector<int> & frames, const std::string & name);
 
         int frame() const;
         void frame(int n);

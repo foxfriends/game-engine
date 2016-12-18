@@ -7,6 +7,7 @@ namespace Game {
     struct Event {
         enum Type {
             None,
+            Quit,
             GameStart,
             RoomStart,
             KeyDown,

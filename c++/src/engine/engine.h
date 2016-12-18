@@ -1,6 +1,7 @@
 #ifndef __GAME_ENGINE_H__
 #define __GAME_ENGINE_H__
 
+#include <SDL.h>
 #include <memory>
 #include <vector>
 
@@ -16,9 +17,9 @@ namespace Game {
 
     class Engine {
         friend class GameUtility;
-        Draw _draw;
+        std::unique_ptr<Draw> _draw;
         Input _input;
-        std::unique_ptr<TextureManager> _texture; // no default constructor
+        std::unique_ptr<TextureManager> _texture;
         std::vector<std::unique_ptr<Room>> _rooms;
         std::vector<std::vector<std::unique_ptr<Object>>> _objects;
         std::vector<Rectangle> _views;

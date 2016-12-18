@@ -51,6 +51,8 @@ namespace Game {
     template<typename T>
     void GameUtility::room_goto() {
         std::unique_ptr<Room> rm = std::make_unique<T>();
+        auto d = rm->size();
+        Rectangle newview{ 0, 0, d.w, d.h };
         int prevId = -1;
         if(!_eng._rooms.empty()) {
             auto &old = _eng._rooms.back();
@@ -58,15 +60,21 @@ namespace Game {
             // end the previous room
             _eng.proc(Event{ Event::RoomEnd, { prevId, rm->id } });
             old->end();
+            _eng._rooms.back() = std::move( rm );
+            _eng._objects.back() = std::vector<std::unique_ptr<Object>>{};
+            _eng._views.back() = newview;
+        } else {
+            _eng._rooms.emplace_back(std::move( rm ));
+            _eng._objects.emplace_back();
+            _eng._views.emplace_back(newview);
         }
 
         // TODO: figure out loading in C++
         //       is this something to do with threads?
-        _eng._rooms.back() = rm;
 
         // star the next room
-        rm->start();
-        _eng.proc(Event{ Event::RoomStart, { prevId, rm->id } });
+        _eng._rooms.back()->start();
+        _eng.proc(Event{ Event::RoomStart, { prevId, _eng._rooms.back()->id } });
     }
 
     template<typename T>

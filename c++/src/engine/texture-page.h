@@ -27,9 +27,14 @@ namespace Game {
         // check if this page has an entry for some sprite
         bool hasSprite(const std::string & name) const;
         // create a sprite from this page
-        Sprite make(const std::string & name) const;
+        Sprite make(const std::string & name);
         // texture access
         operator SDL_Texture * () const;
+        // operations required for blending
+        void setAlpha(Uint8 a);
+        void resetAlpha();
+        void setBlend(Uint8 r, Uint8 g, Uint8 b);
+        void resetBlend();
     };
 };
 
