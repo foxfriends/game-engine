@@ -13,11 +13,11 @@ namespace Game {
     class Room {
         std::vector<std::unique_ptr<Object>> _objects;
         std::unique_ptr<TileMap> _tilemap;
-        Engine * _eng;
+        Engine * _eng = nullptr;
     protected:
         Room();
     public:
-        void init(Engine * eng);
+        void attach(Engine * eng);
         const int id;
         Room(int id);
         virtual ~Room() = 0;
@@ -48,6 +48,8 @@ namespace Game {
             _eng->spawn<T>(args ...);
         } else {
             _objects.emplace_back(std::make_unique<T>(args ...));
+            _objects.back()->attach(_eng);
+            _objects.back()->init();
         }
     }
 

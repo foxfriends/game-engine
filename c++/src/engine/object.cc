@@ -7,7 +7,8 @@ namespace Game {
     Object::Object() {}
     Object::~Object() {}
 
-    void Object::init(Engine * eng) { _eng = eng; }
+    void Object::attach(Engine * eng) { _eng = eng; }
+    void Object::init() {}
 
     void Object::gamestart() {}
     void Object::roomstart(int prev, int next) {}
@@ -55,10 +56,21 @@ namespace Game {
         case Event::GameEnd:
             gameend();
             break;
+        case Event::StepStart:
+            stepstart();
+            break;
+        case Event::Step:
+            step();
+            break;
+        case Event::StepEnd:
+            stepend();
+            break;
         default:
             break;
         }
     }
 
-    GameUtility & Object::game() { return _eng->util(); }
+    GameUtility & Object::game() {
+        return _eng->util();
+    }
 };

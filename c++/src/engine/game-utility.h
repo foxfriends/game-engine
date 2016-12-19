@@ -1,13 +1,14 @@
-#ifndef __GAME_UTIL_H__
-#define __GAME_UTIL_H__
+#ifndef __GAME_UTILITY_H__
+#define __GAME_UTILITY_H__
 
-#include "engine.h"
+#include "struct.h"
 #include "room.h"
-#include "event.h"
-#include "object.h"
 
 namespace Game {
     class Collider;
+    class Engine;
+    class Object;
+
     class GameUtility {
         Engine &_eng;
     public:
@@ -30,8 +31,8 @@ namespace Game {
         bool keystate(int key);
 
         // game state
-        inline void end() { _eng._ended = true; }
-        inline void restart() { end(); _eng._restart = true; }
+        void end();
+        void restart();
 
         // objects
         template<typename T, typename ... Args>
@@ -51,6 +52,7 @@ namespace Game {
     template<typename T>
     void GameUtility::room_goto() {
         std::unique_ptr<Room> rm = std::make_unique<T>();
+        rm->attach(&_eng);
         auto d = rm->size();
         Rectangle newview{ 0, 0, d.w, d.h };
         int prevId = -1;

@@ -4,9 +4,10 @@
 
 namespace Game {
     Room::Room(int id) : id{ id } {}
-    void Room::init(Engine * eng) {
+    void Room::attach(Engine * eng) {
         _eng = eng;
     }
+    
     Room::~Room() {}
     void Room::start() {}
     void Room::proc(const Event &event) {

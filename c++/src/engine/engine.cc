@@ -1,5 +1,5 @@
 #include "engine.h"
-#include "gameutil.h"
+#include "game-utility.h"
 #include "drawable.h"
 #include "object.h"
 #include "event.h"
@@ -103,6 +103,6 @@ namespace Game {
     }
 
     GameUtility & Engine::util() {
-        return *_utilities.get();
+        return *_utilities;
     }
 };

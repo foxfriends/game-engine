@@ -1,4 +1,4 @@
-#include "gameutil.h"
+#include "game-utility.h"
 #include "collider.h"
 
 namespace Game {
@@ -46,6 +46,9 @@ namespace Game {
             throw "You closed the last room... please don't do that";
         }
     }
+
+    void GameUtility::end() { _eng._ended = true; }
+    void GameUtility::restart() { end(); _eng._restart = true; }
 
 
     bool GameUtility::mousestate(int button) {

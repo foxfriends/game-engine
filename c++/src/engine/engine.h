@@ -8,9 +8,9 @@
 #include "draw.h"
 #include "input.h"
 #include "texture-manager.h"
+#include "object.h"
 
 namespace Game {
-    class Object;
     class Room;
     class GameUtility;
     struct Event;
@@ -62,11 +62,14 @@ namespace Game {
         void destroy();
 
         GameUtility & util();
+        int x = 5;
     };
 
     template<typename T, typename ... Args>
     void Engine::spawn(Args ... args) {
         _objects.back().emplace_back(std::make_unique<T>(args ...));
+        _objects.back().back()->attach(this);
+        _objects.back().back()->init();
     }
 
     template<typename T>

@@ -3,6 +3,6 @@
 #include "engine/drawable.h"
 #include "engine/engine.h"
 #include "engine/struct.h"
-#include "engine/gameutil.h"
+#include "engine/game-utility.h"
 #include "engine/room.h"
 #include "engine/timing.h"

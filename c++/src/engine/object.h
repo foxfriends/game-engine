@@ -8,15 +8,18 @@ namespace Game {
     class Engine;
     class GameUtility;
     class Object {
-        Engine * _eng;
+        Engine * _eng = nullptr;
     protected:
         Object();
     public:
         static bool persistent;
-        void init(Engine * eng);
+        void attach(Engine * eng);
 
         virtual ~Object() = 0;
+
         // potential events to trigger (in step-chronological order)
+        // called after being spawned
+        virtual void init();
         // occurs only once per game
         virtual void gamestart();
         // occurs only once per room

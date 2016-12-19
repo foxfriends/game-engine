@@ -2,7 +2,9 @@
 #include "sprite.h"
 
 namespace Game {
-    Draw::Draw(SDL_Renderer & ren) : _ren{ ren } {}
+    Draw::Draw(SDL_Renderer & ren) : _ren{ ren } {
+        SDL_SetRenderDrawBlendMode(&_ren, SDL_BLENDMODE_BLEND);
+    }
 
     Draw & Draw::color(Uint8 r, Uint8 g, Uint8 b) {
         _r = r;

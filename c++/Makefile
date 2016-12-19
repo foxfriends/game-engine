@@ -4,7 +4,6 @@ SOURCES = $(shell find src -name *.cc)
 OBJECTS = ${SOURCES:.cc=.o}
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = engine-test
-TESTSUITE = test/suite.txt
 ${EXEC}: ${OBJECTS}
 	@echo Linking executable
 	@${CXX} ${OBJECTS} ${CXXFLAGS} -o ${EXEC} -lSDL2_ttf -lSDL2_image -lSDL2_mixer
