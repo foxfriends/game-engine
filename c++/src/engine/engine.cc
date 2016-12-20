@@ -3,9 +3,12 @@
 #include "drawable.h"
 #include "object.h"
 #include "event.h"
+#include <fstream>
+#include <json.hpp>
+using nlohmann::json;
 
 namespace Game {
-    Engine::Engine(const std::string & title, const Dimension & size) : _utilities{ std::make_unique<GameUtility>(*this) }, _size{ size } {
+    Engine::Engine(const std::string & title, const Dimension & size, const std::string & cfg) : _utilities{ std::make_unique<GameUtility>(*this) }, _size{ size } {
         // start up SDL here
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
             throw "Initialization error1";
@@ -27,6 +30,25 @@ namespace Game {
         }
         _renderer = std::unique_ptr<SDL_Renderer, decltype(& SDL_DestroyRenderer)>(ren, SDL_DestroyRenderer);
         _draw = std::make_unique<Draw>(*_renderer);
+        if(cfg != "") {
+            std::string resdir = cfg.substr(0, cfg.rfind('/') + 1);
+            if(resdir == cfg) { resdir = ""; }
+            std::ifstream fin{ cfg };
+            json config;
+            fin >> config;
+            // TODO: robust file resolution, URL cleaning
+            for(auto font = config["fonts"].begin(); font != config["fonts"].end(); ++font) {
+                load_font(font.key(), resdir + font.value()[0].get<std::string>(), font.value()[1].get<int>());
+            }
+            std::map<std::string, std::string> sources;
+            for(auto tp = config["texture-pages"].begin(); tp != config["texture-pages"].end(); ++tp) {
+                sources[tp.key()] = resdir + tp.value().get<std::string>();
+            }
+            _texture = std::make_unique<TextureManager>(*_renderer, sources);
+            for(auto tm = config["tile-maps"].begin(); tm != config["tile-maps"].end(); ++tm) {
+                _tilemaps[tm.key()] = resdir + tm.value().get<std::string>();
+            }
+        }
     }
 
     Engine::~Engine() {
@@ -115,5 +137,16 @@ namespace Game {
 
     GameUtility & Engine::util() {
         return *_utilities;
+    }
+
+    TextureManager & Engine::texture() const {
+        return *_texture;
+    }
+
+    std::string Engine::tilemap(const std::string & name) const {
+        if(_tilemaps.count(name) == 0) {
+            throw "No tilemap named " + name + " exists";
+        }
+        return _tilemaps.at(name);
     }
 }

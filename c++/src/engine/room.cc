@@ -3,9 +3,15 @@
 #include "drawable.h"
 
 namespace Game {
-    Room::Room(int id) : id{ id } {}
+    std::vector<std::string> Room::texture_pages {};
+
+    Room::Room(int id, const std::string & tilemap) : _tilemap_name{ tilemap }, id{ id } { }
+
     void Room::attach(Engine * eng) {
         _eng = eng;
+        if(_tilemap_name != "") {
+            _tilemap = std::make_unique<TileMap>(_eng->tilemap(_tilemap_name), _eng->texture());
+        }
     }
 
     Room::~Room() {}
@@ -16,6 +22,9 @@ namespace Game {
         }
     }
     void Room::draw(Draw &draw) {
+        if(_tilemap) {
+            _tilemap->draw(draw);
+        }
         for(auto &o : _objects) {
             if(auto d = dynamic_cast<const Drawable *>(o.get())) {
                 d->draw(draw);
@@ -44,5 +53,9 @@ namespace Game {
         } else {
             return Dimension::infinite();
         }
+    }
+
+    TileMap * Room::tilemap() const {
+        return _tilemap.get();
     }
 }

@@ -8,9 +8,11 @@
 #include "../../engine.h"
 
 namespace Demo {
-    class Menu : public Game::Object, public Game::Drawable {
-        unsigned int _cur = 0;
+    class Menu : public virtual Game::Object, public Game::Drawable {
+    public:
         typedef std::pair<std::string, std::function<void(void)>> Option;
+    private:
+        unsigned int _cur = 0;
         std::vector<Option> _opts;
     public:
         Menu(const std::vector<Option> & opts);

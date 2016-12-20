@@ -1,5 +1,6 @@
 #include "game-utility.h"
 #include "collider.h"
+#include "sprite.h"
 
 namespace Game {
     GameUtility::GameUtility(Engine & eng) : _eng{ eng } {}
@@ -73,5 +74,9 @@ namespace Game {
 
     bool GameUtility::collides_room(const Rectangle & where) const {
         return _eng._rooms.back()->collides(where);
+    }
+
+    std::unique_ptr<Sprite> GameUtility::make_sprite(const std::string & name) {
+        return _eng._texture->sprite(name);
     }
 }

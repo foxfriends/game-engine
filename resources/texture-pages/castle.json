@@ -1,5 +1,5 @@
 {
-  "image": "/resources/images/castle.png",
+  "image": "resources/images/castle.png",
   "width": 256,
   "height": 608,
   "frames": [],

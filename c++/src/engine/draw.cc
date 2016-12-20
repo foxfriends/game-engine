@@ -1,6 +1,5 @@
 #include "draw.h"
 #include "sprite.h"
-#include <iostream>
 
 namespace Game {
     Draw::Draw(SDL_Renderer & ren) : _ren{ ren } {
@@ -38,7 +37,11 @@ namespace Game {
     }
 
     Draw & Draw::font(const std::string & name) {
-        _font = _fonts.at(name).get();
+        try {
+            _font = _fonts.at(name).get();
+        } catch(std::out_of_range) {
+            throw "Font " + name + " does not exist.";
+        }
         return *this;
     }
 
@@ -117,6 +120,16 @@ namespace Game {
                 SDL_Rect dest{pos.x, pos.y, w, h};
                 SDL_RenderCopy(&_ren, tex, NULL, &dest);
                 SDL_DestroyTexture(tex);
+            }
+        );
+        return *this;
+    }
+
+    Draw & Draw::image( SDL_Texture * tex, const Rectangle & src, const Rectangle & dest, int depth) {
+        _layers[depth].emplace_back(
+            [this,tex,src,dest] () -> void {
+                SDL_Rect from = src, to = dest;
+                SDL_RenderCopy(&_ren, tex, &from, &to);
             }
         );
         return *this;

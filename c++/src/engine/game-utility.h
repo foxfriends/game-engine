@@ -3,6 +3,7 @@
 
 #include "struct.h"
 #include "room.h"
+#include "tilemap.h"
 
 namespace Game {
     class Collider;
@@ -47,6 +48,9 @@ namespace Game {
         bool collides(const Rectangle & where, const Collider & who) const;
         // the room only
         bool collides_room(const Rectangle & where) const;
+
+        // sprites
+        std::unique_ptr<Sprite> make_sprite(const std::string & name);
     };
 
     template<typename T>
@@ -71,10 +75,23 @@ namespace Game {
             _eng._views.emplace_back(newview);
         }
 
-        // TODO: figure out loading in C++
-        //       is this something to do with threads?
+        auto textures = T::texture_pages;
+        auto tm = _eng._rooms.back()->tilemap();
+        if(tm) {
+            auto tilemap_textures = tm->textures();
+            textures.insert(textures.end(), tilemap_textures.begin(), tilemap_textures.end());
+        }
 
-        // star the next room
+        // TODO: figure out asynchronous loading
+        //       is this something to do with threads??
+        _eng._texture->load(textures);
+        _eng._texture->purge();
+
+        if(tm) {
+            tm->render(_eng._renderer.get());
+        }
+
+        // start the next room
         _eng._rooms.back()->start();
         _eng.proc(Event{ Event::RoomStart, { prevId, _eng._rooms.back()->id } });
     }

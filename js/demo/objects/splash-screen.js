@@ -1,6 +1,6 @@
 'use strict';
 
-import { Drawable, GameObject, override, SECOND } from '../../engine';
+import { Drawable, GameObject, override, SECOND, Rectangle } from '../../engine';
 import MainMenu from '../rooms/main-menu.js';
 
 class SplashScreen extends Drawable(GameObject) {
@@ -25,7 +25,7 @@ class SplashScreen extends Drawable(GameObject) {
   draw(draw) {
     draw
       .alpha(this.alpha)
-      .text("Hello world", [30, 30]);
+      .rect(new Rectangle(25, 25, 50, 50));
   }
 
   get alpha() {

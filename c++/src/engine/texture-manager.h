@@ -18,7 +18,7 @@ namespace Game {
         std::map<std::string, std::string> _sources;
         SDL_Renderer &_ren;
     public:
-        TextureManager(SDL_Renderer & ren, std::map<std::string, std::string> && sources);
+        TextureManager(SDL_Renderer & ren, std::map<std::string, std::string> & sources);
         // load a list of texture pages
         void load(const std::vector<std::string> & textures);
         // remove all old texture pages
@@ -26,7 +26,9 @@ namespace Game {
         // remove all texture pages in the list
         void purge(const std::vector<std::string> & textures);
         // make a sprite from the current set of pages
-        Sprite sprite(const std::string & name);
+        std::unique_ptr<Sprite> sprite(const std::string & name);
+
+        TexturePage & texture(const std::string & name);
     };
 }
 

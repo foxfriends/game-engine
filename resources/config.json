@@ -1,0 +1,14 @@
+{
+  "texture-pages": {
+    "castle": "./texture-pages/castle.json",
+    "inside": "./texture-pages/inside.json",
+    "sarah": "./texture-pages/sarah.json"
+  },
+  "tile-maps": {
+    "home": "./tile-maps/home.json"
+  },
+  "fonts": {
+    "hack": [ "./fonts/Hack-Regular.ttf", 14 ],
+    "lato": [ "./fonts/Lato-Regular.ttf", 14 ]
+  }
+}

@@ -24,6 +24,7 @@ namespace Game {
         std::vector<std::vector<std::unique_ptr<Object>>> _objects;
         std::vector<Rectangle> _views;
         std::unique_ptr<GameUtility> _utilities;
+        std::map<std::string, std::string> _tilemaps;
 
         typedef void (WindowDeleter) (SDL_Window *);
         std::unique_ptr<SDL_Window, WindowDeleter *> _window{ nullptr, SDL_DestroyWindow };
@@ -43,7 +44,7 @@ namespace Game {
         // clean up resources
         virtual void end();
     protected:
-        Engine(const std::string & title, const Dimension & size);
+        Engine(const std::string & title, const Dimension & size, const std::string & cfg = "");
 
         // load a TTF into the game
         void load_font(const std::string & name, const std::string & path, int size);
@@ -67,7 +68,9 @@ namespace Game {
         void destroy();
 
         GameUtility & util();
-        int x = 5;
+
+        TextureManager & texture() const;
+        std::string tilemap(const std::string & name) const;
     };
 
     template<typename T, typename ... Args>

@@ -25,6 +25,9 @@ namespace Game {
         TexturePage & texture() const;
         Rectangle src() const;
         Rectangle dest() const;
+
+        Sprite * operator = (const std::string & name);
+        operator std::string() const;
     };
 }
 

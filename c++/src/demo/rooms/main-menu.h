@@ -1,5 +1,5 @@
-#ifndef __DEMO_MAIN_MENU_H__
-#define __DEMO_MAIN_MENU_H__
+#ifndef __DEMO_ROOM_MAIN_MENU_H__
+#define __DEMO_ROOM_MAIN_MENU_H__
 
 #include "../../engine.h"
 

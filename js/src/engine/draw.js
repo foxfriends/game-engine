@@ -42,7 +42,7 @@ class Draw {
   // draw a rectangle
   rect(rect, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const [alpha, color] = [this[COLOR], this[ALPHA]];
+    const [color, alpha] = [this[COLOR], this[ALPHA]];
     this[STACK][depth].push(con => {
       con.fillStyle = color;
       con.globalAlpha = alpha;
@@ -53,7 +53,7 @@ class Draw {
   // draw a pixel
   point(point, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const [alpha, color] = [this[COLOR], this[ALPHA]];
+    const [color, alpha] = [this[COLOR], this[ALPHA]];
     this[STACK][depth].push(con => {
       con.fillStyle = color;
       con.globalAlpha = alpha;

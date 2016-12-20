@@ -21,7 +21,7 @@ namespace Demo {
 
     void Menu::draw(Game::Draw & draw) const {
         Game::Position where { 64, 128 };
-        draw.font("hack14");
+        draw.font("hack");
         draw.alpha(1);
         for(unsigned int i = 0; i < _opts.size(); ++i) {
             auto & opt = _opts[i].first;

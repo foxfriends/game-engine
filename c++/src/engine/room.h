@@ -13,13 +13,15 @@ namespace Game {
     class Room {
         std::vector<std::unique_ptr<Object>> _objects;
         std::unique_ptr<TileMap> _tilemap;
+        std::string _tilemap_name;
         Engine * _eng = nullptr;
     protected:
         Room();
     public:
+        static std::vector<std::string> texture_pages;
         void attach(Engine * eng);
         const int id;
-        Room(int id);
+        Room(int id, const std::string & tilemap = "");
         virtual ~Room() = 0;
         // start the room
         virtual void start();
@@ -40,6 +42,8 @@ namespace Game {
         bool collides(const Rectangle & where) const;
         bool collides(const Rectangle & where) const;
         Dimension size() const;
+
+        TileMap * tilemap() const;
     };
 
     template<typename T, typename ... Args>
