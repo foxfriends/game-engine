@@ -2,8 +2,9 @@
 #include "../objects/splash.h"
 
 namespace Demo {
-    Splash::Splash() : Room{ 0 } {}
-    void Splash::start() {
-        spawn<SplashAnimation>();
+    RmSplash::RmSplash() : Room{ 0 } {}
+
+    void RmSplash::start() {
+        spawn<Splash>();
     }
 }

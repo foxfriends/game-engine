@@ -13,6 +13,9 @@ namespace Game {
         if(IMG_Init(IMG_INIT_PNG) ^ IMG_INIT_PNG) {
             throw "Image initialization error";
         }
+        if(TTF_Init() < 0) {
+            throw "TTF initialization error";
+        }
         SDL_Window * win = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.w, size.h, SDL_WINDOW_SHOWN);
         if(win == nullptr) {
             throw "Couldn't open a window";
@@ -28,6 +31,14 @@ namespace Game {
 
     Engine::~Engine() {
         SDL_Quit();
+    }
+
+    void Engine::load_font(const std::string & name, const std::string & path, int size) {
+        _draw->load_font(name, path, size);
+    }
+
+    void Engine::close_font(const std::string & name) {
+        _draw->close_font(name);
     }
 
     void Engine::proc(const Event& event) {
@@ -105,4 +116,4 @@ namespace Game {
     GameUtility & Engine::util() {
         return *_utilities;
     }
-};
+}

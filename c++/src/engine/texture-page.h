@@ -15,8 +15,8 @@ namespace Game {
     // a TexturePage maps out specific images
     class Sprite;
     class TexturePage {
-        typedef void (Deleter) (SDL_Texture *);
-        std::unique_ptr<SDL_Texture, Deleter *> _texture{ nullptr, SDL_DestroyTexture };
+        typedef void (TextureDeleter) (SDL_Texture *);
+        std::unique_ptr<SDL_Texture, TextureDeleter *> _texture{ nullptr, SDL_DestroyTexture };
         std::map<std::string, std::vector<int>> _sprites;
         std::map<int, Rectangle> _frames;
     public:
@@ -36,6 +36,6 @@ namespace Game {
         void setBlend(Uint8 r, Uint8 g, Uint8 b);
         void resetBlend();
     };
-};
+}
 
 #endif

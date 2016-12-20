@@ -1,9 +1,28 @@
 #include "draw.h"
 #include "sprite.h"
+#include <iostream>
 
 namespace Game {
     Draw::Draw(SDL_Renderer & ren) : _ren{ ren } {
         SDL_SetRenderDrawBlendMode(&_ren, SDL_BLENDMODE_BLEND);
+    }
+
+    void Draw::load_font(const std::string & name, const std::string & path, int size) {
+        if(_fonts.count(name) != 0) {
+            close_font(name);
+        }
+        TTF_Font * font = TTF_OpenFont(path.c_str(), size);
+        if(font == nullptr) {
+            throw "Could not load font " + name + " from " + path;
+        }
+        _fonts.emplace(name, std::unique_ptr<TTF_Font, decltype(& TTF_CloseFont)>(font, TTF_CloseFont));
+        if(!_font) {
+            _font = _fonts.at(name).get();
+        }
+    }
+
+    void Draw::close_font(const std::string & name) {
+        _fonts.erase(name);
     }
 
     Draw & Draw::color(Uint8 r, Uint8 g, Uint8 b) {
@@ -78,7 +97,8 @@ namespace Game {
             g = _g,
             b = _b,
             a = _alpha;
-        auto surf = TTF_RenderText_Solid(_font, str.c_str(), { r, g, b, a});
+        // TODO: consider uses of *_Shaded, and *_Blended in different cases
+        auto surf = TTF_RenderText_Solid(_font, str.c_str(), { r, g, b, a });
         if(surf == nullptr) {
             // text failed to render, fail silently
             return *this;
@@ -87,15 +107,16 @@ namespace Game {
             w = surf->w,
             h = surf->h;
         auto tex = SDL_CreateTextureFromSurface(&_ren, surf);
+        SDL_FreeSurface(surf);
         if(tex == nullptr) {
             // more fail = more fail
             return *this;
         }
-        auto text = std::unique_ptr<SDL_Texture, decltype(& SDL_DestroyTexture)>(tex, SDL_DestroyTexture);
         _layers[depth].emplace_back(
-            [this,&text,&pos,w,h] () -> void {
+            [this,tex,pos,w,h] () -> void {
                 SDL_Rect dest{pos.x, pos.y, w, h};
-                SDL_RenderCopy(&_ren, text.get(), NULL, &dest);
+                SDL_RenderCopy(&_ren, tex, NULL, &dest);
+                SDL_DestroyTexture(tex);
             }
         );
         return *this;
@@ -112,4 +133,4 @@ namespace Game {
         SDL_RenderPresent(&_ren);
         _layers.clear();
     }
-};
+}

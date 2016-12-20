@@ -76,6 +76,6 @@ namespace Game {
         }
         return false;
     }
-};
+}
 
 #endif

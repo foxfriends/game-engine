@@ -39,4 +39,4 @@ namespace Game {
         SDL_SetTextureColorMod(_texture.get(), r, g, b);
     }
     void TexturePage::resetBlend() { setBlend(255, 255, 255); }
-};
+}

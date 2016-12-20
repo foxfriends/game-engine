@@ -4,11 +4,11 @@
 #include "../../engine.h"
 
 namespace Demo {
-    class Splash : public Game::Room {
+    class RmSplash : public Game::Room {
     public:
-        Splash();
+        RmSplash();
         virtual void start() override;
     };
-};
+}
 
 #endif

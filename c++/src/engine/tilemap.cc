@@ -25,4 +25,4 @@ namespace Game {
         }
         return false;
     }
-};
+}

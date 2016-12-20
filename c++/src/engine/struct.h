@@ -21,6 +21,6 @@ namespace Game {
         Rectangle(const Position & p, const Dimension & d) noexcept : Position{ p }, Dimension{ d } {}
         operator SDL_Rect() const { return { x, y, w, h }; }
     };
-};
+}
 
 #endif

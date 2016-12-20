@@ -10,6 +10,6 @@ namespace Game {
         virtual const Rectangle & bbox() const = 0;
         bool collides(const Rectangle & where) const;
     };
-};
+}
 
 #endif

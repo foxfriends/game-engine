@@ -73,4 +73,4 @@ namespace Game {
     GameUtility & Object::game() {
         return _eng->util();
     }
-};
+}

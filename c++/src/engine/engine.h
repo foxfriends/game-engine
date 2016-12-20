@@ -44,6 +44,11 @@ namespace Game {
         virtual void end();
     protected:
         Engine(const std::string & title, const Dimension & size);
+
+        // load a TTF into the game
+        void load_font(const std::string & name, const std::string & path, int size);
+        // remove a font from memory
+        void close_font(const std::string & name);
     public:
         virtual ~Engine() = 0;
         // run the game
@@ -82,7 +87,7 @@ namespace Game {
             }
         }
     }
-};
+}
 
 
 #endif

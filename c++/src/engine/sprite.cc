@@ -10,4 +10,4 @@ namespace Game {
     TexturePage & Sprite::texture() const { return _page; }
     Rectangle Sprite::src() const { return _page[_frame]; };
     Rectangle Sprite::dest() const { return *this; }
-};
+}

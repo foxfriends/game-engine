@@ -45,6 +45,6 @@ namespace Game {
 
         GameUtility & game();
     };
-};
+}
 
 #endif

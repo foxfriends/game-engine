@@ -31,4 +31,4 @@ namespace Game {
         }
         throw "Sprite " + name + " does not exist in the current set of texture pages!s";
     }
-};
+}

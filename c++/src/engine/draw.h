@@ -26,7 +26,8 @@ namespace Game {
         TTF_Font * _font;
     public:
         Draw(SDL_Renderer & _ren);
-        Draw & loadFont(const std::string & path, const std::string & name);
+        void load_font(const std::string & name, const std::string & path, int size);
+        void close_font(const std::string & name);
         Draw & color(Uint8 r, Uint8 g, Uint8 b);
         Draw & alpha(float alpha);
         Draw & font(const std::string & name);
@@ -36,6 +37,6 @@ namespace Game {
         Draw & text(const std::string & str, const Position & pos, int depth = 0);
         void render();
     };
-};
+}
 
 #endif

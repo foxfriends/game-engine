@@ -24,6 +24,6 @@ namespace Game {
         Type type;
         std::vector<int> data;
     };
-};
+}
 
 #endif

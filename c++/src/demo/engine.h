@@ -9,6 +9,6 @@ namespace Demo {
         Engine();
         virtual void start() override;
     };
-};
+}
 
 #endif

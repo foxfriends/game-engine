@@ -7,7 +7,7 @@ namespace Game {
     void Room::attach(Engine * eng) {
         _eng = eng;
     }
-    
+
     Room::~Room() {}
     void Room::start() {}
     void Room::proc(const Event &event) {
@@ -45,4 +45,4 @@ namespace Game {
             return Dimension::infinite();
         }
     }
-};
+}

@@ -12,9 +12,30 @@ namespace Game {
     Input::iterator::iterator() : _event{ Event::None } {}
     Input::iterator::iterator(const SDL_Event && event) {
         // TODO: actually parse SDL events
-        if(event.type == SDL_QUIT) {
+        switch(event.type) {
+        case SDL_KEYDOWN:
+            _event.type = Event::KeyDown;
+            _event.data = { event.key.keysym.scancode };
+            break;
+        case SDL_KEYUP:
+            _event.type = Event::KeyUp;
+            _event.data = { event.key.keysym.scancode };
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            _event.type = Event::MouseDown;
+            _event.data = { event.button.button };
+            break;
+        case SDL_MOUSEBUTTONUP:
+            _event.type = Event::MouseUp;
+            _event.data = { event.button.button };
+            break;
+        case SDL_MOUSEMOTION:
+            // TODO: implement
+            break;
+        case SDL_QUIT:
             _event.type = Event::Quit;
             _event.data = {};
+            break;
         }
     }
     Input::iterator::iterator(const iterator & o) {

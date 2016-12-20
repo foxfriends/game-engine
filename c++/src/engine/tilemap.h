@@ -22,6 +22,6 @@ namespace Game {
         void draw(Draw &draw) const;
         bool collides(const Rectangle & where) const;
     };
-};
+}
 
 #endif

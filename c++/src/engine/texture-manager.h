@@ -28,6 +28,6 @@ namespace Game {
         // make a sprite from the current set of pages
         Sprite sprite(const std::string & name);
     };
-};
+}
 
 #endif

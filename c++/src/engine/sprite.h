@@ -26,8 +26,6 @@ namespace Game {
         Rectangle src() const;
         Rectangle dest() const;
     };
-};
-
-
+}
 
 #endif

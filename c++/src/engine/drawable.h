@@ -8,6 +8,6 @@ namespace Game {
     public:
         virtual void draw(Draw &draw) const = 0;
     };
-};
+}
 
 #endif
