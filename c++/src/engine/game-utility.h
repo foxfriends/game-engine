@@ -100,9 +100,9 @@ namespace Game {
     void GameUtility::room_overlay() {
         std::unique_ptr<Room> rm = std::make_unique<T>();
         rm->attach(&_eng);
+        auto s = rm->size();
         _eng._rooms.emplace_back(std::move( rm ));
         _eng._objects.emplace_back();
-        auto s = _eng.size();
         _eng._views.emplace_back(0, 0, s.w, s.h);
         _eng._rooms.back()->start();
         _eng.proc(Event{ Event::RoomStart, { -1, _eng._rooms.back()->id } });

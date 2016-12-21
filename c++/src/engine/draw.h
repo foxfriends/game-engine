@@ -24,17 +24,21 @@ namespace Game {
         typedef void (FontDeleter) (TTF_Font *);
         std::map<std::string, std::unique_ptr<TTF_Font, FontDeleter*>> _fonts;
         TTF_Font * _font;
+        Rectangle _view{ 0, 0, 0, 0 };
+        Dimension _size{ 0, 0 };
     public:
-        Draw(SDL_Renderer & _ren);
+        Draw(SDL_Renderer & _ren, const Dimension & dim);
         void load_font(const std::string & name, const std::string & path, int size);
         void close_font(const std::string & name);
+        Draw & dimensions(const Dimension & dim);
+        Draw & view(const Rectangle & port);
         Draw & color(Uint8 r, Uint8 g, Uint8 b);
         Draw & alpha(float alpha);
         Draw & font(const std::string & name);
-        Draw & rect(const Rectangle rect, int depth = 0);
-        Draw & point(const Position pos, int depth = 0);
+        Draw & rect(Rectangle rect, int depth = 0);
+        Draw & point(Position pos, int depth = 0);
         Draw & sprite(const Sprite & sprite, int depth = 0);
-        Draw & text(const std::string & str, const Position & pos, int depth = 0);
+        Draw & text(const std::string & str, Position pos, int depth = 0);
         Draw & image(SDL_Texture * image, const Rectangle & src, const Rectangle & dest, int depth = 0);
         void clear();
         void render();

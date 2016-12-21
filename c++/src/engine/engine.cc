@@ -11,7 +11,7 @@ namespace Game {
     Engine::Engine(const std::string & title, const Dimension & size, const std::string & cfg) : _utilities{ std::make_unique<GameUtility>(*this) }, _size{ size } {
         // start up SDL here
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-            throw "Initialization error1";
+            throw "Initialization error";
         }
         if(IMG_Init(IMG_INIT_PNG) ^ IMG_INIT_PNG) {
             throw "Image initialization error";
@@ -29,7 +29,7 @@ namespace Game {
             throw "Couldn't create renderer";
         }
         _renderer = std::unique_ptr<SDL_Renderer, decltype(& SDL_DestroyRenderer)>(ren, SDL_DestroyRenderer);
-        _draw = std::make_unique<Draw>(*_renderer);
+        _draw = std::make_unique<Draw>(*_renderer, size);
         if(cfg != "") {
             std::string resdir = cfg.substr(0, cfg.rfind('/') + 1);
             if(resdir == cfg) { resdir = ""; }
@@ -91,6 +91,7 @@ namespace Game {
     void Engine::draw() {
         _draw->clear();
         for(unsigned int i = 0; i < _rooms.size(); ++i) {
+            _draw->view(_views.at(i));
             for(auto &o : _objects.at(i)) {
                 if(auto d = dynamic_cast<const Drawable *>(o.get())) {
                     d->draw(*_draw);

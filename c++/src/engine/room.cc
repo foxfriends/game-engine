@@ -51,7 +51,7 @@ namespace Game {
         if(_tilemap) {
             return _tilemap->size();
         } else {
-            return Dimension::infinite();
+            return { _eng->size().w, _eng->size().h };
         }
     }
 

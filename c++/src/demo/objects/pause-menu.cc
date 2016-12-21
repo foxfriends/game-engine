@@ -1,6 +1,5 @@
 #include "pause-menu.h"
 #include "../rooms/main-menu.h"
-#include <iostream>
 
 namespace Demo {
     PauseMenu::PauseMenu() : Menu {std::vector<Menu::Option>{

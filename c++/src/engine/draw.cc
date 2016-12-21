@@ -2,9 +2,10 @@
 #include "sprite.h"
 
 namespace Game {
-    Draw::Draw(SDL_Renderer & ren) : _ren{ ren } {
+    Draw::Draw(SDL_Renderer & ren, const Dimension & dim) : _ren{ ren }, _view{ 0, 0, dim.w, dim.h }, _size{ dim } {
         SDL_SetRenderDrawBlendMode(&_ren, SDL_BLENDMODE_BLEND);
     }
+
 
     void Draw::load_font(const std::string & name, const std::string & path, int size) {
         if(_fonts.count(name) != 0) {
@@ -22,6 +23,16 @@ namespace Game {
 
     void Draw::close_font(const std::string & name) {
         _fonts.erase(name);
+    }
+
+    Draw & Draw::view(const Rectangle & port) {
+        _view = port;
+        return *this;
+    }
+
+    Draw & Draw::dimensions(const Dimension & dim) {
+        _size = dim;
+        return *this;
     }
 
     Draw & Draw::color(Uint8 r, Uint8 g, Uint8 b) {
@@ -45,7 +56,7 @@ namespace Game {
         return *this;
     }
 
-    Draw & Draw::rect(const Rectangle rect, int depth) {
+    Draw & Draw::rect(Rectangle rect, int depth) {
         const Uint8
             r = _r,
             g = _g,
@@ -54,6 +65,11 @@ namespace Game {
         _layers[depth].emplace_back(
             [this,rect,r,g,b,a] () -> void {
                 SDL_Rect box = rect;
+                // TODO: Move this calculation somewhere reusable
+                box.x = (box.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+                box.y = (box.y - _view.y) * static_cast<float>(_size.h) / _view.h;
+                box.w *= static_cast<float>(_size.w) / _view.w;
+                box.h *= static_cast<float>(_size.h) / _view.h;
                 SDL_SetRenderDrawColor(&_ren, r, g, b, a);
                 SDL_RenderFillRect(&_ren, &box);
             }
@@ -61,7 +77,7 @@ namespace Game {
         return *this;
     }
 
-    Draw & Draw::point(const Position p, int depth) {
+    Draw & Draw::point(Position p, int depth) {
         const Uint8
             r = _r,
             g = _g,
@@ -69,8 +85,11 @@ namespace Game {
             a = _alpha;
         _layers[depth].emplace_back(
             [this,p,r,g,b,a] () -> void {
+                Position q{ p };
+                q.x = (q.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+                q.y = (q.y - _view.y) * static_cast<float>(_size.h) / _view.h;
                 SDL_SetRenderDrawColor(&_ren, r, g, b, a);
-                SDL_RenderDrawPoint(&_ren, p.x, p.y);
+                SDL_RenderDrawPoint(&_ren, q.x, q.y);
             }
         );
         return *this;
@@ -83,6 +102,10 @@ namespace Game {
                 SDL_Rect
                     src = s.src(),
                     dest = s.dest();
+                dest.x = (dest.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+                dest.y = (dest.y - _view.y) * static_cast<float>(_size.h) / _view.h;
+                dest.w *= static_cast<float>(_size.w) / _view.w;
+                dest.h *= static_cast<float>(_size.h) / _view.h;
                 s.texture().setAlpha(a);
                 SDL_RenderCopy(&_ren, s.texture(), &src, &dest);
                 s.texture().resetAlpha();
@@ -94,14 +117,14 @@ namespace Game {
     // TODO: make this more efficient (don't make a new texture for static texts)
     // TODO: add alignment options to make this more sensible
     // TODO: add ability to check text sizes
-    Draw & Draw::text(const std::string & str, const Position & pos, int depth) {
+    Draw & Draw::text(const std::string & str, Position pos, int depth) {
         const Uint8
             r = _r,
             g = _g,
             b = _b,
             a = _alpha;
-        // TODO: consider uses of *_Shaded, and *_Blended in different cases
-        auto surf = TTF_RenderText_Solid(_font, str.c_str(), { r, g, b, a });
+        // TODO: consider uses of *_Solid, *_Shaded, and *_Blended in different cases
+        auto surf = TTF_RenderText_Blended(_font, str.c_str(), { r, g, b, a });
         if(surf == nullptr) {
             // text failed to render, fail silently
             return *this;
@@ -118,6 +141,10 @@ namespace Game {
         _layers[depth].emplace_back(
             [this,tex,pos,w,h] () -> void {
                 SDL_Rect dest{pos.x, pos.y, w, h};
+                dest.x = (dest.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+                dest.y = (dest.y - _view.y) * static_cast<float>(_size.h) / _view.h;
+                dest.w *= static_cast<float>(_size.w) / _view.w;
+                dest.h *= static_cast<float>(_size.h) / _view.h;
                 SDL_RenderCopy(&_ren, tex, NULL, &dest);
                 SDL_DestroyTexture(tex);
             }
@@ -129,6 +156,10 @@ namespace Game {
         _layers[depth].emplace_back(
             [this,tex,src,dest] () -> void {
                 SDL_Rect from = src, to = dest;
+                to.x = (to.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+                to.y = (to.y - _view.y) * static_cast<float>(_size.h) / _view.h;
+                to.w *= static_cast<float>(_size.w) / _view.w;
+                to.h *= static_cast<float>(_size.h) / _view.h;
                 SDL_RenderCopy(&_ren, tex, &from, &to);
             }
         );
