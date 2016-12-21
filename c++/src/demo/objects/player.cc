@@ -20,13 +20,11 @@ namespace Demo {
 
     void Player::stepend() {
         sprite().x += _hsp;
-        while(game().collides_room(bbox()) && _hsp) {
-            std::cout << "A" << std::endl;
+        while(game().collides_room(bbox()) && _hsp != 0) {
             sprite().x -= _hsp / std::abs(_hsp);
         }
         sprite().y += _vsp;
-        while(game().collides_room(bbox()) && _vsp) {
-            std::cout << "A" << std::endl;
+        while(game().collides_room(bbox()) && _vsp != 0) {
             sprite().y -= _vsp / std::abs(_vsp);
         }
         if(_hsp != 0 || _vsp != 0) {
@@ -47,6 +45,6 @@ namespace Demo {
     }
 
     Game::Rectangle Player::bbox() const {
-        return { 16, 32, 32, 32 };
+        return { position().x + 16, position().y + 32, 32, 32 };
     }
 };

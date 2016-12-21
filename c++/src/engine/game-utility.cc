@@ -51,7 +51,6 @@ namespace Game {
     void GameUtility::end() { _eng._ended = true; }
     void GameUtility::restart() { end(); _eng._restart = true; }
 
-
     bool GameUtility::mousestate(int button) {
         return _eng._input.mousestate(button);
     }
