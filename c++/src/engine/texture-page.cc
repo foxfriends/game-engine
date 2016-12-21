@@ -9,14 +9,15 @@ namespace Game {
         std::ifstream fin{ file };
         json data;
         fin >> data;
-        _size = Dimension{ data["width"].get<int>(), data["height"].get<int>() };
+        _size = Dimension{ data["width"], data["height"] };
         _sprites = data["sprites"];
+        _frames.clear();
         _frames.reserve(data["frames"].size());
         std::transform(
             data["frames"].begin(),
             data["frames"].end(),
-            _frames.begin(),
-            [] (const std::vector<int> & v) -> Rectangle {
+            std::back_inserter(_frames),
+            [] (const json & v) -> Rectangle {
                 return { v[0], v[1], v[2], v[3] };
             }
         );
@@ -44,11 +45,11 @@ namespace Game {
     }
 
     bool TexturePage::hasSprite(const std::string & name) const {
-        return !!_sprites.count(name);
+        return _sprites.count(name);
     }
 
     std::unique_ptr<Sprite> TexturePage::make(const std::string & name) {
-        return std::make_unique<Sprite>(*this, _sprites[name].get<std::vector<int>>(), name);
+        return std::make_unique<Sprite>(*this, _sprites[name], name);
     }
 
     void TexturePage::setAlpha(Uint8 a) {

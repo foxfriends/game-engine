@@ -13,16 +13,16 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
   vsp = 0;
 
   @override
+  init() {
+    this.sprite.x = 32;
+    this.sprite.y = 96;
+  }
+
+  @override
   roomend(_, room) {
     if(room === MainMenu) {
       super.game.destroy(this);
     }
-  }
-
-  @override
-  init() {
-    this.sprite.x = 32;
-    this.sprite.y = 96;
   }
 
   @override

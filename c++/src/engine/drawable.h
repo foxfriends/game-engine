@@ -11,10 +11,12 @@ namespace Game {
     class Drawable : public virtual Object {
         std::unique_ptr<Sprite> _sprite;
     public:
+        virtual ~Drawable() = 0;
         bool has_sprite() const;
         Sprite & sprite();
+        const Sprite & sprite() const;
         void sprite(const std::string & name);
-        virtual void draw(Draw &draw) const = 0;
+        virtual void draw(Draw & draw) const;
     };
 }
 

@@ -14,20 +14,18 @@ namespace Game {
     class Sprite : public Rectangle {
         TexturePage & _page;
         std::vector<int> _frames;
-        int _frame = 0;
+        float _frame = 0;
         std::string _name;
     public:
         Sprite(TexturePage & page, const std::vector<int> & frames, const std::string & name);
 
-        int frame() const;
-        void frame(int n);
+        float frame() const;
+        float frame(float f);
 
         TexturePage & texture() const;
+        const std::string & name() const;
         Rectangle src() const;
         Rectangle dest() const;
-
-        Sprite * operator = (const std::string & name);
-        operator std::string() const;
     };
 }
 

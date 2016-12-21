@@ -16,10 +16,11 @@ namespace Game {
         inline const Position & mouseposition() const { return _mouseposition; }
 
         class iterator : public std::iterator<std::input_iterator_tag, Input> {
+            Input & _input;
             Event _event;
         public:
-            iterator();
-            iterator(const SDL_Event && event);
+            iterator(Input & input);
+            iterator(Input & input, const SDL_Event && event);
             iterator(const iterator & it);
             iterator & operator = (const iterator & o);
             bool operator == (const iterator & o) const;

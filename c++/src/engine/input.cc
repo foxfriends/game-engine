@@ -2,32 +2,36 @@
 
 namespace Game {
     Input::iterator Input::begin() {
-        return ++iterator();
+        return ++iterator(*this);
     }
 
     Input::iterator Input::end() {
-        return iterator();
+        return iterator(*this);
     }
 
-    Input::iterator::iterator() : _event{ Event::None } {}
-    Input::iterator::iterator(const SDL_Event && event) {
+    Input::iterator::iterator(Input & input) : _input{ input }, _event{ Event::None } {}
+    Input::iterator::iterator(Input & input, const SDL_Event && event) : _input{ input } {
         // TODO: actually parse SDL events
         switch(event.type) {
         case SDL_KEYDOWN:
             _event.type = Event::KeyDown;
             _event.data = { event.key.keysym.scancode };
+            _input._keystate[event.key.keysym.scancode] = true;
             break;
         case SDL_KEYUP:
             _event.type = Event::KeyUp;
             _event.data = { event.key.keysym.scancode };
+            _input._keystate[event.key.keysym.scancode] = false;
             break;
         case SDL_MOUSEBUTTONDOWN:
             _event.type = Event::MouseDown;
             _event.data = { event.button.button };
+            _input._mousestate[event.button.button] = true;
             break;
         case SDL_MOUSEBUTTONUP:
             _event.type = Event::MouseUp;
             _event.data = { event.button.button };
+            _input._mousestate[event.button.button] = false;
             break;
         case SDL_MOUSEMOTION:
             // TODO: implement
@@ -38,7 +42,8 @@ namespace Game {
             break;
         }
     }
-    Input::iterator::iterator(const iterator & o) {
+
+    Input::iterator::iterator(const iterator & o) : _input{ o._input } {
         _event = o._event;
     }
 
@@ -64,7 +69,7 @@ namespace Game {
     Input::iterator & Input::iterator::operator ++ () {
         SDL_Event event;
         if(SDL_PollEvent(&event)) {
-            iterator c = iterator(std::move(event));
+            iterator c = iterator(_input, std::move(event));
             swap(*this, c);
         } else {
             _event = Event{ Event::None };
