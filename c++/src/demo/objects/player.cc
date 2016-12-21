@@ -1,6 +1,9 @@
 #include "player.h"
+#include "../rooms/pause-menu.h"
 
 namespace Demo {
+    bool Player::persistent = true;
+
     void Player::init() {
         sprite("sarah_idle_south");
         sprite().x = 32;
@@ -10,6 +13,12 @@ namespace Demo {
     void Player::roomend(int, int next) {
         if(next == 1) { // TODO: recommend making an enum for room ID's
             game().destroy(*this);
+        }
+    }
+
+    void Player::keydown(int key) {
+        if(key == SDL_SCANCODE_P) {
+            game().room_overlay<RmPauseMenu>();
         }
     }
 

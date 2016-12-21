@@ -22,6 +22,8 @@ namespace Game {
         std::unique_ptr<TextureManager> _texture;
         std::vector<std::unique_ptr<Room>> _rooms;
         std::vector<std::vector<std::unique_ptr<Object>>> _objects;
+        std::vector<std::unique_ptr<Room>> _delete_rooms;
+        std::vector<std::vector<std::unique_ptr<Object>>> _delete_objects;
         std::vector<Rectangle> _views;
         std::unique_ptr<GameUtility> _utilities;
         std::map<std::string, std::string> _tilemaps;

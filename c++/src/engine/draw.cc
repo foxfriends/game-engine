@@ -135,15 +135,21 @@ namespace Game {
         return *this;
     }
 
-    void Draw::render() {
+    void Draw::clear() {
         SDL_SetRenderDrawColor(&_ren, 0xff, 0xff, 0xff, 0xff);
         SDL_RenderClear(&_ren);
+    }
+
+    void Draw::render() {
         for(auto & d : _layers) {
             for(auto & f : d.second) {
                 f();
             }
         }
-        SDL_RenderPresent(&_ren);
         _layers.clear();
+    }
+
+    void Draw::present() {
+        SDL_RenderPresent(&_ren);
     }
 }

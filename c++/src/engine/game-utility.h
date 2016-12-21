@@ -99,12 +99,13 @@ namespace Game {
     template<typename T>
     void GameUtility::room_overlay() {
         std::unique_ptr<Room> rm = std::make_unique<T>();
-        _eng._rooms.emplace_back(rm);
+        rm->attach(&_eng);
+        _eng._rooms.emplace_back(std::move( rm ));
         _eng._objects.emplace_back();
         auto s = _eng.size();
         _eng._views.emplace_back(0, 0, s.w, s.h);
-        rm->start();
-        _eng.proc(Event{ Event::RoomStart, { -1, rm->id } });
+        _eng._rooms.back()->start();
+        _eng.proc(Event{ Event::RoomStart, { -1, _eng._rooms.back()->id } });
     }
 
     template<typename T, typename ... Args>

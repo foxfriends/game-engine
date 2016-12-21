@@ -36,7 +36,9 @@ namespace Game {
         Draw & sprite(const Sprite & sprite, int depth = 0);
         Draw & text(const std::string & str, const Position & pos, int depth = 0);
         Draw & image(SDL_Texture * image, const Rectangle & src, const Rectangle & dest, int depth = 0);
+        void clear();
         void render();
+        void present();
     };
 }
 

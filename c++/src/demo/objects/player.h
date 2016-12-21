@@ -5,12 +5,16 @@
 
 namespace Demo {
     class Player : public virtual Game::Object, public Game::Drawable, public Game::Collider {
+    public:
+        static bool persistent;
+    private:
         const int _speed = 4;
         int _hsp = 0, _vsp = 0;
         std::string _dir = "south";
     public:
         virtual void init() override;
         virtual void roomend(int, int next) override;
+        virtual void keydown(int key) override;
         virtual void step() override;
         virtual void stepend() override;
 

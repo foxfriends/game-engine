@@ -89,18 +89,17 @@ namespace Game {
     }
 
     void Engine::draw() {
-        // TODO: make overlay drawing work
-        if(!_objects.empty()) {
-            for(auto &o : _objects.back()) {
+        _draw->clear();
+        for(unsigned int i = 0; i < _rooms.size(); ++i) {
+            for(auto &o : _objects.at(i)) {
                 if(auto d = dynamic_cast<const Drawable *>(o.get())) {
                     d->draw(*_draw);
                 }
             }
+            _rooms.at(i)->draw(*_draw);
+            _draw->render();
         }
-        if(!_rooms.empty()) {
-            _rooms.back()->draw(*_draw);
-        }
-        _draw->render();
+        _draw->present();
     }
 
     void Engine::end() {
@@ -118,6 +117,8 @@ namespace Game {
             proc(Event{Event::GameStart});
             do {
                 step();
+                _delete_rooms.clear();
+                _delete_objects.clear();
                 draw();
             } while(!_ended);
             proc(Event{Event::GameEnd});

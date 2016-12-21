@@ -39,6 +39,9 @@ namespace Game {
     void GameUtility::room_close() {
         _eng.proc(Event{ Event::RoomEnd, { _eng._rooms.back()->id, -1} });
         _eng._rooms.back()->end();
+        // store these for the rest of this frame so the events all finish
+        _eng._delete_rooms.emplace_back(std::move( _eng._rooms.back() ));
+        _eng._delete_objects.emplace_back(std::move( _eng._objects.back() ));
         _eng._rooms.pop_back();
         _eng._objects.pop_back();
         _eng._views.pop_back();
