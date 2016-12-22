@@ -1,6 +1,6 @@
 # game-engine
 
-A simple game engine, currently available in C++ and HTML5 (JS).
+A simple game engine, available in C++ and HTML5 (JS).
 
 ## Current features
 
