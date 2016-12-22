@@ -30,9 +30,9 @@ function Collider(bbox) {
 
 Object.defineProperty(Collider, Symbol.hasInstance, {
   value(instance) {
-    return typeof collides === 'function' &&
+    return typeof instance.collides === 'function' &&
       instance.position instanceof Position &&
-      instance.box instanceof Rectangle;
+      instance.bbox instanceof Rectangle;
   }
 });
 

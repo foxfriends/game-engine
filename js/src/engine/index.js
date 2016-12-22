@@ -120,6 +120,10 @@ class Engine {
       }
     }
   }
+  // finds a persistent object
+  find(Obj) {
+    return this[OBJECTS][0].filter(o => o instanceof Obj);
+  }
 
   // load the given list of texture pages
   get texture() {
@@ -245,8 +249,15 @@ class Engine {
       destroy: (obj) => {
         this[ROOMS][0].destroy(obj);
       },
+      // find an object
+      find: (Obj) => {
+        return this[ROOMS][0].find(Obj);
+      },
       // checks if two colliders are colliding
       collides: (where, what) => {
+        if(what instanceof Collider) {
+          return what.collides(where);
+        }
         if(this[ROOMS][0].collides(where, what)) {
           return true;
         }

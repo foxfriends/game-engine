@@ -95,6 +95,11 @@ class Room {
     }
   }
 
+  // finds all objects of a type in this room
+  find(Obj) {
+    return [].concat(this[OBJECTS].filter(o => o instanceof Obj), this[ENGINE].find(Obj));
+  }
+
   // draw this room
   // HACK: internalize
   draw(draw) {
