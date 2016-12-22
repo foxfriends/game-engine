@@ -3,9 +3,9 @@
     "castle": "./texture-pages/castle.json",
     "inside": "./texture-pages/inside.json",
     "sarah": "./texture-pages/sarah.json",
-    "house": "./texture-pages/dirt.json",
+    "dirt": "./texture-pages/dirt.json",
     "grass": "./texture-pages/grass.json",
-    "house": "./texture-pages/house.json",
+    "house": "./texture-pages/house.json"
   },
   "tile-maps": {
     "home": "./tile-maps/home.json",

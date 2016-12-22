@@ -38,6 +38,8 @@ namespace Game {
         // objects
         template<typename T, typename ... Args>
         void spawn(Args ... args);
+        template<typename T>
+        std::vector<T *> find();
         void destroy(Object & who);
         // any (including room)
         bool collides(const Rectangle & where) const;
@@ -57,17 +59,17 @@ namespace Game {
     void GameUtility::room_goto() {
         std::unique_ptr<Room> rm = std::make_unique<T>();
         rm->attach(&_eng);
-        auto d = rm->size();
+        auto d = _eng.size();
         Rectangle newview{ 0, 0, d.w, d.h };
         int prevId = -1;
         if(!_eng._rooms.empty()) {
-            auto &old = _eng._rooms.back();
+            auto & old = _eng._rooms.back();
             prevId = old->id;
             // end the previous room
             _eng.proc(Event{ Event::RoomEnd, { prevId, rm->id } });
             old->end();
+            _eng._delete_rooms.emplace_back(std::move( _eng._rooms.back() ));
             _eng._rooms.back() = std::move( rm );
-            _eng._objects.back() = std::vector<std::unique_ptr<Object>>{};
             _eng._views.back() = newview;
         } else {
             _eng._rooms.emplace_back(std::move( rm ));
@@ -111,6 +113,11 @@ namespace Game {
     template<typename T, typename ... Args>
     void GameUtility::spawn(Args ... args) {
         _eng.spawn<T>(args ...);
+    }
+
+    template<typename T>
+    std::vector<T *> GameUtility::find() {
+        return _eng._rooms.back()->find<T>();
     }
 
     template<typename T>

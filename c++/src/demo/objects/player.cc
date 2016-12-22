@@ -47,6 +47,7 @@ namespace Demo {
         } else {
             sprite("sarah_idle_" + _dir);
         }
+        game().view({ position().x + 32, position().y + 32 });
     }
 
     Game::Position Player::position() const {

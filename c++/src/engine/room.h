@@ -35,6 +35,8 @@ namespace Game {
         template<typename T, typename ... Args>
         void spawn(Args ... args);
         template<typename T>
+        std::vector<T *> find() const;
+        template<typename T>
         void destroy();
         void destroy(Object & who);
 
@@ -55,6 +57,17 @@ namespace Game {
             _objects.back()->attach(_eng);
             _objects.back()->init();
         }
+    }
+
+    template<typename T>
+    std::vector<T *> Room::find() const {
+        std::vector<T *> found = _eng->find<T>();
+        for(auto & o : _objects) {
+            if(auto t = dynamic_cast<T *>(o.get())) {
+                found.emplace_back(t);
+            }
+        }
+        return found;
     }
 
     template<typename T>

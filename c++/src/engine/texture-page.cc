@@ -8,7 +8,11 @@ namespace Game {
         // read and process file
         std::ifstream fin{ file };
         json data;
-        fin >> data;
+        try {
+            fin >> data;
+        } catch( ... ) {
+            throw "Invalid JSON from " + file;
+        }
         _size = Dimension{ data["width"], data["height"] };
         _sprites = data["sprites"];
         _frames.clear();

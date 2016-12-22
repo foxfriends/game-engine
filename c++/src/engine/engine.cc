@@ -35,7 +35,11 @@ namespace Game {
             if(resdir == cfg) { resdir = ""; }
             std::ifstream fin{ cfg };
             json config;
-            fin >> config;
+            try {
+                fin >> config;
+            } catch( ... ) {
+                throw "Invalid JSON from " + cfg;
+            }
             // TODO: robust file resolution, URL cleaning
             for(auto font = config["fonts"].begin(); font != config["fonts"].end(); ++font) {
                 load_font(font.key(), resdir + font.value()[0].get<std::string>(), font.value()[1].get<int>());

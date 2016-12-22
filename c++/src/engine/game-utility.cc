@@ -45,10 +45,6 @@ namespace Game {
         _eng._rooms.pop_back();
         _eng._objects.pop_back();
         _eng._views.pop_back();
-        if(_eng._rooms.empty()) {
-            // TODO: error type?
-            throw "You closed the last room... please don't do that";
-        }
     }
 
     void GameUtility::end() { _eng._ended = true; }

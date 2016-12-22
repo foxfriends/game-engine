@@ -63,6 +63,9 @@ namespace Game {
         // spawn a new object in the room
         template<typename T, typename ... Args>
         void spawn(Args ...args);
+
+        template<typename T>
+        std::vector<T *> find() const;
         // destroy an object
         void destroy(Object & who);
         // destroy all objects of a type
@@ -77,9 +80,22 @@ namespace Game {
 
     template<typename T, typename ... Args>
     void Engine::spawn(Args ... args) {
-        _objects.back().emplace_back(std::make_unique<T>(args ...));
-        _objects.back().back()->attach(this);
-        _objects.back().back()->init();
+        auto obj = std::make_unique<T>(args ...);
+        obj->attach(this);
+        obj->init();
+        _objects.back().emplace_back(std::move( obj ));
+
+    }
+
+    template<typename T>
+    std::vector<T *> Engine::find() const {
+        std::vector<T *> found;
+        for(auto & o : _objects.back()) {
+            if(auto t = dynamic_cast<T *>(o.get())) {
+                found.emplace_back(t);
+            }
+        }
+        return found;
     }
 
     template<typename T>

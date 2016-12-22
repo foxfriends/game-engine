@@ -11,7 +11,11 @@ namespace Game {
     TileMap::TileMap(const std::string & file, TextureManager & texture) : _tm{ texture } {
         std::ifstream fin{ file };
         json data;
-        fin >> data;
+        try {
+            fin >> data;
+        } catch( ... ) {
+            throw "Invalid JSON from " + file;
+        }
         _tw = data["meta"]["tw"];
         _th = data["meta"]["th"];
 
