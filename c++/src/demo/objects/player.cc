@@ -6,8 +6,8 @@ namespace Demo {
 
     void Player::init() {
         sprite("sarah_idle_south");
-        sprite().x = 32;
-        sprite().y = 96;
+        sprite().x = 500;
+        sprite().y = 400;
     }
 
     void Player::roomend(int, int next) {
