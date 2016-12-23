@@ -23,6 +23,8 @@ namespace Game {
         const int id;
         Room(int id, const std::string & tilemap = "");
         virtual ~Room() = 0;
+        // load the room
+        virtual void load();
         // start the room
         virtual void start();
         // process an event

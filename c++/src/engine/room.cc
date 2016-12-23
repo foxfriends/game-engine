@@ -15,6 +15,7 @@ namespace Game {
     }
 
     Room::~Room() {}
+    void Room::load() {}
     void Room::start() {}
     void Room::proc(const Event &event) {
         for(auto &o : _objects) {
