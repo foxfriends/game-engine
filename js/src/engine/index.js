@@ -130,6 +130,10 @@ class Engine {
     return this[TEXTURE_MANAGER];
   }
 
+  get layers() {
+    return this[ROOMS].length;
+  }
+
   // utilities
   get util() {
     return {
@@ -163,7 +167,7 @@ class Engine {
             view.y = h - view.h;
           }
         }
-        return this[VIEWS][0] = view;
+        return this[VIEWS][0] = new Rectangle(...view);
       },
       room: {
         // go to the given room
@@ -182,6 +186,7 @@ class Engine {
           }
           (async () => {
             this[ROOMS][0].load();
+            this.proc(new GameEvent('roomload', old, Rm));
             await this[ROOMS][0].loaded;
             // remove the old room, which was temporarily shifted
             this[ROOMS].splice(1, 1);
@@ -202,6 +207,7 @@ class Engine {
           }
           (async () => {
             this[ROOMS][0].load();
+            this.proc(new GameEvent('roomload', null, Rm));
             await this[ROOMS][0].loaded;
             this[ROOMS][0].start();
             this.proc(new GameEvent('roomstart', null, Rm));

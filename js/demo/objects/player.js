@@ -4,18 +4,24 @@ import { Drawable, Collider, GameObject, override, persistent, sprite, Rectangle
 import PauseMenu from '../rooms/pause-menu';
 import MainMenu from '../rooms/main-menu';
 
+const SPD = 4;
+
 @persistent
 @sprite('sarah_idle_south')
 class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject)) {
-  speed = 4;
+  speed = SPD;
   dir = 'south';
   hsp = 0;
   vsp = 0;
 
   @override
-  init() {
-    this.sprite.x = 500;
-    this.sprite.y = 400;
+  roomload() {
+    this.speed = 0;
+  }
+
+  @override
+  roomstart() {
+    this.speed = SPD;
   }
 
   @override
@@ -23,6 +29,12 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
     if(room === MainMenu) {
       super.game.destroy(this);
     }
+  }
+
+  @override
+  init() {
+    this.sprite.x = 500;
+    this.sprite.y = 400;
   }
 
   @override

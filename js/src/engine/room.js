@@ -26,7 +26,9 @@ class Room {
         pages.push(...tm.meta.pages.map(({name}) => name));
       }
       await this[ENGINE].texture.load(new Set(pages));
-      this[ENGINE].texture.purge();
+      if(engine.layers === 1) {
+        this[ENGINE].texture.purge();
+      }
       if(tm) {
         this[TILEMAP] = new TileMap(this[ENGINE].texture, tm);
       }

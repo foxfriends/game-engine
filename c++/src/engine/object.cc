@@ -11,6 +11,7 @@ namespace Game {
     void Object::init() {}
 
     void Object::gamestart() {}
+    void Object::roomload(int prev, int next) {}
     void Object::roomstart(int prev, int next) {}
 
     void Object::stepstart() {}
@@ -43,6 +44,9 @@ namespace Game {
             break;
         case Event::MouseMove:
             mousemove({event.data[0], event.data[1]});
+            break;
+        case Event::RoomLoad:
+            roomload(event.data[0], event.data[1]);
             break;
         case Event::RoomStart:
             roomstart(event.data[0], event.data[1]);

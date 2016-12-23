@@ -15,6 +15,8 @@ class GameObject {
   // initialize things on being created (use instead of constructor)
   init() {}
 
+  // run before each room starts
+  roomload(old, room) {}
   // run at the beginning of each room
   roomstart(old, room) {}
   // run at the beginning of the game

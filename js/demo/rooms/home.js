@@ -1,13 +1,20 @@
 'use strict';
 
-import { Room, texturepage, tilemap, Position } from '../../engine';
+import { Room, override, texturepage, tilemap, Position } from '../../engine';
 import Player from '../objects/player';
 import Door from '../objects/door';
+import Loader from '../objects/loader';
 import * as Outside from './outside';
 
 @texturepage('sarah')
 @tilemap('home')
 class Home extends Room {
+  @override
+  load() {
+    super.spawn(Loader);
+  }
+
+  @override
   start() {
     if(!super.find(Player).length) {
       super.spawn(Player);

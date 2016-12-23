@@ -9,6 +9,7 @@ namespace Game {
             None,
             Quit,
             GameStart,
+            RoomLoad,
             RoomStart,
             KeyDown,
             KeyUp,

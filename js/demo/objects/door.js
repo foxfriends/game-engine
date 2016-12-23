@@ -27,9 +27,9 @@ class Door extends Collider(new Rectangle(0, 0, 32, 32))(GameObject) {
   @override
   step() {
     if(super.game.collides(this.bbox, this[PLAYER])) {
+      super.game.room.goto(this.dest);
       this[PLAYER].sprite.x = this.outpos.x;
       this[PLAYER].sprite.y = this.outpos.y;
-      super.game.room.goto(this.dest);
     }
   }
 }

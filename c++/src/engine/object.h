@@ -23,6 +23,7 @@ namespace Game {
         // occurs only once per game
         virtual void gamestart();
         // occurs only once per room
+        virtual void roomload(int prev, int next);
         virtual void roomstart(int prev, int next);
         // occurs before inputs are processed
         virtual void stepstart();

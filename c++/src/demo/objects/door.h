@@ -6,7 +6,7 @@
 
 namespace Demo {
     template<typename Dest>
-    class Door : public virtual Game::Object, public Game::Drawable, public Game::Collider {
+    class Door : public virtual Game::Object, public Game::Collider {
         Game::Position _pos, _outpos;
         Player * _player;
     public:
@@ -15,7 +15,6 @@ namespace Demo {
         virtual void step() override;
         virtual Game::Position position() const override;
         virtual Game::Rectangle bbox() const override;
-        virtual void draw(Game::Draw & draw) const override;
     };
 
     template<typename Dest>
@@ -43,11 +42,6 @@ namespace Demo {
     template<typename Dest>
     Game::Rectangle Door<Dest>::bbox() const {
         return { position().x, position().y, 32, 32 };
-    }
-
-    template<typename Dest>
-    void Door<Dest>::draw(Game::Draw & draw) const {
-        draw.rect(bbox());
     }
 }
 

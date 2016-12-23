@@ -1,7 +1,7 @@
 'use strict';
 
-const [STACK, COLOR, ALPHA, FONT, WHO, CONTEXT, VIEWPORT] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTEXT, VIEWPORT] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Draw {
   [STACK] = {};
@@ -10,6 +10,8 @@ class Draw {
   [FONT] = '14px Arial';
   [WHO] = null;
   [VIEWPORT] = null;
+  [HALIGN] = 'top';
+  [VALIGN] = 'left'
 
   constructor(context) {
     this[CONTEXT] = context;
@@ -36,6 +38,18 @@ class Draw {
   }
   color(color) {
     this[COLOR] = typeof color === 'number' ? '#' + color.toString(16).padStart(6, '0') : color;
+    return this;
+  }
+  font(font) {
+    this[FONT] = font;
+    return this;
+  }
+  halign(align) {
+    this[HALIGN] = align;
+    return this;
+  }
+  valign(align) {
+    this[VALIGN] = align;
     return this;
   }
 
@@ -84,11 +98,13 @@ class Draw {
   // draw some text
   text(str, where, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const [font, alpha, color] = [this[FONT], this[ALPHA], this[COLOR]]
+    const [font, alpha, color, ha, va] = [this[FONT], this[ALPHA], this[COLOR], this[HALIGN], this[VALIGN]]
     this[STACK][depth].push(con => {
       con.font = font;
       con.globalAlpha = alpha;
       con.fillStyle = color;
+      con.textAlign = ha;
+      con.textBaseline = va;
       con.fillText(str, ...where);
     });
     return this;

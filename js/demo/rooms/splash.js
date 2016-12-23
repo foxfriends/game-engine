@@ -1,7 +1,6 @@
 'use strict';
-import { Room } from '../../engine';
+import { Room, override } from '../../engine';
 import SplashScreen from '../objects/splash-screen';
-import { override } from '../../engine';
 
 class Splash extends Room {
   @override
