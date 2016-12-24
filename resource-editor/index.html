@@ -26,10 +26,20 @@
         <input type="number" name="th" placeholder="Tile height" />
         <input type="number" name="width" placeholder="Map width" />
         <input type="number" name="height" placeholder="Map height" />
+        <hr />
         <p>Texture Pages</p>
         <ul id="texture-pages">
           <li id="tp-adder"><input type="text" name="tp-add" placeholder="Add..." /></li>
         </ul>
+        <hr />
+        <p>Layers</p>
+        <ul id="layers">
+          <li id="layer-adder"><input type="text" name="layer-add" placeholder="Add..." /></li>
+          <li id="all" class="clickable">Show all layers</li>
+        </ul>
+        <p>
+          <label for="collision">Show collisions? <input type="checkbox" id="collision" name="collision" /></label>
+        </p>
       </aside>
       <main>
         <canvas id="editor"></canvas>

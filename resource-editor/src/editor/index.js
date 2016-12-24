@@ -42,6 +42,8 @@ function init_start() {
       config = JSON.parse(fs.readFileSync(project));
     } catch (error) {
       if(!project) return;
+      project = '';
+      config = {};
       remote.dialog.showErrorBox('Error', 'Not a valid config file');
     }
     setProject(project, config);

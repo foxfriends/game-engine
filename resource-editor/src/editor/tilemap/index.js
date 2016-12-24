@@ -40,8 +40,11 @@ async function refresh() {
     li.addEventListener('click', () => {
       if(selectedPage === page) {
         if(remote.dialog.showMessageBox(remote.getCurrentWindow(), { message: `Remove ${page.name}?`, buttons: ['Cancel', 'Ok'] })) {
-          // TODO: remove all references to this page from the image
-          // TODO: close the open texture page resource
+          for(let layer of Object.keys(data.images)) {
+            for(let row of data.images[layer]) {
+              row.map(x => page.min <= x && page.max < x ? -1 : x);
+            }
+          }
           delete data.meta.pages[index];
           delete textures[page.name];
           saved = false;
@@ -54,9 +57,13 @@ async function refresh() {
     pagelist.appendChild(li);
   });
   await Promise.all(waiting);
+  const layerlist = document.querySelector('#layers');
+  Array.prototype.forEach.call(layerlist.querySelectorAll('li:not(#all)'), (li) => {
+    li.parentNode.removeChild(li);
+  });
   for(let depth of Object.keys(data.images).map(x => +x)) {
     const li = document.createElement('LI');
-    li.textContent = page.name;
+    li.textContent = depth;
     li.classList.add('clickable');
     if(depth === selectedLayer) {
       li.classList.add('selected');
@@ -73,7 +80,7 @@ async function refresh() {
       }
       refresh();
     });
-    pagelist.appendChild(li);
+    layerlist.appendChild(li);
     if(!layers[depth]) {
       layers[depth] = document.createElement('CANVAS');
       layers[depth].width = width;
@@ -98,11 +105,25 @@ async function refresh() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   canvas.width = width;
   canvas.height = height;
-  // TODO: Draw only selected layers. allow layer deselection
-  // TODO: Draw collision maps
-  // TODO: Editing? ?!?! 
   for(let layer of Object.keys(layers).sort((a, b) => a - b)) {
-    ctx.drawImage(layers[layer], 0, 0);
+    if(selectedLayer == null || selectedLayer == layer) {
+      ctx.drawImage(layers[layer], 0, 0);
+    }
+  }
+  if(document.querySelector('#collision').checked) {
+    ctx.fillStyle = 'black';
+    ctx.globalAlpha = 0.7;
+    let [x, y] = [0, 0];
+    for(let row of data.collisions) {
+      x = 0;
+      for(let col of row) {
+        if(+col === 1) {
+          ctx.fillRect(x, y, data.meta.tw, data.meta.th);
+        }
+        x += data.meta.tw;
+      }
+      y += data.meta.th;
+    }
   }
 }
 
@@ -167,6 +188,7 @@ function init(b, f, n) {
     }
   }
   window.addEventListener('keydown', keydown);
+  document.querySelector('#all').addEventListener('click', () => { selectedLayer = null; refresh(); })
   Array.prototype.forEach.call(document.querySelectorAll('input'), (input) => {
     input.addEventListener('input', () => {
       saved = false;
@@ -183,6 +205,7 @@ function init(b, f, n) {
     height = this.value;
     refresh();
   });
+  document.querySelector('#collision').addEventListener('click', refresh);
   refresh();
   return clear;
 }
