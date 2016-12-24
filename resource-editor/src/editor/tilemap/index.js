@@ -7,25 +7,35 @@ import { remote } from 'electron';
 
 let data = {}, canvas = null, ctx = null;
 let file = '', name = '', oldname = '', saved = true;
-let selectedPage = '', selectedLayer = NaN;
+let selectedPage = null, selectedLayer = null;
+let width = 300, height = 150;
+let textures = {};
 let layers = {};
 let back = () => {};
 
-function refresh() {
+async function refresh() {
   document.querySelector('[name="name"]').value = name;
   document.querySelector('[name="tw"]').value = data.meta.tw || 0;
   document.querySelector('[name="th"]').value = data.meta.th || 0;
+  document.querySelector('[name="width"]').value = width;
+  document.querySelector('[name="height"]').value = height;
   const pagelist = document.querySelector('#texture-pages');
   Array.prototype.forEach.call(pagelist.querySelectorAll('li:not(#tp-adder)'), (li) => {
     li.parentNode.removeChild(li);
   });
+  const waiting = [];
   data.meta.pages.forEach((page, index) => {
-    // TODO: load texture pages from project if they aren't open yet
     const li = document.createElement('LI');
     li.textContent = page.name;
     li.classList.add('clickable');
     if(page === selectedPage) {
       li.classList.add('selected');
+    }
+    if(!textures[page.name]) {
+      textures[page.name] = new Image();
+      const { image } = JSON.parse(fs.readFileSync(path.resolve(path.dirname(getProject().path), getProject().data['texture-pages'][page.name])));
+      textures[page.name].src = path.resolve(path.dirname(getProject().path), image);
+      waiting.push(new Promise((resolve, reject) => textures[page.name].addEventListener('load', () => resolve())));
     }
     li.addEventListener('click', () => {
       if(selectedPage === page) {
@@ -33,6 +43,7 @@ function refresh() {
           // TODO: remove all references to this page from the image
           // TODO: close the open texture page resource
           delete data.meta.pages[index];
+          delete textures[page.name];
           saved = false;
         }
       } else {
@@ -42,6 +53,7 @@ function refresh() {
     });
     pagelist.appendChild(li);
   });
+  await Promise.all(waiting);
   for(let depth of Object.keys(data.images).map(x => +x)) {
     const li = document.createElement('LI');
     li.textContent = page.name;
@@ -64,14 +76,33 @@ function refresh() {
     pagelist.appendChild(li);
     if(!layers[depth]) {
       layers[depth] = document.createElement('CANVAS');
+      layers[depth].width = width;
+      layers[depth].height = height;
       const image = data.images[depth];
       const c = layers[depth].getContext('2d');
       for(let i = 0; i < image.length; ++i) {
         for(let j = 0; j < image[i].length; ++j) {
-          // TODO: parse tiles out of texture pages once loaded
+          let n = image[i][j];
+          const [ p ] = data.meta.pages.filter(page => page.min <= n && n < page.max);
+          if(!p) { continue; }
+          n -= p.min;
+          const [ xx, yy ] = [
+            data.meta.tw * (n % (textures[p.name].width / data.meta.tw)),
+            data.meta.th * Math.floor(n / (textures[p.name].width / data.meta.tw))
+          ];
+          c.drawImage(textures[p.name], xx, yy, data.meta.tw, data.meta.th, j * data.meta.tw, i * data.meta.th, data.meta.tw, data.meta.th);
         }
       }
     }
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.width = width;
+  canvas.height = height;
+  // TODO: Draw only selected layers. allow layer deselection
+  // TODO: Draw collision maps
+  // TODO: Editing? ?!?! 
+  for(let layer of Object.keys(layers).sort((a, b) => a - b)) {
+    ctx.drawImage(layers[layer], 0, 0);
   }
 }
 
@@ -109,8 +140,13 @@ function clear() {
 function init(b, f, n) {
   saved = true;
   back = b;
-  file = f;
-  name = n;
+  file = f || '';
+  name = oldname = n || '';
+  layers = {};
+  textures = {};
+  selectedPage = selectedLayer = null;
+  canvas = page.querySelector('#editor');
+  ctx = canvas.getContext('2d');
   data = {
     meta: {
       tw: 32,
@@ -123,6 +159,8 @@ function init(b, f, n) {
   if(file) {
     try {
       data = JSON.parse(fs.readFileSync(file));
+      width = data.meta.tw * data.collisions[0].length;
+      height = data.meta.th * data.collisions.length;
     } catch(error) {
       console.error(error);
       remote.dialog.showErrorBox('Error', 'Not a valid tile map');
@@ -136,6 +174,14 @@ function init(b, f, n) {
   });
   document.querySelector('[name="name"]').addEventListener('input', function() {
     name = this.value;
+  });
+  document.querySelector('[name="width"]').addEventListener('input', function() {
+    width = this.value;
+    refresh();
+  });
+  document.querySelector('[name="height"]').addEventListener('input', function() {
+    height = this.value;
+    refresh();
   });
   refresh();
   return clear;

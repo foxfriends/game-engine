@@ -87,6 +87,7 @@ function init(b, f, n) {
   back = b;
   file = f || '';
   name = oldname = n || '';
+  img = null;
   canvas = document.querySelector('#editor');
   ctx = canvas.getContext('2d');
   data = {
@@ -96,6 +97,7 @@ function init(b, f, n) {
     frames: [],
     sprites: {}
   };
+  selectedSprite = null;
   if(file) {
     try {
       data = JSON.parse(fs.readFileSync(file));
