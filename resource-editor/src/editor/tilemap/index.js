@@ -7,7 +7,7 @@ import { remote } from 'electron';
 
 let data = {}, canvas = null, ctx = null;
 let file = '', name = '', oldname = '', saved = true;
-let selectedPage = null, selectedLayer = null;
+let selectedPage = null, selectedLayer = null, tileIndex = -1;
 let width = 300, height = 150;
 let textures = {};
 let layers = {};
@@ -51,6 +51,7 @@ async function refresh() {
         }
       } else {
         selectedPage = page;
+        tileIndex = page.min;
       }
       refresh();
     });
@@ -154,8 +155,44 @@ function keydown(event) {
   }
 }
 
+function mousedown(event) {
+  if(!selectedLayer) { return; }
+  const { clientX: xx, clientY: yy } = event;
+  const el = document.querySelector('main');
+  const { left, top } = el.getBoundingClientRect();
+  let [x, y] = [
+    Math.floor((xx - left + el.scrollLeft) / data.meta.tw),
+    Math.floor((yy - top + el.scrollTop) / data.meta.th)
+  ];
+  if(x >= 0 && y >= 0 && x < data.collisions[0].length && y < data.collisions.length) {
+    // in bounds of the room
+    switch(event.button) {
+      case 0: // HACK: this whole thing man am I even trying??
+        if(event.shiftKey) {
+          const i = data.images[selectedLayer][y][x];
+          if(i >= selectedPage.min && i < selectedPage.max) {
+            tileIndex = i;
+          }
+        } else {
+          delete layers[selectedLayer];
+          data.images[selectedLayer][y][x] = tileIndex;
+          refresh();
+        }
+        break;
+      case 2:
+        delete layers[selectedLayer];
+        data.images[selectedLayer][y][x] = -1;
+        refresh();
+        break;
+    }
+  } else {
+
+  }
+}
+
 function clear() {
   window.removeEventListener('keydown', keydown);
+  window.removeEventListener('mousedown', mousedown);
 }
 
 function init(b, f, n) {
@@ -183,11 +220,11 @@ function init(b, f, n) {
       width = data.meta.tw * data.collisions[0].length;
       height = data.meta.th * data.collisions.length;
     } catch(error) {
-      console.error(error);
       remote.dialog.showErrorBox('Error', 'Not a valid tile map');
     }
   }
   window.addEventListener('keydown', keydown);
+  window.addEventListener('mousedown', mousedown);
   document.querySelector('#all').addEventListener('click', () => { selectedLayer = null; refresh(); })
   Array.prototype.forEach.call(document.querySelectorAll('input'), (input) => {
     input.addEventListener('input', () => {
@@ -204,6 +241,32 @@ function init(b, f, n) {
   document.querySelector('[name="height"]').addEventListener('input', function() {
     height = this.value;
     refresh();
+  });
+  document.querySelector('[name="tp-add"]').addEventListener('keydown', function(event) {
+    if(event.key === 'Enter') {
+      const name = this.value;
+      const pages = getProject().data["texture-pages"];
+      if(pages[name]) {
+        const { image } = JSON.parse(fs.readFileSync(path.resolve(path.dirname(getProject().path), pages[name])));
+        textures[name] = new Image();
+        textures[name].src = path.resolve(path.dirname(getProject().path), image);
+        let min = 0;
+        for(let page of data.meta.pages) {
+          min = Math.max(min, page.max);
+        }
+        textures[name].addEventListener('load', function() {
+          const { width, height } = this;
+          const count = (width / data.meta.tw) * (height / data.meta.th);
+          data.meta.pages.push({
+            name: name,
+            min: min,
+            max: min + count
+          });
+          refresh();
+        });
+        this.value = '';
+      }
+    }
   });
   document.querySelector('#collision').addEventListener('click', refresh);
   refresh();
