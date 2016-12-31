@@ -3,6 +3,7 @@
 import TexturePage from './texture-page';
 
 class TextureManager {
+  // TODO: internalization ?
   old = [];
   pages = {};
 
@@ -15,10 +16,9 @@ class TextureManager {
     this.old = Object.keys(this.pages).filter(key => !textures.has(key));
     const loaded = [];
     for(let texture of textures) {
-      if(!this.pages[texture]) {
-        this.pages[texture] = new TexturePage(this.sources[texture]);
-        loaded.push(this.pages[texture].loaded);
-      }
+      if(this.pages[texture]) { continue; }
+      this.pages[texture] = new TexturePage(this.sources[texture]);
+      loaded.push(this.pages[texture].loaded);
     }
     return Promise.all(loaded);
   }
@@ -28,7 +28,6 @@ class TextureManager {
     for(let texture of textures) {
       delete this.pages[texture];
     }
-    return this;
   }
 
   // instantiate the sprite from the pages
