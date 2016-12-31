@@ -12,7 +12,7 @@ module.exports = [{
       loaders: [
         { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
         { test: /\.json$/, exclude: /node_modules.*\.json/, loader: 'json-loader' },
-      ],
+      ]
     }
   }, {
     entry: './demo/index.js',
@@ -24,7 +24,7 @@ module.exports = [{
       loaders: [
         { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
         { test: /\.json$/, exclude: /node_modules.*\.json/, loader: 'json-loader' },
-      ],
+      ]
     }
   }
 ];
