@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { saveTexturePage as save, rename, getProject } from '../project';
+import { saveTexturePage as save, renameTexturePage as rename, getProject } from '../project';
 import { remote } from 'electron';
 
 let data = {}, img = null, canvas = null, ctx = null;
@@ -14,7 +14,7 @@ function refresh() {
   document.querySelector('[name="name"]').value = name;
   document.querySelector('[name="image"]').value = path.basename(data.image) || '';
   document.querySelector('[name="width"]').value = data.width || 0;
-  document.querySelector('[name="height"]').value = data.value || 0;
+  document.querySelector('[name="height"]').value = data.height || 0;
   const spritelist = document.querySelector('#sprites');
   Array.prototype.forEach.call(spritelist.querySelectorAll('li:not(#spr-adder)'), (li) => {
     li.parentNode.removeChild(li);
@@ -40,14 +40,17 @@ function refresh() {
     spritelist.appendChild(li);
   }
   if(data.image !== '') {
-    img = new Image();
-    img.src = path.resolve(path.dirname(getProject().path), data.image);
-    img.addEventListener('load', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvas.width = data.width = img.width;
-      canvas.height = data.height = img.height;
-      ctx.drawImage(img, 0, 0);
-    });
+    if(img === null || img.src.replace(/^.*?:\/\//, '') !== path.resolve(path.dirname(getProject().path), data.image)) {
+      img = new Image();
+      img.src = path.resolve(path.dirname(getProject().path), data.image);
+      img.addEventListener('load', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = data.width = img.width;
+        canvas.height = data.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        refresh();
+      });
+    }
   }
 }
 
@@ -116,15 +119,17 @@ function init(b, f, n) {
     name = this.value;
   });
   document.querySelector('[name="image"]').addEventListener('click', function() {
-    const [ file ] = remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
+    const [ file ] = (remote.dialog.showOpenDialog(remote.getCurrentWindow(), {
       defaultPath: path.dirname(getProject().path),
       filters: [
         { name: "Images", extensions: ["png"] }
       ],
       properties: ['openFile']
-    });
-    data.image = path.relative(path.dirname(getProject().path), file);
-    refresh();
+    }) || []);
+    if(file) {
+      data.image = path.relative(path.dirname(getProject().path), file);
+      refresh();
+    }
   });
   refresh();
   return clear;

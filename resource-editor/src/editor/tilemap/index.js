@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { saveTileMap as save, rename, getProject } from '../project';
+import { saveTileMap as save, renameTileMap as rename, getProject } from '../project';
 import { remote } from 'electron';
 
 let data = {}, canvas = null, ctx = null;
@@ -19,6 +19,14 @@ async function refresh() {
   document.querySelector('[name="th"]').value = data.meta.th || 0;
   document.querySelector('[name="width"]').value = width;
   document.querySelector('[name="height"]').value = height;
+  const collisions = [];
+  for(let i = 0; i < height / data.meta.th; ++i) {
+    collisions[i] = data.collisions[i] || '';
+    while(collisions[i].length !== width / data.meta.tw) {
+      collisions[i] += '0';
+    }
+  }
+  data.collisions = collisions;
   const pagelist = document.querySelector('#texture-pages');
   Array.prototype.forEach.call(pagelist.querySelectorAll('li:not(#tp-adder)'), (li) => {
     li.parentNode.removeChild(li);
@@ -48,6 +56,7 @@ async function refresh() {
           delete data.meta.pages[index];
           delete textures[page.name];
           saved = false;
+          selectedPage = null;
         }
       } else {
         selectedPage = page;
@@ -59,10 +68,10 @@ async function refresh() {
   });
   await Promise.all(waiting);
   const layerlist = document.querySelector('#layers');
-  Array.prototype.forEach.call(layerlist.querySelectorAll('li:not(#all)'), (li) => {
+  Array.prototype.forEach.call(layerlist.querySelectorAll('li:not(#all):not(#layer-adder)'), (li) => {
     li.parentNode.removeChild(li);
   });
-  for(let depth of Object.keys(data.images).map(x => +x)) {
+  for(let depth of Object.keys(data.images).map(x => +x).sort((a, b) => b - a)) {
     const li = document.createElement('LI');
     li.textContent = depth;
     li.classList.add('clickable');
@@ -75,6 +84,7 @@ async function refresh() {
           delete data.images[depth];
           delete layers[depth];
           saved = false;
+          selectedLayer = null;
         }
       } else {
         selectedLayer = depth;
@@ -126,6 +136,19 @@ async function refresh() {
       y += data.meta.th;
     }
   }
+  const res = document.querySelector('#res-view');
+  const resctx = res.getContext('2d');
+  resctx.clearRect(0, 0, res.width, res.height);
+  if(selectedPage) {
+    const img = textures[selectedPage.name];
+    resctx.strokeStyle = "black";
+    let [xx, yy] = [(res.width - data.meta.tw) / 2, (res.height - data.meta.th) / 2];
+    resctx.strokeRect(xx, yy, data.meta.tw, data.meta.th);
+    const ti = tileIndex - selectedPage.min;
+    xx -= ti % Math.floor(img.width / data.meta.tw) * data.meta.tw;
+    yy -= Math.floor(ti / Math.floor(img.width / data.meta.tw)) * data.meta.th;
+    resctx.drawImage(img, xx, yy);
+  }
 }
 
 function keydown(event) {
@@ -156,15 +179,14 @@ function keydown(event) {
 }
 
 function mousedown(event) {
-  if(!selectedLayer) { return; }
   const { clientX: xx, clientY: yy } = event;
-  const el = document.querySelector('main');
-  const { left, top } = el.getBoundingClientRect();
+  let el = document.querySelector('main');
+  let { left, top } = el.getBoundingClientRect();
   let [x, y] = [
     Math.floor((xx - left + el.scrollLeft) / data.meta.tw),
     Math.floor((yy - top + el.scrollTop) / data.meta.th)
   ];
-  if(x >= 0 && y >= 0 && x < data.collisions[0].length && y < data.collisions.length) {
+  if(x >= 0 && y >= 0 && x < data.collisions[0].length && y < data.collisions.length && selectedLayer !== null && selectedPage !== null) {
     // in bounds of the room
     switch(event.button) {
       case 0: // HACK: this whole thing man am I even trying??
@@ -185,8 +207,32 @@ function mousedown(event) {
         refresh();
         break;
     }
-  } else {
-
+    return;
+  }
+  const cv = document.querySelector('#res-view');
+  const box = cv.getBoundingClientRect();
+  left = box.left;
+  top = box.top;
+  [x, y] = [
+    Math.floor((xx - left) / data.meta.tw),
+    Math.floor((yy - top) / data.meta.th)
+  ];
+  if(x >= 0 && y >= 0 && x < Math.ceil(cv.width / data.meta.tw)  && y < Math.ceil(cv.height / data.meta.th) && selectedPage !== null) {
+    // in bounds of tile selector
+    const xoffset = (tileIndex - selectedPage.min) % Math.floor(textures[selectedPage.name].width / data.meta.tw) - Math.floor(cv.width / data.meta.tw / 2);
+    const yoffset = Math.floor((tileIndex - selectedPage.min) / Math.floor(textures[selectedPage.name].width / data.meta.tw)) - Math.floor(cv.height / data.meta.th / 2);
+    x += xoffset;
+    y += yoffset;
+    if(x >= 0 && x < textures[selectedPage.name].width / data.meta.tw &&
+       y >= 0 && y < textures[selectedPage.name].height / data.meta.th) {
+      const ti  = selectedPage.min
+                + x
+                + y * Math.floor(textures[selectedPage.name].width / data.meta.tw);
+      if(ti >= selectedPage.min && ti < selectedPage.max) {
+        tileIndex = ti;
+        refresh();
+      }
+    }
   }
 }
 
@@ -212,8 +258,16 @@ function init(b, f, n) {
       pages: []
     },
     images: {},
-    collisions: []
+    collisions: [
+      '0000000000',
+      '0000000000',
+      '0000000000',
+      '0000000000',
+      '0000000000'
+    ]
   };
+  width = 320;
+  height = 160;
   if(file) {
     try {
       data = JSON.parse(fs.readFileSync(file));
@@ -235,12 +289,28 @@ function init(b, f, n) {
     name = this.value;
   });
   document.querySelector('[name="width"]').addEventListener('input', function() {
-    width = this.value;
-    refresh();
+    if(!isNaN(this.value) && this.value !== 0) {
+      width = this.value;
+      refresh();
+    }
   });
   document.querySelector('[name="height"]').addEventListener('input', function() {
-    height = this.value;
-    refresh();
+    if(!isNaN(this.value) && this.value !== 0) {
+      height = this.value;
+      refresh();
+    }
+  });
+  document.querySelector('[name="tw"]').addEventListener('input', function() {
+    if(!isNaN(this.value) && this.value !== 0) {
+      data.meta.tw = this.value;
+      refresh();
+    }
+  });
+  document.querySelector('[name="th"]').addEventListener('input', function() {
+    if(!isNaN(this.value) && this.value !== 0) {
+      data.meta.th = this.value;
+      refresh();
+    }
   });
   document.querySelector('[name="tp-add"]').addEventListener('keydown', function(event) {
     if(event.key === 'Enter') {
@@ -266,6 +336,17 @@ function init(b, f, n) {
         });
         this.value = '';
       }
+    }
+  });
+  document.querySelector('[name="layer-add"]').addEventListener('keydown', function(event) {
+    if(event.key === 'Enter') {
+      const layer = this.value;
+      if(!data.images[layer]) {
+        data.images[layer] = data.collisions.map(r => r.split('').map(() => -1));
+      }
+      selectedLayer = layer;
+      refresh();
+      this.value = '';
     }
   });
   document.querySelector('#collision').addEventListener('click', refresh);

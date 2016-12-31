@@ -28,16 +28,30 @@ function saveProject() {
   fs.writeFileSync(project, JSON.stringify(config));
 }
 
-function rename(oldname, newname) {
-  if(config[newname]) {
+function rename(what, oldname, newname) {
+  if(config[what][newname]) {
     remote.dialog.showErrorBox('Error', 'This name is already taken');
     return;
   }
-  if(!config[oldname]) {
+  if(!config[what][oldname]) {
     return;
   }
-  config[newname] = config[oldname];
-  delete config[oldname];
+  config[what][newname] = config[what][oldname];
+  if(what === 'texture-pages') {
+    for(let map of Object.keys(config['tile-maps'])) {
+      const file = path.resolve(path.dirname(project), config['tile-maps'][map]);
+      const tm = JSON.parse(fs.readFileSync(file));
+      tm.meta.pages = tm.meta.pages.map(page => {
+        if(page.name === oldname) {
+          page.name = newname;
+        }
+        return page;
+      });
+      fs.writeFileSync(file, JSON.stringify(tm));
+    }
+  }
+  delete config[what][oldname];
+  saveProject();
 }
 
 function save(what, name, file, data) {
@@ -52,5 +66,7 @@ function save(what, name, file, data) {
 
 const saveTexturePage = save.bind(null, 'texture-pages');
 const saveTileMap = save.bind(null, 'tile-maps');
+const renameTexturePage = rename.bind(null, 'texture-pages');
+const renameTileMap = rename.bind(null, 'tile-maps');
 
-export { saveTexturePage, saveTileMap, setProject, getProject, rename };
+export { saveTexturePage, saveTileMap, renameTexturePage, renameTileMap, setProject, getProject, rename };
