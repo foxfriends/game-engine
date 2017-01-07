@@ -52,6 +52,9 @@ namespace Game {
             for(auto tm = config["tile-maps"].begin(); tm != config["tile-maps"].end(); ++tm) {
                 _tilemaps[tm.key()] = resdir + tm.value().get<std::string>();
             }
+            for(auto sound = config["sounds"].begin(); sound != config["sounds"].end(); ++sound) {
+                // TODO: do something with these
+            }
         }
     }
 

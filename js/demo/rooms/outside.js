@@ -8,7 +8,6 @@ import * as Home from './home';
 @texturepage('sarah')
 @tilemap('outside')
 class Outside extends Room {
-
   @override
   load() {
     super.spawn(Loader);
