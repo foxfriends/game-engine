@@ -2,9 +2,9 @@
 'use strict';
 
 const fs = require('fs');
+const parser = require('xml2json');
 const generate = require('./generate');
 const promisify = require('./promisify');
-const parser = require('xml2json');
 
 generate(function*(node, script, tiled, json) {
   const xml = parser.toJson(yield promisify(fs.readFile)(tiled), {

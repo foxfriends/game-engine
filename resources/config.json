@@ -14,5 +14,8 @@
   "fonts": {
     "hack": [ "./fonts/Hack-Regular.ttf", 14 ],
     "lato": [ "./fonts/Lato-Regular.ttf", 14 ]
+  },
+  "sounds": {
+    "door": "./sounds/door.wav"
   }
 }

@@ -1,5 +1,5 @@
 'use strict';
 
-const [SPRITE, PAGES, PERSISTENT, TILEMAP] = [Symbol(), Symbol(), Symbol(), Symbol()];
+const [SPRITE, PAGES, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
-export { SPRITE, PAGES, PERSISTENT, TILEMAP };
+export { SPRITE, SOUNDS, FONTS, PAGES, PERSISTENT, TILEMAP, LOADED };

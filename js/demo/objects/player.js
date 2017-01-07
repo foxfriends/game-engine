@@ -13,6 +13,7 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
   dir = 'south';
   hsp = 0;
   vsp = 0;
+  doorPos = null;
 
   @override
   roomload() {
@@ -22,6 +23,11 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
   @override
   roomstart() {
     this.speed = SPD;
+    if(this.doorPos) {
+      this.sprite.x = this.doorPos.x;
+      this.sprite.y = this.doorPos.y;
+      this.doorPos = null;
+    }
   }
 
   @override

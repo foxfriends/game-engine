@@ -1,5 +1,5 @@
 {
-  "image": "images/house.png",
+  "image": "../images/house.png",
   "width": 288,
   "height": 224,
   "frames": [],

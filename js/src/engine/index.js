@@ -8,17 +8,19 @@ import Collider from './collider';
 import Room from './room';
 import Input from './input';
 import TextureManager from './texture-manager';
-import { PAGES } from './const';
+import Sound from './sound';
+import { PAGES, SOUNDS } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, VIEWS] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, VIEWS, AUDIOCONTEXT] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Engine {
   [ROOMS] = [];
   [OBJECTS] = [[]];
   [RAF] = null;
   [VIEWS] = [new Rectangle(0, 0, 300, 150)];
+  [AUDIOCONTEXT] = new (AudioContext || webkitAudioContext) ();
 
   constructor(canvas, {w, h}) {
     this[CANVAS] = document.querySelector(canvas);
@@ -278,6 +280,17 @@ class Engine {
           }
         }
         return false;
+      },
+      sound: (name) => {
+        // load the sound or something I guess?
+        let sound = this.constructor[SOUNDS][name];
+        if(!sound) {
+          throw `No sound called ${name} exists`;
+        }
+        if(typeof sound === 'string') {
+          sound = this.constructor[SOUNDS][name] = new Sound(this[AUDIOCONTEXT], sound);
+        }
+        return sound;
       }
     };
   }

@@ -1,6 +1,8 @@
 'use strict';
 
-import { SPRITE, PAGES, TILEMAP, PERSISTENT } from './const';
+import path from 'path';
+import loadJSON from './load-json';
+import { LOADED, SPRITE, PAGES, FONTS, SOUNDS, TILEMAP, PERSISTENT } from './const';
 
 // @override methods must have a superclass method they are overriding
 function override(target, prop, descriptor) {
@@ -11,11 +13,6 @@ function override(target, prop, descriptor) {
 // @persistent GameObjects are contained by the game and exist outside of rooms
 function persistent(target) {
   Object.defineProperty(target, PERSISTENT, { value: true });
-}
-
-// @texturepages defines the texture page mapping used by the game { [name] : 'url' }
-function texturepages(map) {
-  return function(target) { Object.defineProperty(target, PAGES, { value: map }); };
 }
 
 // @texturepage lists texture pages required by a room
@@ -33,10 +30,23 @@ function tilemap(name) {
   return function(target) { Object.defineProperty(target, TILEMAP, { value: name }) ; };
 }
 
-// @tilemap defines the layout of the static background and collision tiles in a room
-function tilemaps(map) {
-  return function(target) { Object.defineProperty(target, TILEMAP, { value: map }) ; };
+// @config takes a configuration object
+function config(dir, cfg) {
+  for(let key of Object.keys(cfg)) {
+    for(let item of Object.keys(cfg[key])) {
+      if(typeof cfg[key][item] === 'string') {
+        cfg[key][item] = path.resolve(dir, cfg[key][item]);
+      } else {
+        cfg[key][item][0] = path.relative(dir, cfg[key][item][0]);
+      }
+    }
+  }
+  return function(target) {
+    Object.defineProperty(target, PAGES, { value: cfg['texture-pages'] });
+    Object.defineProperty(target, TILEMAP, { value: cfg['tile-maps'] });
+    Object.defineProperty(target, FONTS, { value: cfg['fonts'] });
+    Object.defineProperty(target, SOUNDS, { value: cfg['sounds'] });
+  }
 }
 
-
-export { override, persistent, texturepage, texturepages, sprite, tilemap, tilemaps };
+export { override, persistent, texturepage, sprite, tilemap, config };

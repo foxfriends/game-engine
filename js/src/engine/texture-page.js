@@ -17,7 +17,7 @@ class TexturePage extends Image {
     this[LOADED] = (async () => {
       // make a texture page from the json
       const json = await loadJSON(url);
-      this.src = json.image;
+      this.src = path.resolve(path.dirname(url), json.image);
       this.width = json.width;
       this.height = json.height;
       this[FRAMES] = json.frames;
