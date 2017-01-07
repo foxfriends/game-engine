@@ -1,6 +1,6 @@
 'use strict';
 
-import { Room, override, texturepage, tilemap, Position } from '../../engine';
+import { Room, override, texturepage, tilemap, Position, music } from '../../engine';
 import Player from '../objects/player';
 import Door from '../objects/door';
 import Loader from '../objects/loader';
@@ -8,6 +8,7 @@ import * as Outside from './outside';
 
 @texturepage('sarah')
 @tilemap('home')
+@music('overworld')
 class Home extends Room {
   @override
   load() {
@@ -16,6 +17,7 @@ class Home extends Room {
 
   @override
   start() {
+    this.game.music('overworld');
     if(!super.find(Player).length) {
       super.spawn(Player);
     }

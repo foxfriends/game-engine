@@ -2,7 +2,7 @@
 
 import PlayingSound from './playing-sound';
 
-const [SOUND, SRC, VOLUME, CONTEXT] = [Symbol(), Symbol(), Symbol(), Symbol()];
+const [SOUND, SRC, VOLUME, CONTEXT, LOADED, NAME] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 function loadSound(url) {
   return new Promise((resolve, reject) => {
@@ -18,17 +18,25 @@ function loadSound(url) {
 
 // a Sound holds an instantiated sound which can be played, stopped, and modified
 // at will
-// TODO: improve the sound system to use audio context
 class Sound {
+  [NAME] = '';
   [SOUND] = null;
   [VOLUME] = 1;
+  [LOADED] = Promise.resolve();
 
-  constructor(context, url) {
+  constructor(context, url, name) {
+    this[NAME] = name;
     this[CONTEXT] = context;
-    (async () => {
+    this[LOADED] = (async () => {
       const data = await loadSound(url);
       this[SOUND] = await new Promise(resolve => context.decodeAudioData(data, resolve));
     }) ();
+  }
+
+  get name() { return this[NAME]; }
+
+  get loaded() {
+    return this[LOADED];
   }
 
   // plays the sound. returns a PlayingSound promise
@@ -40,7 +48,7 @@ class Sound {
     gain.connect(this[CONTEXT].destination);
     source.connect(gain);
     source.start(0);
-    return new PlayingSound(this[CONTEXT], { source, gain });
+    return new PlayingSound(this[CONTEXT], { source, gain }, this[NAME]);
   }
 
   // the volume that a new instance of this sound will play at

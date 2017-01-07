@@ -1,9 +1,13 @@
 'use strict';
 
-const [CONTEXT, RESOLVE, REJECT, NODES] = [Symbol(), Symbol(), Symbol(), Symbol()];
+const [CONTEXT, RESOLVE, REJECT, NODES, NAME] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class PlayingSound extends Promise {
-  constructor(context, nodes) {
+  constructor(context, nodes, name) {
+    if(typeof context === 'function') {
+      super(context);
+      return;
+    }
     let res, rej;
     super((resolve, reject) => {
       res = resolve;
@@ -19,11 +23,14 @@ class PlayingSound extends Promise {
     this[REJECT] = rej;
     this[CONTEXT] = context;
     this[NODES] = nodes;
+    this[NAME] = name;
   }
+
+  get name() { return this[NAME]; }
 
   stop() {
     this[REJECT]();
-    this[NODES].source && this[NODES].stop();
+    this[NODES].source && this[NODES].source.stop();
   }
 }
 

@@ -5,7 +5,7 @@ import Collider from './collider';
 import TileMap from './tile-map';
 import loadJSON from './load-json';
 import { Dimension } from './struct';
-import { PERSISTENT, PAGES, TILEMAP } from './const';
+import { PERSISTENT, PAGES, TILEMAP, SOUNDS, MUSIC } from './const';
 
 const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
 
@@ -19,15 +19,21 @@ class Room {
     this[LOADED] = (async () => {
       let tm = null;
       const pages = this.constructor[PAGES] || [];
+      const sounds = this.constructor[SOUNDS] || [];
+      const music = this.constructor[MUSIC] || [];
       if(this.constructor[TILEMAP]) {
         const url = this[ENGINE].constructor[TILEMAP][this.constructor[TILEMAP]];
         if(!url) { throw `TileMap ${this.constructor[TILEMAP]} does not exist`; }
         tm = await loadJSON(url);
         pages.push(...tm.meta.pages.map(({name}) => name));
       }
-      await this[ENGINE].texture.load(new Set(pages));
+      const txload = this[ENGINE].texture.load(new Set(pages));
+      const sndload = this[ENGINE].sound.loadSound(new Set(sounds));
+      const musload = this[ENGINE].sound.loadMusic(new Set(music));
+      await Promise.all([txload, sndload, musload]);
       if(engine.layers === 1) {
         this[ENGINE].texture.purge();
+        // TODO: automatic unloading of unneeded sound and music
       }
       if(tm) {
         this[TILEMAP] = new TileMap(this[ENGINE].texture, tm);

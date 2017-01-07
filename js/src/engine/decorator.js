@@ -2,7 +2,7 @@
 
 import path from 'path';
 import loadJSON from './load-json';
-import { LOADED, SPRITE, PAGES, FONTS, SOUNDS, TILEMAP, PERSISTENT } from './const';
+import { LOADED, SPRITE, PAGES, FONTS, SOUNDS, MUSIC, TILEMAP, PERSISTENT } from './const';
 
 // @override methods must have a superclass method they are overriding
 function override(target, prop, descriptor) {
@@ -30,6 +30,16 @@ function tilemap(name) {
   return function(target) { Object.defineProperty(target, TILEMAP, { value: name }) ; };
 }
 
+// @music names the music resources that are needed for this room
+function music(...names) {
+  return function(target) { Object.defineProperty(target, MUSIC, { value: names }) ; };
+}
+
+// @sound names the sound resources that should be preloaded for this room
+function sound(...names) {
+  return function(target) { Object.defineProperty(target, SOUNDS, { value: names }) ; };
+}
+
 // @config takes a configuration object
 function config(dir, cfg) {
   for(let key of Object.keys(cfg)) {
@@ -46,7 +56,8 @@ function config(dir, cfg) {
     Object.defineProperty(target, TILEMAP, { value: cfg['tile-maps'] });
     Object.defineProperty(target, FONTS, { value: cfg['fonts'] });
     Object.defineProperty(target, SOUNDS, { value: cfg['sounds'] });
+    Object.defineProperty(target, MUSIC, { value: cfg['music'] });
   }
 }
 
-export { override, persistent, texturepage, sprite, tilemap, config };
+export { override, persistent, texturepage, sprite, tilemap, config, music, sound };

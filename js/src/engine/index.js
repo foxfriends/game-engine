@@ -9,7 +9,7 @@ import Room from './room';
 import Input from './input';
 import TextureManager from './texture-manager';
 import SoundManager from './sound-manager';
-import { PAGES, SOUNDS } from './const';
+import { PAGES, SOUNDS, MUSIC } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
 const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS] =
@@ -30,7 +30,7 @@ class Engine {
     this[CONTEXT] = this[CANVAS].getContext('2d');
     this[INPUT] = new Input(this[CANVAS]);
     this[TEXTURE_MANAGER] = new TextureManager(this.constructor[PAGES]);
-    this[SOUND_MANAGER] = new SoundManager(this.constructor[SOUNDS]);
+    this[SOUND_MANAGER] = new SoundManager(this.constructor[SOUNDS], this.constructor[MUSIC]);
   }
   get size() { return new Dimension(this[CANVAS].width, this[CANVAS].height); }
 
@@ -127,16 +127,19 @@ class Engine {
     return this[OBJECTS][0].filter(o => o instanceof Obj);
   }
 
-  // load the given list of texture pages
   get texture() {
     return this[TEXTURE_MANAGER];
+  }
+
+  get sound() {
+    return this[SOUND_MANAGER];
   }
 
   get layers() {
     return this[ROOMS].length;
   }
 
-  // utilities
+  // utilities - TODO: does this need to be modularized?
   get util() {
     return {
       // get/set the view port, optionally constrained within the room
@@ -283,6 +286,9 @@ class Engine {
       },
       sound: (name) => {
         return this[SOUND_MANAGER].sound(name);
+      },
+      music: (name) => {
+        return this[SOUND_MANAGER].music(name);
       }
     };
   }
