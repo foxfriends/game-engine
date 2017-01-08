@@ -25,7 +25,7 @@ namespace Game {
                 return { v[0], v[1], v[2], v[3] };
             }
         );
-        std::string image = data["image"].get<std::string>();
+        std::string image = file.substr(0, file.rfind('/') + 1) + data["image"].get<std::string>();
         SDL_Surface* surf = IMG_Load(image.c_str());
         if(surf == NULL) {
             throw "Unable to load image " + image;
