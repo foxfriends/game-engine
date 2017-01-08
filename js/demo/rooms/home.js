@@ -1,6 +1,6 @@
 'use strict';
 
-import { Room, override, texturepage, tilemap, Position, music } from '../../engine';
+import { Room, override, texturepage, tilemap, Position, music, sound } from '../../engine';
 import Player from '../objects/player';
 import Door from '../objects/door';
 import Loader from '../objects/loader';
@@ -9,6 +9,7 @@ import * as Outside from './outside';
 @texturepage('sarah')
 @tilemap('home')
 @music('overworld')
+@sound('door')
 class Home extends Room {
   @override
   load() {

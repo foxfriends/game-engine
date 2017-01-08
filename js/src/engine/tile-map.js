@@ -1,15 +1,17 @@
 'use strict';
 
 import { Dimension, Rectangle } from './struct';
-const [COLLISIONS, IMAGES, LOADED] = [Symbol(), Symbol(), Symbol()];
+const [COLLISIONS, IMAGES, LOADED, PAGES] = [Symbol(), Symbol(), Symbol(), Symbol()];
 
 // a TileMap provides an efficient way to store and render a static tile map
 // and also calculate wall collisions quickly
 class TileMap {
   [IMAGES] = [];
   [COLLISIONS] = [];
+  [PAGES] = [];
 
   constructor(tm, {meta, images, collisions}) {
+    this[PAGES] = meta.pages;
     this.tw = meta.tw;
     this.th = meta.th;
     const tile = (n) => {
@@ -44,6 +46,10 @@ class TileMap {
       }
     }
     this[COLLISIONS] = collisions.map(l => l.split('').map(i => !!+i));
+  }
+
+  get pages() {
+    return this[PAGES].map(({name}) => name);
   }
 
   get size() {

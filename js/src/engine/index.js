@@ -194,9 +194,11 @@ class Engine {
             this.proc(new GameEvent('roomload', old, Rm));
             await this[ROOMS][0].loaded;
             // remove the old room, which was temporarily shifted
-            this[ROOMS].splice(1, 1);
-            this[OBJECTS].splice(1, 1);
-            this[VIEWS].splice(1, 1);
+            if(this[ROOMS][1]) {
+              this[ROOMS].splice(1, 1)[0].destructor();
+              this[OBJECTS].splice(1, 1);
+              this[VIEWS].splice(1, 1);
+            }
             this[ROOMS][0].start();
             this.proc(new GameEvent('roomstart', old, Rm));
           })();
@@ -222,6 +224,7 @@ class Engine {
         close: () => {
           this.proc(new GameEvent('roomend', this[ROOMS][0].constructor, null));
           this[ROOMS][0].end();
+          this[ROOMS][0].destructor();
           this[ROOMS].shift();
           this[OBJECTS].shift();
           this[VIEWS].shift();

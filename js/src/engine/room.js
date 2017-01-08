@@ -27,22 +27,32 @@ class Room {
         tm = await loadJSON(url);
         pages.push(...tm.meta.pages.map(({name}) => name));
       }
-      const txload = this[ENGINE].texture.load(new Set(pages));
-      const sndload = this[ENGINE].sound.loadSound(new Set(sounds));
-      const musload = this[ENGINE].sound.loadMusic(new Set(music));
+      const txload = this[ENGINE].texture.load(pages);
+      const sndload = this[ENGINE].sound.loadSound(sounds);
+      const musload = this[ENGINE].sound.loadMusic(music);
       await Promise.all([txload, sndload, musload]);
-      if(engine.layers === 1) {
-        this[ENGINE].texture.purge();
-        // TODO: automatic unloading of unneeded sound and music
-      }
       if(tm) {
         this[TILEMAP] = new TileMap(this[ENGINE].texture, tm);
       }
     })();
   }
 
+  destructor() {
+    let tm = null;
+    const pages = this.constructor[PAGES] || [];
+    const sounds = this.constructor[SOUNDS] || [];
+    const music = this.constructor[MUSIC] || [];
+    if(this[TILEMAP]) {
+      pages.push(...this[TILEMAP].pages);
+    }
+    this[ENGINE].texture.purge(pages);
+    this[ENGINE].sound.purgeSound(sounds);
+    this[ENGINE].sound.purgeMusic(music);
+  }
+
   // utilities
   // TODO: reduce duplication of GameObject#game
+  // TODO: remember what ^ meant
   get game() {
     return new Proxy(this[ENGINE], {
       get(target, prop) {

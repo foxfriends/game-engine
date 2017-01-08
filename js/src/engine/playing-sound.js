@@ -14,11 +14,15 @@ class PlayingSound extends Promise {
       rej = reject;
       if(nodes.source) {
         nodes.source.addEventListener('ended', () => {
-          resolve();
-          this[RESOLVE] = this[REJECT] = () => {};
+          this[RESOLVE]();
         });
       }
     });
+    const cancel = () => {
+      nodes.source.removeEventListener('ended', this[RESOLVE]);
+      this[RESOLVE] = this[REJECT] = () => {};
+    };
+    this.then(cancel, cancel);
     this[RESOLVE] = res;
     this[REJECT] = rej;
     this[CONTEXT] = context;

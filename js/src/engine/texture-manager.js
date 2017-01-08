@@ -2,39 +2,56 @@
 
 import TexturePage from './texture-page';
 
+const [REFERENCES, PAGES, SOURCES] = [Symbol(), Symbol(), Symbol()];
+
 class TextureManager {
-  // TODO: internalization ?
-  old = [];
-  pages = {};
+  [REFERENCES] = new WeakMap();
+  [PAGES] = {};
+  [SOURCES] = null;
 
   constructor(sources = []) {
-    this.sources = sources;
+    this[SOURCES] = sources;
   }
 
   // load a set of texture pages
   load(textures) {
-    this.old = Object.keys(this.pages).filter(key => !textures.has(key));
+    textures = new Set(textures);
     const loaded = [];
     for(let texture of textures) {
-      if(this.pages[texture]) { continue; }
-      this.pages[texture] = new TexturePage(this.sources[texture]);
-      loaded.push(this.pages[texture].loaded);
+      if(!this[PAGES][texture]) {
+        this[PAGES][texture] = new TexturePage(this[SOURCES][texture]);
+        loaded.push(this[PAGES][texture].loaded);
+      }
+      this[REFERENCES].set(
+        this[PAGES][texture],
+        (this[REFERENCES].get(this[PAGES][texture]) || 0) + 1
+      );
     }
     return Promise.all(loaded);
   }
 
   // remove all texture pages in the list given
-  purge(textures = this.old) {
+  purge(textures = []) {
     for(let texture of textures) {
-      delete this.pages[texture];
+      if(this[PAGES][texture]) {
+        this[REFERENCES].set(
+          this[PAGES][texture],
+          this[REFERENCES].get(this[PAGES][texture]) - 1
+        );
+        if(!this[REFERENCES].get(this[PAGES][texture])) {
+          delete this[PAGES][texture];
+        }
+      }
     }
   }
+
+  get pages() { return this[PAGES]; }
 
   // instantiate the sprite from the pages
   sprite(sprite) {
     let spr;
-    for(let page of Object.keys(this.pages)) {
-      if(spr = this.pages[page].make(sprite)) {
+    for(let page of Object.keys(this[PAGES])) {
+      if(spr = this[PAGES][page].make(sprite)) {
         break;
       }
     }

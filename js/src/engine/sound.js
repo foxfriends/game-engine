@@ -2,7 +2,7 @@
 
 import PlayingSound from './playing-sound';
 
-const [SOUND, SRC, VOLUME, CONTEXT, LOADED, NAME] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [SOUND, SRC, VOLUME, CONTEXT, LOADED, NAME, URL] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 function loadSound(url) {
   return new Promise((resolve, reject) => {
@@ -20,12 +20,14 @@ function loadSound(url) {
 // at will
 class Sound {
   [NAME] = '';
+  [URL] = '';
   [SOUND] = null;
   [VOLUME] = 1;
   [LOADED] = Promise.resolve();
 
   constructor(context, url, name) {
     this[NAME] = name;
+    this[URL] = url;
     this[CONTEXT] = context;
     this[LOADED] = (async () => {
       const data = await loadSound(url);
@@ -33,6 +35,7 @@ class Sound {
     }) ();
   }
 
+  get url() { return this[URL]; }
   get name() { return this[NAME]; }
 
   get loaded() {
