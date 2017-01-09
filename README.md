@@ -11,6 +11,7 @@ A simple game engine, available in C++ and HTML5 (JS).
 *   Overlay rooms
 *   Movable and resizable viewports
 *   Texture pages and tile maps for managing images
-    *   Includes translator from [Tiled](http://www.mapeditor.org/) editor format to the JSON format used by
-        this engine for easy tile map editing abilities
+    *   Includes (one way) translator from [Tiled](http://www.mapeditor.org/)
+        editor format to the JSON format used by this engine for easy tile map
+        editing abilities
 *   Sounds and music
