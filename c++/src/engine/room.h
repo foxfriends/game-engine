@@ -15,13 +15,20 @@ namespace Game {
         std::unique_ptr<TileMap> _tilemap;
         std::string _tilemap_name;
         Engine * _eng = nullptr;
+        std::vector<std::string> _texture_pages;
+        std::vector<std::string> _sound;
+        std::vector<std::string> _music;
     protected:
-        std::vector<std::string> texture_pages;
         Room();
     public:
         void attach(Engine * eng);
         const int id;
-        Room(int id, const std::initializer_list<std::string> & textures = {}, const std::string & tilemap = "");
+        Room(
+            int id,
+            const std::initializer_list<std::string> & textures = {},
+            const std::initializer_list<std::string> & sound = {},
+            const std::initializer_list<std::string> & music = {},
+            const std::string & tilemap = "");
         virtual ~Room() = 0;
         // load the room
         virtual void load();
@@ -33,6 +40,9 @@ namespace Game {
         virtual void draw(Draw &draw);
         // end the room
         virtual void end();
+
+        // game utilities
+        GameUtility & game();
 
         template<typename T, typename ... Args>
         void spawn(Args ... args);

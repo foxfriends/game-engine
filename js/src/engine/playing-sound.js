@@ -36,6 +36,20 @@ class PlayingSound extends Promise {
     this[REJECT]();
     this[NODES].source && this[NODES].source.stop();
   }
+
+  // the volume that a new instance of this sound will play at
+  get volume() {
+    if(this[NODES].gain) {
+      return this[NODES].gain.gain.value;
+    } else {
+      return NaN;
+    }
+  }
+  set volume(amt) {
+    if(this[NODES].gain) {
+      this[NODES].gain.gain.value = amt;
+    }
+  }
 }
 
 export default PlayingSound;

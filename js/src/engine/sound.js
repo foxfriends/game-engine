@@ -2,7 +2,7 @@
 
 import PlayingSound from './playing-sound';
 
-const [SOUND, SRC, VOLUME, CONTEXT, LOADED, NAME, URL] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [SOUND, SRC, CONTEXT, LOADED, NAME, URL] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 function loadSound(url) {
   return new Promise((resolve, reject) => {
@@ -22,7 +22,6 @@ class Sound {
   [NAME] = '';
   [URL] = '';
   [SOUND] = null;
-  [VOLUME] = 1;
   [LOADED] = Promise.resolve();
 
   constructor(context, url, name) {
@@ -47,16 +46,12 @@ class Sound {
     const source = this[CONTEXT].createBufferSource();
     source.buffer = this[SOUND];
     const gain = this[CONTEXT].createGain();
-    gain.gain.value = this[VOLUME];
+    gain.gain.value = 1;
     gain.connect(this[CONTEXT].destination);
     source.connect(gain);
     source.start(0);
     return new PlayingSound(this[CONTEXT], { source, gain }, this[NAME]);
   }
-
-  // the volume that a new instance of this sound will play at
-  get volume() { return this[VOLUME]; }
-  set volume(amt) { this[VOLUME] = amt; }
 }
 
 export default Sound;

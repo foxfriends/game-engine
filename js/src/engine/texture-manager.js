@@ -31,7 +31,7 @@ class TextureManager {
   }
 
   // remove all texture pages in the list given
-  purge(textures = []) {
+  purge(textures) {
     for(let texture of textures) {
       if(this[PAGES][texture]) {
         this[REFERENCES].set(

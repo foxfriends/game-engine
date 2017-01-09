@@ -26,11 +26,11 @@ namespace Game {
             }
         );
         std::string image = file.substr(0, file.rfind('/') + 1) + data["image"].get<std::string>();
-        SDL_Surface* surf = IMG_Load(image.c_str());
+        SDL_Surface * surf = IMG_Load(image.c_str());
         if(surf == NULL) {
             throw "Unable to load image " + image;
         }
-        SDL_Texture *tex = SDL_CreateTextureFromSurface(&ren, surf);
+        SDL_Texture * tex = SDL_CreateTextureFromSurface(& ren, surf);
         SDL_FreeSurface(surf);
         if(tex == NULL) { throw "Could not convert " + file + " surface to texture"; }
         _texture = std::unique_ptr<SDL_Texture, decltype(& SDL_DestroyTexture)>(tex, SDL_DestroyTexture);

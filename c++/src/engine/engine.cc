@@ -16,6 +16,9 @@ namespace Game {
         if(IMG_Init(IMG_INIT_PNG) ^ IMG_INIT_PNG) {
             throw "Image initialization error";
         }
+        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+            throw "Mixer initialization error";
+        }
         if(TTF_Init() < 0) {
             throw "TTF initialization error";
         }
@@ -44,17 +47,23 @@ namespace Game {
             for(auto font = config["fonts"].begin(); font != config["fonts"].end(); ++font) {
                 load_font(font.key(), resdir + font.value()[0].get<std::string>(), font.value()[1].get<int>());
             }
-            std::map<std::string, std::string> sources;
+            std::map<std::string, std::string> tp_sources;
             for(auto tp = config["texture-pages"].begin(); tp != config["texture-pages"].end(); ++tp) {
-                sources[tp.key()] = resdir + tp.value().get<std::string>();
+                tp_sources[tp.key()] = resdir + tp.value().get<std::string>();
             }
-            _texture = std::make_unique<TextureManager>(*_renderer, sources);
+            _texture = std::make_unique<TextureManager>(*_renderer, tp_sources);
             for(auto tm = config["tile-maps"].begin(); tm != config["tile-maps"].end(); ++tm) {
                 _tilemaps[tm.key()] = resdir + tm.value().get<std::string>();
             }
+            std::map<std::string, std::string> snd_sources;
             for(auto sound = config["sounds"].begin(); sound != config["sounds"].end(); ++sound) {
-                // TODO: do something with these
+                snd_sources[sound.key()] = resdir + sound.value().get<std::string>();
             }
+            std::map<std::string, std::string> mus_sources;
+            for(auto music = config["music"].begin(); music != config["music"].end(); ++music) {
+                mus_sources[music.key()] = resdir + music.value().get<std::string>();
+            }
+            _sound = std::make_unique<SoundManager>(snd_sources, mus_sources);
         }
     }
 
@@ -150,6 +159,10 @@ namespace Game {
 
     TextureManager & Engine::texture() const {
         return *_texture;
+    }
+
+    SoundManager & Engine::sound() const {
+        return *_sound;
     }
 
     SDL_Renderer * Engine::renderer() {

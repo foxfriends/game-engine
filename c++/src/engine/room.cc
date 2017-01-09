@@ -3,8 +3,13 @@
 #include "drawable.h"
 
 namespace Game {
-    Room::Room(int id, const std::initializer_list<std::string> & textures, const std::string & tilemap)
-        : _tilemap_name{ tilemap }, texture_pages{ textures }, id{ id } { }
+    Room::Room(
+        int id,
+        const std::initializer_list<std::string> & textures,
+        const std::initializer_list<std::string> & sound,
+        const std::initializer_list<std::string> & music,
+        const std::string & tilemap)
+        : _tilemap_name{ tilemap }, _texture_pages{ textures }, _sound{ sound }, _music{ music }, id{ id } { }
 
     void Room::attach(Engine * eng) {
         _eng = eng;
@@ -13,11 +18,15 @@ namespace Game {
             _eng->texture().load(_tilemap->textures());
             _tilemap->render(_eng->renderer());
         }
-        _eng->texture().load(texture_pages);
+        _eng->texture().load(_texture_pages);
+        _eng->sound().load_sound(_sound);
+        _eng->sound().load_music(_music);
     }
 
     Room::~Room() {
-        _eng->texture().purge(texture_pages);
+        _eng->texture().purge(_texture_pages);
+        _eng->sound().purge_sound(_sound);
+        _eng->sound().purge_music(_music);
     }
     void Room::load() {}
     void Room::start() {}
@@ -62,5 +71,9 @@ namespace Game {
 
     TileMap * Room::tilemap() const {
         return _tilemap.get();
+    }
+
+    GameUtility & Room::game() {
+        return _eng->util();
     }
 }

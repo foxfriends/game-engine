@@ -6,3 +6,5 @@
 #include "engine/game-utility.h"
 #include "engine/room.h"
 #include "engine/timing.h"
+#include "engine/sound.h"
+#include "engine/playing-sound.h"

@@ -9,6 +9,7 @@ namespace Game {
     class Collider;
     class Engine;
     class Object;
+    class Sound;
 
     class GameUtility {
         Engine &_eng;
@@ -34,6 +35,11 @@ namespace Game {
         // game state
         void end();
         void restart();
+
+        // sound / music
+        Sound & sound(const std::string & name);
+        void music(const std::string & name);
+        void stop_music();
 
         // objects
         template<typename T, typename ... Args>

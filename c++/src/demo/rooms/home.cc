@@ -4,9 +4,10 @@
 #include "../objects/door.h"
 
 namespace Demo {
-    RmHome::RmHome() : Room{ 2, { "sarah" }, "home" } {}
+    RmHome::RmHome() : Room{ 2, { "sarah" }, { "door" }, { "overworld" }, "home" } {}
 
     void RmHome::start() {
+        game().music("overworld");
         if(find<Player>().empty()) {
             spawn<Player>();
         }

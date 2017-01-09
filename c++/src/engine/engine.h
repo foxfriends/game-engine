@@ -2,12 +2,15 @@
 #define __GAME_ENGINE_H__
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <memory>
 #include <vector>
 
 #include "draw.h"
 #include "input.h"
 #include "texture-manager.h"
+#include "sound-manager.h"
 #include "object.h"
 
 namespace Game {
@@ -20,6 +23,7 @@ namespace Game {
         std::unique_ptr<Draw> _draw;
         Input _input;
         std::unique_ptr<TextureManager> _texture;
+        std::unique_ptr<SoundManager> _sound;
         std::vector<std::unique_ptr<Room>> _rooms;
         std::vector<std::vector<std::unique_ptr<Object>>> _objects;
         std::vector<std::unique_ptr<Room>> _delete_rooms;
@@ -75,6 +79,7 @@ namespace Game {
         GameUtility & util();
 
         TextureManager & texture() const;
+        SoundManager & sound() const;
         SDL_Renderer * renderer();
         std::string tilemap(const std::string & name) const;
     };

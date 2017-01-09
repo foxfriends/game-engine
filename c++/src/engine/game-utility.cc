@@ -1,6 +1,7 @@
 #include "game-utility.h"
 #include "collider.h"
 #include "sprite.h"
+#include "sound.h"
 
 namespace Game {
     GameUtility::GameUtility(Engine & eng) : _eng{ eng } {}
@@ -49,6 +50,17 @@ namespace Game {
 
     void GameUtility::end() { _eng._ended = true; }
     void GameUtility::restart() { end(); _eng._restart = true; }
+
+    Sound & GameUtility::sound(const std::string & name) {
+        return _eng._sound->sound(name);
+    }
+    void GameUtility::music(const std::string & name) {
+        _eng._sound->music(name);
+    }
+
+    void GameUtility::stop_music() {
+        _eng._sound->stop_music();
+    }
 
     bool GameUtility::mousestate(int button) {
         return _eng._input.mousestate(button);

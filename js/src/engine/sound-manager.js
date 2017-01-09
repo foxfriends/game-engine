@@ -22,6 +22,8 @@ class SoundManager {
     throw `Sound ${name} was not loaded in this room`;
   }
 
+  // TODO: Music volume adjustment
+
   music(name) {
     if(this[CURRENT_MUSIC] && this[CURRENT_MUSIC].name === name) { return; }
     if(this[CURRENT_MUSIC]) { this[CURRENT_MUSIC].stop(); }
@@ -74,7 +76,7 @@ class SoundManager {
     return Promise.all(pr);
   }
 
-  purgeSound(names = []) {
+  purgeSound(names) {
     for(let name of names) {
       this[PURGE]('sound', name);
     }
@@ -89,7 +91,7 @@ class SoundManager {
     return Promise.all(pr);
   }
 
-  purgeMusic(names = []) {
+  purgeMusic(names) {
     for(let name of names) {
       this[PURGE]('music', name);
       if(this[CURRENT_MUSIC] && this[CURRENT_MUSIC].name === name && !(this[SOURCES].music[name] instanceof Sound)) {
