@@ -9,7 +9,6 @@
 namespace Demo {
     class RmOutside : public Game::Room {
     public:
-        static std::vector<std::string> texture_pages;
         RmOutside();
         void start() override;
     };

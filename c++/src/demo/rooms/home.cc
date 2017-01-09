@@ -4,9 +4,7 @@
 #include "../objects/door.h"
 
 namespace Demo {
-    std::vector<std::string> RmHome::texture_pages { "sarah" };
-
-    RmHome::RmHome() : Room{ 2, "home" } {}
+    RmHome::RmHome() : Room{ 2, { "sarah" }, "home" } {}
 
     void RmHome::start() {
         if(find<Player>().empty()) {

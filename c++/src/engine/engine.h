@@ -75,6 +75,7 @@ namespace Game {
         GameUtility & util();
 
         TextureManager & texture() const;
+        SDL_Renderer * renderer();
         std::string tilemap(const std::string & name) const;
     };
 

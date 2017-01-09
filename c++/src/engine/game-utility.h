@@ -63,12 +63,11 @@ namespace Game {
         Rectangle newview{ 0, 0, d.w, d.h };
         int prevId = -1, nextId = -1;
         if(!_eng._rooms.empty()) {
-            auto & old = _eng._rooms.back();
-            prevId = old->id;
+            prevId = _eng._rooms.back()->id;
             nextId = rm->id;
             // end the previous room
             _eng.proc(Event{ Event::RoomEnd, { prevId, nextId } });
-            old->end();
+            _eng._rooms.back()->end();
             _eng._delete_rooms.emplace_back(std::move( _eng._rooms.back() ));
             _eng._rooms.back() = std::move( rm );
             _eng._views.back() = newview;
@@ -78,29 +77,11 @@ namespace Game {
             _eng._views.emplace_back(newview);
         }
 
-        auto textures = T::texture_pages;
-        auto tm = _eng._rooms.back()->tilemap();
-        if(tm) {
-            auto tilemap_textures = tm->textures();
-            textures.insert(textures.end(), tilemap_textures.begin(), tilemap_textures.end());
-        }
-
         // TODO: figure out asynchronous loading
         //       is this something to do with threads??
-        // TODO: move this stuff into the room's code as it is in the JS version
-        // TODO: maybe just rethink the whole way room transitions are handled
-        //       this is kind of messy TBH...
+
         _eng._rooms.back()->load();
         _eng.proc(Event{ Event::RoomLoad, { prevId, nextId } });
-        _eng._texture->load(textures);
-        if(_eng._rooms.size() == 1) {
-            _eng._texture->purge();
-        }
-
-        if(tm) {
-            tm->render(_eng._renderer.get());
-        }
-
         // start the next room
         _eng._rooms.back()->start();
         _eng.proc(Event{ Event::RoomStart, { prevId, _eng._rooms.back()->id } });

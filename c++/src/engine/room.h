@@ -16,12 +16,12 @@ namespace Game {
         std::string _tilemap_name;
         Engine * _eng = nullptr;
     protected:
+        std::vector<std::string> texture_pages;
         Room();
     public:
-        static std::vector<std::string> texture_pages;
         void attach(Engine * eng);
         const int id;
-        Room(int id, const std::string & tilemap = "");
+        Room(int id, const std::initializer_list<std::string> & textures = {}, const std::string & tilemap = "");
         virtual ~Room() = 0;
         // load the room
         virtual void load();

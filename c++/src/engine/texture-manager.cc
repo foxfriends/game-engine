@@ -16,16 +16,17 @@ namespace Game {
                     throw "Could not load texture page " + name;
                 }
             }
+            ++_references[name];
         }
     }
 
-    void TextureManager::purge() {
-        purge(_old);
-    }
-
     void TextureManager::purge(const std::vector<std::string> & textures) {
-        for(auto & texture : textures) {
-            _pages.erase(texture);
+        for(const std::string & name : textures) {
+            if(_references[name]) {
+                if(!--_references[name]) {
+                    _pages.erase(name);
+                }
+            }
         }
     }
 

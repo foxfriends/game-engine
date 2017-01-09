@@ -3,18 +3,22 @@
 #include "drawable.h"
 
 namespace Game {
-    std::vector<std::string> Room::texture_pages {};
-
-    Room::Room(int id, const std::string & tilemap) : _tilemap_name{ tilemap }, id{ id } { }
+    Room::Room(int id, const std::initializer_list<std::string> & textures, const std::string & tilemap)
+        : _tilemap_name{ tilemap }, texture_pages{ textures }, id{ id } { }
 
     void Room::attach(Engine * eng) {
         _eng = eng;
         if(_tilemap_name != "") {
             _tilemap = std::make_unique<TileMap>(_eng->tilemap(_tilemap_name), _eng->texture());
+            _eng->texture().load(_tilemap->textures());
+            _tilemap->render(_eng->renderer());
         }
+        _eng->texture().load(texture_pages);
     }
 
-    Room::~Room() {}
+    Room::~Room() {
+        _eng->texture().purge(texture_pages);
+    }
     void Room::load() {}
     void Room::start() {}
     void Room::proc(const Event &event) {

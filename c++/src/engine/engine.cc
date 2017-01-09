@@ -152,6 +152,10 @@ namespace Game {
         return *_texture;
     }
 
+    SDL_Renderer * Engine::renderer() {
+        return _renderer.get();
+    }
+
     std::string Engine::tilemap(const std::string & name) const {
         if(_tilemaps.count(name) == 0) {
             throw "No tilemap named " + name + " exists";
