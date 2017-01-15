@@ -6,7 +6,7 @@
 namespace Game {
     GameUtility::GameUtility(Engine & eng) : _eng{ eng } {}
 
-    Rectangle & GameUtility::view() const {
+    Rectangle GameUtility::view() const {
         return _eng._views.back();
     }
 

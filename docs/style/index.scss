@@ -1,0 +1,132 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
+@import 'code.scss';
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-family: 'Lato';
+  padding-top: 32px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  height: 32px;
+  margin: 0;
+}
+
+[data-tab] {
+  display: flex;
+  flex-basis: 200px;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  cursor: pointer;
+  border-bottom: 2px solid darken($pre-color, 10);
+
+  &:hover {
+    border-bottom: 2px solid darken($pre-color, 20);
+  }
+
+  &.selected {
+    background-color: $pre-color;
+  }
+}
+
+header, main, footer {
+  max-width: 1000px;
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  margin: 1pc;
+}
+
+hr {
+  width: 50%;
+}
+
+p {
+  text-align: justify;
+}
+
+details {
+  margin: 1pc 0;
+
+  summary {
+    position: relative;
+    display: block;
+    cursor: pointer;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: "\25b8";
+      position: absolute;
+      top: 0;
+      right: calc(100% + 1pc);
+    }
+  }
+  &[open] summary::before {
+    content: "\25be";
+  }
+}
+
+dl {
+  &.params {
+    border: 1px solid $pre-color;
+    border-radius: 2px;
+    background-color: lighten($pre-color, 3);
+    padding: 1pc;
+  }
+
+  dt code {
+    background-color: darken($pre-color, 20);
+    margin-right: 1pc;
+  }
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: rgb(113, 164, 177);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.reference {
+  color: transparentize(black, 0.5);
+}
+
+dt ol {
+  padding: 0;
+  li {
+    @extend .reference;
+  }
+}
+
+div.demo {
+  width: 100%;
+  text-align: center;
+
+  .game-border {
+    display: inline-block;
+    padding: 1pc;
+    background-color: $pre-color;
+  }
+}

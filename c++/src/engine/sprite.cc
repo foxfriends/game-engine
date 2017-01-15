@@ -8,13 +8,13 @@ namespace Game {
         return _frame;
     }
 
-    float Sprite::frame(float f) {
+    void Sprite::frame(float f) {
         if(f >= _frames.size()) {
             f -= _frames.size();
         } else if(f < 0) {
             f += _frames.size();
         }
-        return _frame = f;
+        _frame = f;
     }
 
     TexturePage & Sprite::texture() const { return _page; }

@@ -80,7 +80,6 @@ class Room {
   // run at the start of the room (after loading)
   start() {}
   // trigger an event for each object in the room
-  // HACK: internalize
   proc(event) {
     for(let obj of this[OBJECTS]) {
       obj.proc(event);
@@ -119,7 +118,6 @@ class Room {
   }
 
   // draw this room
-  // HACK: internalize
   draw(draw) {
     for(let obj of this[OBJECTS]) {
       obj instanceof Drawable && obj.draw(draw);
@@ -128,7 +126,7 @@ class Room {
   }
 
   // check if there is a collision in this room
-  collides(where, what) {
+  collides(where, what = 'any') {
     if(what === 'room' || what === 'any') {
       if(this[TILEMAP] && this[TILEMAP].collides(where)) {
         return true;

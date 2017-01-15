@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - Decorators</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Decorators</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main data-view="c++">
+    <section class="overview">
+      <p>
+        Decorators are not required in C++.
+      </p>
+    </section>
+  </main>
+  <main data-view="javascript">
+    <section class="overview">
+      <p>
+        Decorators are used to attach resources and behaviours to game objects
+        and rooms. Additionally, they can be used to provide additional
+        information to aid in debugging. The full list of decorators available
+        is described below.
+      </p>
+    </section>
+    <section class="api">
+      <h3>API</h3>
+      <dl>
+        <dt id="override"><code class="language-javascript">@override</code></dt>
+        <dd>
+          <p>
+            Annotates a class method, ensuring that it does, in fact, override
+            a superclass method. If it does not, a runtime error is thrown when
+            the class definition is executed.
+          </p>
+        </dd>
+        <dt id="persistent"><code class="language-javascript">@persistent</code></dt>
+        <dd>
+          <p>
+            Annotates a <a href="game-object.html">{{GameObject}}</a>
+            subclass to specify that it persist through room changes.
+          </p>
+        </dd>
+        <dt id="texturepage"><code class="language-javascript">@sprite(name : string)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates a <a href="game-object.html">{{GameObject}}</a>
+                subclass, defining the sprite it should show when it is created.
+                Does the same thing as <code class="language-javascript">this.sprite = name;</code>
+                in the <a href="game-object.html#init"><code class="language-javascript token class-name">GameObject.init()</code>
+                method</a>, but does it a bit earlier and makes it possible to avoid overriding
+                the method.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">name : string</code></dt>
+              <dd>
+                the name of the sprite to use.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="texturepage"><code class="language-javascript">@texturepage(...names : ...string)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates a <a href="room.html"><code class="language-javsacript token class-name">Room</code></a> subclass,
+                listing all <a href="resources.html#texture-page">texture pages</a>
+                that are required to show anything that may occur in the
+                <a href="room.html"><code class="language-javsacript token class-name">Room</code></a>.
+                Texture pages that are part of a tilemap are included automatically.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">...names : ...string</code></dt>
+              <dd>
+                the names of one or more texture pages which need to be loaded.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="tilemap"><code class="language-javascript">@tilemap(name : string)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates a <a href="room.html"><code class="language-javsacript token class-name">Room</code></a> subclass,
+                attaching a <a href="resources.html#tilemap">tilemap</a> to it. A
+                <a href="room.html"><code class="language-javsacript token class-name">Room</code></a> can only have one tilemap.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">name : string</code></dt>
+              <dd>
+                the name of the tilemap to use.
+              </dd>
+            </dl>
+          </details>
+        </dl>
+        <dt id="tilemap"><code class="language-javascript">@sound(...names : ...string)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates a <a href="room.html"><code class="language-javsacript token class-name">Room</code></a> subclass,
+                listing all <a href="resources.html#sound">sound resources</a> that
+                are required to handle any sound effects that may be required to play
+                in the <a href="room.html"><code class="language-javsacript token class-name">Room</code></a>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">...names : ...string</code></dt>
+              <dd>
+                the names of one or more sound resources which need to be loaded.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="tilemap"><code class="language-javascript">@music(...names : ...string)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates a <a href="room.html"><code class="language-javsacript token class-name">Room</code></a> subclass,
+                listing all <a href="resources.html#music">music resources</a> that
+                are required to handle any music changes that may occur in the
+                <a href="room.html"><code class="language-javsacript token class-name">Room</code></a>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">...names : ...string</code></dt>
+              <dd>
+                the names of one or more music resources which need to be loaded.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="tilemap"><code class="language-javascript">@config(path : string, data : object)</code></dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Annotates the <a href="engine.html"><code class="language-javsacript token class-name">Engine</code> class</a>,
+                providing the resource mappings and the publicly available directory
+                where the resources can be found.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">path : string</code></dt>
+              <dd>
+                the path to the directory containing all the resource files as
+                they will be available to the public.
+              </dd>
+              <dt><code class="language-javsacript">data : object</code></dt>
+              <dd>
+                the actual configuration data, likely loaded statically from a JSON file.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Examples</h3>
+      <pre>
+        <code class="block language-javascript">
+          import {
+            override, persistent, sprite, texturepage, tilemap, sound, music, config,
+            Engine, Room, Drawable, GameObject
+          } from 'engine';
+          import cfg from '../resources/config.json';
+
+          @config('resources', cfg)
+          class MyGame extends Engine {
+            @override
+            start() {
+              this.util.room.goto(Level1);
+            }
+          }
+
+          @texturepage('player', 'enemy')
+          @tilemap('level-1')
+          @sound('player-attack')
+          @music('overworld')
+          class Level1 extends Room {
+            @override
+            start() {
+              // create the player in level 1
+              this.spawn(Player);
+              for(let i = 0; i < 10; ++i) {
+                // make a bunch of enemies
+                this.spawn(Enemy);
+              }
+            }
+          }
+
+          @texturepage('player', 'enemy')
+          @tilemap('level-2')
+          @sound('player-attack')
+          @music('overworld')
+          class Level2 extends Room {
+            @override
+            start() {
+              for(let i = 0; i < 20; ++i) {
+                // make more enemies
+                this.spawn(Enemy);
+              }
+            }
+          }
+
+          @persistent
+          @sprite('player-idle')
+          class Player extends Drawable(GameObject) {
+            @override
+            init() {
+              this.sprite.x = 64;
+              this.sprite.y = 400;
+            }
+
+            @override
+            step() {
+              // move around
+            }
+          }
+
+          @sprite('enemy')
+          class Enemy extends Drawable(GameObject) {
+            @override
+            init() {
+              this.sprite.x = Math.floor(Math.random() * 400) + 200;
+              this.sprite.y = Math.floor(Math.random() * 480) - 32;
+            }
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

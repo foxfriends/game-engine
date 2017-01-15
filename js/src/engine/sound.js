@@ -34,6 +34,7 @@ class Sound {
     }) ();
   }
 
+  // TODO: internalize?
   get url() { return this[URL]; }
   get name() { return this[NAME]; }
 

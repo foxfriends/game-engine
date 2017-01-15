@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - interface Drawable</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Drawable</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The <code class="language-javascript token class-name">Drawable</code>
+        <span data-view="javascript">mixin provides an interface</span>
+        <span data-view="c++">class acts as an interface</span>
+        which allows a
+        <a href="game-object.html">{{GameObject}}</a> to be drawn to the screen.
+        If a <a href="game-object.html">{{GameObject}}</a>
+        does not explicity implement this interface, its <code class="language-javascript">draw()</code>
+        method will not be triggered.
+      </p>
+      <p data-view="c++">
+        Note that when inheriting from <code class="language-javascript token class-name">Drawable</code>,
+        inheritance from <a href="game-object.html">{{GameObject}}</a> must be virtual.
+      </p>
+      <p data-view="javascript">
+        Note that as JavaScript does not support multiple inheritance, <code class="language-javascript token class-name">Drawable</code>
+        is a mixin and so the class must be &ldquo;called&rdquo; with its base class, which
+        should have <a href="game-object.html">{{GameObject}}</a> at its innermost level.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt data-view="javascript" id="drawable">
+          <code class="language-javascript">Drawable(base : class)</code>
+        </dt>
+        <dd data-view="javascript">
+          <details>
+            <summary>
+              <p>
+                The mixin that is to be extended.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">base : class</code></dt>
+              <dd>
+                the class to mix this in with.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="draw">
+          <code data-view="javascript" class="language-javascript">draw(draw : Draw) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void draw(Draw &amp; draw)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                By default, draws the
+                <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>
+                if one is set, or does nothing otherwise.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">draw : Draw</code>
+                <code data-view="c++" class="language-cpp">Draw &amp; draw</code>
+              </dt>
+              <dd>
+                the instance of the <a href="draw.html"><code class="language-javascript token class-name">Draw</code> class</a>
+                to be used for drawing.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="sprite">
+          <ol data-view="javascript">
+            <li><code class="language-javascript">sprite : Sprite</code></li>
+            <li><code class="language-javascript">set sprite(name : string)</code></li>
+          </ol>
+          <ol data-view="c++">
+            <li><code class="language-cpp">Sprite &amp; sprite()</code></li>
+            <li><code class="language-cpp">void sprite(std::string name)</code></li>
+          </ol>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                The <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>
+                that is currently being used to represent this {{GameObject}}, if there
+                is one. Can be used to change the current <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>
+                using <span class="reference">(1)</span>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">name : string</code>
+                <code data-view="c++" class="language-cpp">std::string name</code>
+              </dt>
+              <dd>
+                the name of the <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>
+                to set it to.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt data-view="c++">
+          <code class="language-cpp">bool has_sprite()</code>
+        </dt>
+        <dd data-view="c++">
+          <p>
+            Determines whether a <a href="sprite.html"><code class="language-c++ token class-name">Sprite</code></a> has been set.
+            This should be checked before calling <code class="language-c++">sprite()</code> to avoid
+            an error if there is not one.
+          </p>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          'use strict';
+          import { Drawable, GameObject, override, Position } from '../../engine';
+
+          // a base class for showing simple menus
+          // note how Drawable is "called" with GameObject
+          class Menu extends Drawable(GameObject) {
+            opts = {};
+            cur = 0;
+
+            @override
+            keydown(which) {
+              // react to input
+              switch(which) {
+                case 'Enter':
+                  // do the action
+                  this.opts[Object.keys(this.opts)[this.cur]].call(this);
+                  break;
+                case 'ArrowDown':
+                  // loop options down
+                  this.cur = (this.cur + 1) % Object.keys(this.opts).length;
+                  break;
+                case 'ArrowUp':
+                  // loop options up
+                  this.cur = (this.cur - 1 + Object.keys(this.opts).length) % Object.keys(this.opts).length;
+                  break;
+              }
+            }
+
+            @override
+            draw(draw) {
+              let i = 0;
+              draw.font('hack')
+                  .alpha(1);
+              // draw each option
+              for(let opt of Object.keys(this.opts)) {
+                draw.color(i === this.cur ? 0xFF0000 : 0) // highlight the selected option
+                    .text(opt, new Position(64, 128 + 32 * i)); // draw the text
+                ++i;
+              }
+            }
+          }
+
+          export default Menu;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+          #include &lt;string&gt;
+          #include &lt;map&gt;
+          #include &lt;functional&gt;
+
+          // a base class for showing simple menus
+          // note how inheritance is virtual
+          class Menu : public virtual Game::Object, public Game::Drawable {
+          public:
+            typedef std::pair&lt;std::string, std::function&lt;void(void)&gt;&gt; Option;
+          private:
+            unsigned int _cur = 0;
+            std::vector&lt;Option&gt; _opts;
+          public:
+            Menu(const std::vector&lt;Option&gt; &amp; opts) : _opts { opts } {}
+
+            virtual void keydown(int key) override {
+              // react to input
+              switch(key) {
+              case SDL_SCANCODE_DOWN:
+                // loop options down
+                _cur = (_cur + 1) % _opts.size();
+                break;
+              case SDL_SCANCODE_UP:
+                // loop options up
+                _cur = (_cur + _opts.size() - 1) % _opts.size();
+                break;
+              case SDL_SCANCODE_RETURN:
+                // do the action
+                _opts.at(_cur).second();
+                break;
+              }
+            }
+
+            virtual void draw(Game::Draw &amp; draw) const override {
+              // draw the menu text
+              Game::Position where { 64, 128 };
+              draw.font("hack")
+                  .alpha(1);
+              // draw each option
+              for(unsigned int i = 0; i < _opts.size(); ++i) {
+                std::string &amp; opt = _opts[i].first;
+                where.y = 128 + 32 * i;
+                if(i == _cur) {
+                  // highlight the selected option
+                  draw.color(0xff, 0, 0);
+                } else {
+                  draw.color(0, 0, 0);
+                }
+                // draw the text
+                draw.text(opt, where);
+              }
+            }
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

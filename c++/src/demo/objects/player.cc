@@ -27,13 +27,21 @@ namespace Demo {
         _vsp = _speed * (game().keystate(SDL_SCANCODE_DOWN) - game().keystate(SDL_SCANCODE_UP));
     }
 
+    bool Player::check_collision() {
+        auto box = bbox();
+        auto where = position();
+        box.x += where.x;
+        box.y += where.y;
+        return game().collides_room(box);
+    }
+
     void Player::stepend() {
         sprite().x += _hsp;
-        while(game().collides_room(bbox()) && _hsp != 0) {
+        while(check_collision() && _hsp != 0) {
             sprite().x -= _hsp / std::abs(_hsp);
         }
         sprite().y += _vsp;
-        while(game().collides_room(bbox()) && _vsp != 0) {
+        while(check_collision() && _vsp != 0) {
             sprite().y -= _vsp / std::abs(_vsp);
         }
         if(_hsp != 0 || _vsp != 0) {
@@ -55,6 +63,6 @@ namespace Demo {
     }
 
     Game::Rectangle Player::bbox() const {
-        return { position().x + 16, position().y + 32, 32, 32 };
+        return { 16, 32, 32, 32 };
     }
 };

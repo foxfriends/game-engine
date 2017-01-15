@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+  <script src="demo/demo.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Game Engine</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <p>
+      This game engine provides a number of interfaces and base classes, which
+      work together with an instance of the <code class="language-javascript token class-name">Engine</code>
+      to provide an easy way of managing your game. Currently, this engine is available
+      for HTML5 in JavaScript and in C++ for cross-platform desktop use.
+    </p>
+    <p data-view="c++">
+      Notice that, although these documents refer to the Engine classes only by
+      name, in the C++ version they are all contained in the <code class="c++ token namespace class-name">Game</code>
+      namespace.
+    </p>
+    <section class="contents">
+      <h2>Contents</h2>
+      <dl>
+        <dt><a href="engine.html"><code class="language-javascript">class Engine</code></a></dt>
+        <dd>The main controller class</dd>
+        <dt><a href="game-utility.html"><code class="language-javascript">class GameUtility</code></a></dt>
+        <dd>Utility functions provided by the Engine for all to use</dd>
+        <dt><a href="room.html"><code class="language-javascript">class Room</code></a></dt>
+        <dd>The base class for Room components</dd>
+        <dt>
+          <a href="game-object.html">
+            <code data-view="javascript" class="language-javascript">class GameObject</code>
+            <code data-view="c++" class="language-cpp">class Object</code>
+          </a>
+        </dt>
+        <dd>The base class for <span data-view="javascript">Game</span>Object components</dd>
+        <dt><a href="draw.html"><code class="language-javascript">class Draw</code></a></dt>
+        <dd>A set of functions used by Drawables to draw</dd>
+        <dt><a href="drawable.html"><code class="language-javascript">interface Drawable</code></a></dt>
+        <dd>An interface that must be implemented in order to draw a<span data-view="c++">n</span> <span data-view="javascript">Game</span>Object</dd>
+        <dt><a href="collider.html"><code class="language-javascript">interface Collider</code></a></dt>
+        <dd>An interface that must be implemented in order for <span data-view="javascript">Game</span>Objects to be checked for collisions</dd>
+        <dt>
+          <a href="game-event.html">
+            <code data-view="javascript" class="language-javascript">class GameEvent</code>
+            <code data-view="c++" class="language-cpp">struct Event</code>
+          </a>
+        </dt>
+        <dd>A representation of any possible events that may happen during the game</dd>
+        <dt><a href="sprite.html"><code class="language-javascript">class Sprite</code></a></dt>
+        <dd>An animated image to represent your <span data-view="javascript">Game</span>Objects on screen</dd>
+        <dt><a href="sound.html"><code class="language-javascript">class Sound</code></a></dt>
+        <dd>An interface by which to play a sound</dd>
+        <dt><a href="decorators.html"><code class="language-javascript">@decorators</code></a></dt>
+        <dd>JavaScript only utilities to add metadata and attach resources to your components</dd>
+        <dt><a href="shapes.html">Shapes</a></dt>
+        <dd>Some useful shapes that work with the engine</dd>
+        <dt><a href="resources.html">Resources</a></dt>
+        <dd>Images, room layouts, sounds, music, and fonts</dd>
+        <dt><a href="tiled2json.html">tiled2json</a></dt>
+        <dd>Use the Tiled Editor to make your rooms</dd>
+      </dl>
+    </section>
+  </main>
+  <div class="demo">
+    <header>
+      <h1>Demo</h1>
+    </header>
+    <section>
+      <span class="game-border">
+        <canvas id="game"></canvas>
+      </span>
+    </section>
+  </div>
+</body>
+</html>

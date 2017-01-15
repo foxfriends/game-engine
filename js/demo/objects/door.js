@@ -13,12 +13,12 @@ class Door extends Collider(new Rectangle(0, 0, 32, 32))(GameObject) {
   [PLAYER] = null;
 
   @override
-  init(position, dest, outpos) {
+  init(dest, position, outpos) {
     [this[PLAYER]] = super.game.find(Player);
     this.sound = super.game.sound('door');
+    this.dest = dest;
     this.pos = position;
     this.outpos = outpos;
-    this.dest = dest;
   }
 
   @override
@@ -26,9 +26,16 @@ class Door extends Collider(new Rectangle(0, 0, 32, 32))(GameObject) {
     return this.pos;
   }
 
+  checkCollision() {
+    const box = new Rectangle(...this.bbox);
+    box.x += this.position.x;
+    box.y += this.position.y;
+    return super.game.collides(box, this[PLAYER]);
+  }
+
   @override
   step() {
-    if(super.game.collides(this.bbox, this[PLAYER])) {
+    if(this.checkCollision()) {
       this.sound.play();
       super.game.room.goto(this.dest);
       this[PLAYER].doorPos = this.outpos;

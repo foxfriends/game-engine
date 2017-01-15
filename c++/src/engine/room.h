@@ -45,7 +45,7 @@ namespace Game {
         GameUtility & game();
 
         template<typename T, typename ... Args>
-        void spawn(Args ... args);
+        T * spawn(Args ... args);
         template<typename T>
         std::vector<T *> find() const;
         template<typename T>
@@ -61,14 +61,15 @@ namespace Game {
     };
 
     template<typename T, typename ... Args>
-    void Room::spawn(Args ... args) {
+    T * Room::spawn(Args ... args) {
         if(T::persistent) {
-            _eng->spawn<T>(args ...);
+            return _eng->spawn<T>(args ...);
         } else {
             _objects.emplace_back(std::make_unique<T>(args ...));
             _objects.back()->attach(_eng);
             _objects.back()->init();
         }
+        return dynamic_cast<T *>(_objects.back().get());
     }
 
     template<typename T>

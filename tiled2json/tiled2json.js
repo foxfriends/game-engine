@@ -1,4 +1,3 @@
-#! /home/cam/code/nvm/versions/node/v7.2.1/bin/node
 'use strict';
 
 const fs = require('fs');

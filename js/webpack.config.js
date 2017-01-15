@@ -23,6 +23,7 @@ module.exports = [{
     module: {
       loaders: [
         { test: /\.js$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
+        { test: /\.css$/, exclude: /node_modules.*\.js/, loader: 'style-loader!css-loader' },
         { test: /\.json$/, exclude: /node_modules.*\.json/, loader: 'json-loader' },
       ]
     }

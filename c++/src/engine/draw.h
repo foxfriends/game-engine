@@ -30,8 +30,10 @@ namespace Game {
         Draw(SDL_Renderer & _ren, const Dimension & dim);
         void load_font(const std::string & name, const std::string & path, int size);
         void close_font(const std::string & name);
+        // what are these... should they be not public?
         Draw & dimensions(const Dimension & dim);
         Draw & view(const Rectangle & port);
+
         Draw & color(Uint8 r, Uint8 g, Uint8 b);
         Draw & alpha(float alpha);
         Draw & font(const std::string & name);
@@ -39,6 +41,8 @@ namespace Game {
         Draw & point(Position pos, int depth = 0);
         Draw & sprite(const Sprite & sprite, int depth = 0);
         Draw & text(const std::string & str, Position pos, int depth = 0);
+
+        // these are internal too
         Draw & image(SDL_Texture * image, const Rectangle & src, const Rectangle & dest, int depth = 0);
         void clear();
         void render();

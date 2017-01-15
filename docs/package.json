@@ -1,0 +1,28 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Documentation server for the game engine",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server public_html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "game",
+    "engine",
+    "documentation"
+  ],
+  "author": "Cameron Eldridge",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.26.1",
+    "node-sass": "^4.2.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.2.0-rc.3"
+  },
+  "dependencies": {
+    "http-server": "^0.9.0",
+    "prismjs": "^1.6.0"
+  }
+}

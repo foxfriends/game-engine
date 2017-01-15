@@ -22,7 +22,7 @@ class Home extends Room {
     if(!super.find(Player).length) {
       super.spawn(Player);
     }
-    super.spawn(Door, new Position(18 * 32, 18 * 32 - 16), Outside.v, new Position(10 * 32 - 16, 8 * 32 - 16));
+    super.spawn(Door, Outside.v, new Position(18 * 32, 18 * 32 - 16), new Position(10 * 32 - 16, 8 * 32 - 16));
   }
 };
 

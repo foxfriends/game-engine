@@ -1,0 +1,536 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class GameObject</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1><span data-view="javascript">Game</span>Object</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The {{GameObject}} class defines any individual component of the game
+        which may exist in a <a href="room.html"><code class="language-javascript token class-name">Room</code></a>
+        and requires interactability, dynamic capabilities, or any sort of processing.
+        {{GameObject}}s can react to a number of different <a href="game-event.html">{{GameEvent}}s</a>
+        as they come up by overriding their respective handler methods, or query
+        the state of the game directly every frame using the <a href="#step"><code class="language-javascript token function">step*</code></a> methods.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt data-view="c++" id="constructor">
+          <code data-view="c++" class="language-cpp">Object()</code>
+        </dt>
+        <dd data-view="c++">
+          <p>
+            Though it does nothing by default, the constructor can be overriden to
+            take any parameters, which correspond to the parameters passed to the
+            <a href="game-utility.html#spawn"><code class="language-cpp token class-name">GameUtility.spawn&lt;T&gt;()</code> method</a>.
+            Note that the game will not be attached to the <a href="engine.html"><code class="language-javascript token class-name">Engine</code></a> at this time, so
+            any operations that require knowledge of the game state will have to wait
+            until the <a href="#init"><code class="language-javascript">init()</code> method</a>.
+          </p>
+        </dd>
+        <dt id="init">
+          <code data-view="javascript" class="language-javascript">init() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void init()</code>
+        </dt>
+        <dd>
+          <p>
+            Called immediately after the {{GameObject}} is created and is connected to
+            the <a href="engine.html"><code class="language-javascript token class-name">Engine</code></a>.
+            Place any initialization code that requires knowledge of the rest of the
+            game's state here. <span data-view="javascript">Any additional arguments
+            given to the <a href="game-utility.html#spawn"><code class="language-javascript token class-name">GameUtility.spawn()</code> method</a>
+            are passed to this event.</span>
+          </p>
+        </dd>
+        <dt id="gamestart">
+          <code data-view="javascript" class="language-javascript">gamestart() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void gamestart()</code>
+        </dt>
+        <dd>
+          <p>
+            Called only once during the entire game, right as it starts. Only
+            {{GameObject}}s that are exist after <a href="engine.html#start"><code class="language-javascript token class-name">Engine.start()</code></a>
+            is called method will receive this event.
+          </p>
+        </dd>
+        <dt id="gameend">
+          <code data-view="javascript" class="language-javascript">gameend() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void gameend()</code>
+        </dt>
+        <dd>
+          <p>
+            Called only once during the entire game, right before it ends. Only
+            {{GameObject}}s that exist at the end of the game will receive this event.
+          </p>
+        </dd>
+        <dt id="roomload">
+          <code data-view="javascript" class="language-javascript">roomload(prev : class, next : class) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void roomload(int prev, int next)</code>
+        </dt>
+        <dd>
+          <details class="params">
+            <summary>
+              <p>
+                Called when <a href="room.html"><code class="language-javascript token class-name">Room</code></a>
+                loading starts. Does nothing by default.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">prev : class</code>
+                <code data-view="c++" class="language-cpp">int prev</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that was just closed,
+                or <code data-view="c++" class="language-cpp">-1</code>
+                <code data-view="javascript" class="language-javascript">null</code>
+                if no room was closed to start this one.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">next : class</code>
+                <code data-view="c++" class="language-cpp">int next</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that is loading.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="roomstart">
+          <code data-view="javascript" class="language-javascript">roomstart(prev : class, next : class) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void roomstart(int prev, int next)</code>
+        </dt>
+        <dd>
+          <details class="params">
+            <summary>
+              <p>
+                Called when loading ends and the <a href="room.html"><code class="language-javascript token class-name">Room</code></a>
+                starts. Does nothing by default.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">prev : class</code>
+                <code data-view="c++" class="language-cpp">int prev</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that was just closed,
+                or <code data-view="c++" class="language-cpp">-1</code>
+                <code data-view="javascript" class="language-javascript">null</code>
+                if no room was closed to start this one.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">next : class</code>
+                <code data-view="c++" class="language-cpp">int next</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that is starting.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="roomend">
+          <code data-view="javascript" class="language-javascript">roomend(prev : class, next : class) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void roomend(int prev, int next)</code>
+        </dt>
+        <dd>
+          <details class="params">
+            <summary>
+              <p>
+                Called when a <a href="room.html"><code class="language-javascript token class-name">Room</code></a>
+                is closed. Does nothing by default.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">prev : class</code>
+                <code data-view="c++" class="language-cpp">int prev</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that was just closed.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">next : class</code>
+                <code data-view="c++" class="language-cpp">int next</code>
+              </dt>
+              <dd>
+                The <span data-view="c++">id of </span>the room that is starting,
+                or <code data-view="c++" class="language-cpp">-1</code>
+                <code data-view="javascript" class="language-javascript">null</code>
+                if no room is being started.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="stepstart">
+          <code data-view="javascript" class="language-javascript">stepstart() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void stepstart()</code>
+        </dt>
+        <dd>
+          <p>
+            Called once per frame, before the input events are handled.
+          </p>
+        </dd>
+        <dt id="step">
+          <code data-view="javascript" class="language-javascript">step() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void step()</code>
+        </dt>
+        <dd>
+          <p>
+            Called once per frame, after the input events are handled.
+          </p>
+        </dd>
+        <dt id="stepend">
+          <code data-view="javascript" class="language-javascript">stepend() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void stepend()</code>
+        </dt>
+        <dd>
+          <p>
+            Called once per frame, after all other events have been handled but
+            before the screen is redrawn.
+          </p>
+        </dd>
+        <dt id="keydown">
+          <code data-view="javascript" class="language-javascript">keydown(which : string) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void keydown(int which)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Called once for each key when it is pressed down.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">which : string</code>
+                <code data-view="c++" class="language-cpp">int which</code>
+              </dt>
+              <dd>
+                an identifier for the key which was pressed down.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values"><code class="language-javascript">KeyboardEvent.code</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_Scancode"><code class="language-cpp">SDL_Scancode</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="keyup">
+          <code data-view="javascript" class="language-javascript">keyup(which : string) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void keyup(int which)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Called once for each key when it is released.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">which : string</code>
+                <code data-view="c++" class="language-cpp">int which</code>
+              </dt>
+              <dd>
+                an identifier for the key which was released.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values"><code class="language-javascript">KeyboardEvent.code</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_Scancode"><code class="language-cpp">SDL_Scancode</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="mousedown">
+          <code data-view="javascript" class="language-javascript">mousedown(which : number) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void mousedown(int which)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Called once when a mouse button is pressed down.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">which : number</code>
+                <code data-view="c++" class="language-cpp">int which</code>
+              </dt>
+              <dd>
+                an identifier for the button which was pressed.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button"><code class="language-javascript">KeyboardEvent.button</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_MouseButtonEvent"><code class="language-cpp">SDL_BUTTON_*</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="mouseup">
+          <code data-view="javascript" class="language-javascript">mouseup(which : number) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void mouseup(int which)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Called once when a mouse button is released.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">which : number</code>
+                <code data-view="c++" class="language-cpp">int which</code>
+              </dt>
+              <dd>
+                an identifier for the button which was released.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button"><code class="language-javascript">KeyboardEvent.button</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_MouseButtonEvent"><code class="language-cpp">SDL_BUTTON_*</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="mousemove">
+          <code data-view="javascript" class="language-javascript">mousemove(where : Position) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void mousemove(const Position &amp; where)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Called any time the mouse moves.
+                <!-- TODO: this is probably a bug -->
+                Might even be called when the mouse doesn't move. Might not be called
+                when the mouse is outside of the <span data-view="javascript">canvas</span><span data-view="c++">window</span>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">where : Position</code>
+                <code data-view="c++" class="language-cpp">Position where</code>
+              </dt>
+              <dd>
+                the new position of the cursor, relative to the top left corner
+                of the window.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="game">
+          <code data-view="javascript" class="language-javascript">game : GameUtility</code><em data-view="javascript">read-only</em>
+          <code data-view="c++" class="language-cpp">GameUtility &amp; game()</code>
+        </dt>
+        <dd>
+          <p>
+            Provides a <a href="game-utility.html"><code class="language-javascript token class-name">GameUtility</code>
+            instance</a> that exposes a number of useful functions to allow the game's
+            components to influence its state.
+          </p>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          'use strict';
+
+          import { Drawable, Collider, GameObject, override, persistent, sprite, Rectangle, Position } from '../../engine';
+          import PauseMenu from '../rooms/pause-menu';
+          import MainMenu from '../rooms/main-menu';
+
+          const SPD = 4;
+
+          // set persistent flag and initial sprite
+          @persistent
+          @sprite('sarah_idle_south')
+                               // add drawing and collision behaviour
+          class Player extends Collider(new Rectangle(16, 32, 32, 32))(Drawable(GameObject))) {
+            speed = SPD;
+            dir = 'south';
+            hsp = 0;
+            vsp = 0;
+            doorPos = null;
+
+            @override
+            roomload() {
+              // no moving while the room loads
+              this.speed = 0;
+            }
+
+            @override
+            roomstart() {
+              // allow moving again
+              this.speed = SPD;
+              if(this.doorPos) {
+                // go to the door
+                this.sprite.x = this.doorPos.x;
+                this.sprite.y = this.doorPos.y;
+                this.doorPos = null;
+              }
+            }
+
+            @override
+            roomend(_, room) {
+              // remove the player before the menu starts
+              if(room === MainMenu) {
+                super.game.destroy(this);
+              }
+            }
+
+            @override
+            init() {
+              // initial position
+              this.sprite.x = 500;
+              this.sprite.y = 400;
+            }
+
+            @override
+            keydown(which) {
+              // pause the game
+              if(which === 'p') {
+                super.game.room.overlay(PauseMenu);
+              }
+            }
+
+            @override
+            step() {
+              // prepare for movement
+              this.hsp = this.speed * (super.game.keystate('ArrowRight') - super.game.keystate('ArrowLeft'));
+              this.vsp = this.speed * (super.game.keystate('ArrowDown') - super.game.keystate('ArrowUp'));
+            }
+
+            checkCollision() {
+              const box = new Rectangle(...this.bbox);
+              box.x += this.position.x;
+              box.y += this.position.y;
+              return super.game.collides(box, 'room');
+            }
+
+            @override
+            stepend() {
+              // calculate movements
+              this.sprite.x += this.hsp;
+              while(this.checkCollision() &amp;&amp; this.hsp) {
+                this.sprite.x -= Math.sign(this.hsp);
+              }
+              this.sprite.y += this.vsp;
+              while(this.checkCollision() &amp;&amp; this.vsp) {
+                this.sprite.y -= Math.sign(this.vsp);
+              }
+              // calculate sprite and animations
+              if(this.hsp !== 0 || this.vsp !== 0) {
+                if(this.hsp !== 0) {
+                  this.dir = this.hsp > 0 ? 'east' : 'west';
+                } else if(this.vsp != 0) {
+                  this.dir = this.vsp > 0 ? 'south' : 'north';
+                }
+                this.sprite = `sarah_walk_${this.dir}`;
+                this.sprite.frame += 0.2;
+              } else {
+                this.sprite = `sarah_idle_${this.dir}`;
+              }
+              super.game.view(new Position(this.sprite.x + 32, this.sprite.y + 32));
+            }
+          }
+
+          export default Player;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+          #include "../rooms/pause-menu.h"
+
+          class Player : public virtual Game::Object, public Game::Drawable, public Game::Collider {
+            public:
+              static bool persistent;
+            private:
+              const int _speed = 4;
+              int _hsp = 0, _vsp = 0;
+              std::string _dir = "south";
+              bool check_collision() {
+                Rectangle box = bbox();
+                Position where = position();
+                box.x += where.x;
+                box.y += where.y;
+                return game().collides_room(box);
+              }
+            public:
+              virtual void init() override {
+                // set sprite and default position
+                sprite("sarah_idle_south");
+                sprite().x = 500;
+                sprite().y = 400;
+              }
+              virtual void roomend(int, int next) override {
+                // remove when moving to room 1 (main menu)
+                if(next == 1) {
+                  game().destroy(*this);
+                }
+              }
+              virtual void keydown(int key) override {
+                // open the pause menu
+                if(key == SDL_SCANCODE_P) {
+                  game().room_overlay&lt;RmPauseMenu&gt;();
+                }
+              }
+              virtual void step() override {
+                // prepare to move
+                _hsp = _speed * (game().keystate(SDL_SCANCODE_RIGHT) - game().keystate(SDL_SCANCODE_LEFT));
+                _vsp = _speed * (game().keystate(SDL_SCANCODE_DOWN) - game().keystate(SDL_SCANCODE_UP));
+              }
+              virtual void stepend() override {
+                // calculate movements
+                sprite().x += _hsp;
+                while(check_collision() &amp;&amp; _hsp != 0) {
+                  sprite().x -= _hsp / std::abs(_hsp);
+                }
+                sprite().y += _vsp;
+                while(check_collision() &amp;&amp; _vsp != 0) {
+                  sprite().y -= _vsp / std::abs(_vsp);
+                }
+                // calculate sprite and animations
+                if(_hsp != 0 || _vsp != 0) {
+                  if(_hsp != 0) {
+                    _dir = _hsp > 0 ? "east" : "west";
+                  } else if(_vsp != 0) {
+                    _dir = _vsp > 0 ? "south" : "north";
+                  }
+                  sprite("sarah_walk_" + _dir);
+                  sprite().frame(sprite().frame() + 0.2);
+                } else {
+                  sprite("sarah_idle_" + _dir);
+                }
+                game().view({ position().x + 32, position().y + 32 });
+              }
+
+              virtual Game::Position position() const override {
+                // position for collisions
+                return { sprite().x, sprite().y };
+              }
+
+              virtual Game::Rectangle bbox() const override {
+                // box for collisions
+                return { 16, 32, 32, 32 };
+              }
+            };
+            // set the persistent flag
+            bool Player::persistent = true;
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

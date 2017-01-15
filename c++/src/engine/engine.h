@@ -13,6 +13,10 @@
 #include "sound-manager.h"
 #include "object.h"
 
+// TODO: make better use of friend classes to improve encapsulation from the end
+//       user. higher coupling inside for lower coupling with the final products
+//       is probably worth it
+
 namespace Game {
     class Room;
     class GameUtility;
@@ -49,13 +53,12 @@ namespace Game {
         void draw();
         // clean up resources
         virtual void end();
-    protected:
-        Engine(const std::string & title, const Dimension & size, const std::string & cfg = "");
-
         // load a TTF into the game
         void load_font(const std::string & name, const std::string & path, int size);
         // remove a font from memory
         void close_font(const std::string & name);
+    protected:
+        Engine(const std::string & title, const Dimension & size, const std::string & cfg = "");
     public:
         virtual ~Engine() = 0;
         // run the game
@@ -64,9 +67,11 @@ namespace Game {
         // current window size
         inline const Dimension & size() const { return _size; }
 
+        // TODO: internalize a bunch of these and make rooms friends?
+        //       probably better than exposing so much to the users
         // spawn a new object in the room
         template<typename T, typename ... Args>
-        void spawn(Args ...args);
+        T * spawn(Args ...args);
 
         template<typename T>
         std::vector<T *> find() const;
@@ -85,12 +90,12 @@ namespace Game {
     };
 
     template<typename T, typename ... Args>
-    void Engine::spawn(Args ... args) {
+    T * Engine::spawn(Args ... args) {
         auto obj = std::make_unique<T>(args ...);
         obj->attach(this);
         obj->init();
         _objects.back().emplace_back(std::move( obj ));
-
+        return dynamic_cast<T *>(_objects.back().back().get());
     }
 
     template<typename T>

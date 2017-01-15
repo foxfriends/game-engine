@@ -11,6 +11,8 @@ namespace Demo {
         const int _speed = 4;
         int _hsp = 0, _vsp = 0;
         std::string _dir = "south";
+
+        bool check_collision();
     public:
         virtual void init() override;
         virtual void roomend(int, int next) override;

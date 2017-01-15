@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class Sprite</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Sprite</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        A <code class="language-javascript token class-name">Sprite</code> holds
+        a sequence of frames from a <a href="resources.html#texture-page">texture page</a>
+        and a location at which to display them on the screen. This provides easy
+        handling of animations for <a href="game-object.html">{{GameObject}}s</a>.
+      </p>
+      <p>
+        Though it is impossible to create a <code class="language-javascript token class-name">Sprite</code>
+        yourself, all <a href="drawable.html"><code class="language-javascript token class-name">Drawable</code>s</a>
+        have a <code class="language-javascript token class-name">Sprite</code>,
+        which you are able to access and manipulate.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt>
+          <code data-view="javascript" class="language-javascript">frame : number</code>
+          <ol data-view="c++">
+            <li><code data-view="c++" class="language-cpp">float frame()</code></li>
+            <li><code data-view="c++" class="language-cpp">void frame(float f)</code></li>
+          </ol>
+        </dt>
+        <dd>
+          <p data-view="javascript">
+            the frame of the <code class="language-javascript token class-name">Sprite</code>'s
+            animation to show. This value is rounded down to the nearest integer
+            to determine the actual frame index.
+          </p>
+          <details data-view="c++">
+            <summary>
+              <p>
+                the frame of the <code class="language-cpp token class-name">Sprite</code>'s
+                animation to show. This value is rounded down to the nearest integer
+                to determine the actual frame index.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code class="language-cpp">float f</code>
+              </dt>
+              <dd>
+                the index to set the frame to.
+              </dd>
+            </dl>
+          </details>
+          <dt>
+            <code data-view="javascript" class="language-javascript">x : number</code>
+            <code data-view="c++" class="language-cpp">int x</code>
+          </dt>
+          <dd>
+            <p>
+              The x coordinate where to draw the <code class="language-javascript token class-name">Sprite</code>.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">y : number</code>
+            <code data-view="c++" class="language-cpp">int y</code>
+          </dt>
+          <dd>
+            <p>
+              The y coordinate where to draw the <code class="language-javascript token class-name">Sprite</code>.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">w : number</code>
+            <code data-view="c++" class="language-cpp">int w</code>
+          </dt>
+          <dd>
+            <p>
+              The width to draw the <code class="language-javascript token class-name">Sprite</code> at.
+              The image will be stretched to fill this space.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">h : number</code>
+            <code data-view="c++" class="language-cpp">int h</code>
+          </dt>
+          <dd>
+            <p>
+              The height to draw the <code class="language-javascript token class-name">Sprite</code> at.
+              The image will be stretched to fill this space.
+            </p>
+          </dd>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          @override
+          stepend() {
+            this.sprite.x += this.hsp; // change the position of the sprite
+            while(this.checkCollision() &amp;&amp; this.hsp) {
+              this.sprite.x -= Math.sign(this.hsp);
+            }
+            this.sprite.y += this.vsp;
+            while(this.checkCollision() &amp;&amp; this.vsp) {
+              this.sprite.y -= Math.sign(this.vsp);
+            }
+            if(this.hsp !== 0 || this.vsp !== 0) {
+              if(this.hsp !== 0) {
+                this.dir = this.hsp > 0 ? 'east' : 'west';
+              } else if(this.vsp != 0) {
+                this.dir = this.vsp > 0 ? 'south' : 'north';
+              }
+              this.sprite = `sarah_walk_${this.dir}`; // change the sprite to the right direction
+              this.sprite.frame += 0.2; // animate at 1 frame per 5 steps
+            } else {
+              this.sprite = `sarah_idle_${this.dir}`;
+            }
+            super.game.view(new Position(this.sprite.x + 32, this.sprite.y + 32));
+          }
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          void Player::stepend() {
+                sprite().x += _hsp; // change the position of the sprite
+                while(check_collision() &amp;&amp; _hsp != 0) {
+                    sprite().x -= _hsp / std::abs(_hsp);
+                }
+                sprite().y += _vsp;
+                while(check_collision() &amp;&amp; _vsp != 0) {
+                    sprite().y -= _vsp / std::abs(_vsp);
+                }
+                if(_hsp != 0 || _vsp != 0) {
+                    if(_hsp != 0) {
+                        _dir = _hsp > 0 ? "east" : "west";
+                    } else if(_vsp != 0) {
+                        _dir = _vsp > 0 ? "south" : "north";
+                    }
+                    sprite("sarah_walk_" + _dir); // change the sprite to the right direction
+                    sprite().frame(sprite().frame() + 0.2); // animate at 1 frame per 5 steps
+                } else {
+                    sprite("sarah_idle_" + _dir);
+                }
+                game().view({ position().x + 32, position().y + 32 });
+            }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

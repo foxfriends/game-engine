@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - Shapes</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Shapes</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        A number of calculations in the game are easiest abstracted using simple
+        shapes. Rather than everyone making their own, there are some that are
+        built in to the Engine and have certain advantages.
+      </p>
+    </section>
+    <section class="info" id="position">
+      <h2>Position</h2>
+      <p>
+        A <code class="language-javascript token class-name">Position</code> is simply an <code class="language-javascript">[x, y]</code>
+        pair.
+      </p>
+      <section class="interface">
+        <h3>Interface</h3>
+        <dl>
+          <dt>
+            <code data-view="javascript" class="language-javascript">constructor(x : number, y : number)</code>
+            <code data-view="c++" class="language-cpp">Position(int x, int y)</code>
+          </dt>
+          <dd>
+            <details>
+              <summary>
+                <p>
+                  Make a <code class="language-javascript token class-name">Position</code>.
+                </p>
+              </summary>
+              <dl class="params">
+                <dt>
+                  <code data-view="javascript" class="language-javascript">x : number</code>
+                  <code data-view="c++" class="language-cpp">int x</code>
+                </dt>
+                <dd>
+                  the x coordinate.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">y : number</code>
+                  <code data-view="c++" class="language-cpp">int y</code>
+                </dt>
+                <dd>
+                  the y coordinate.
+                </dd>
+              </dl>
+            </details>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">x : number</code>
+            <code data-view="c++" class="language-cpp">int x</code>
+          </dt>
+          <dd>
+            <p>
+              The x coordinate.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">y : number</code>
+            <code data-view="c++" class="language-cpp">int y</code>
+          </dt>
+          <dd>
+            <p>
+              The y coordinate.
+            </p>
+          </dd>
+        </dl>
+      </section>
+    </section>
+    <section class="info" id="dimension">
+      <h2>Dimension</h2>
+      <p>
+        A <code class="language-javascript token class-name">Dimension</code> is
+        simply a <code class="language-javascript">[w, h]</code> pair.
+      </p>
+      <section class="interface">
+        <h3>Interface</h3>
+        <dl>
+          <dt>
+            <code data-view="javascript" class="language-javascript">constructor(w : number, h : number)</code>
+            <code data-view="c++" class="language-cpp">Dimension(int w, int h)</code>
+          </dt>
+          <dd>
+            <details>
+              <summary>
+                <p>
+                  Make a <code class="language-javascript token class-name">Dimension</code>.
+                </p>
+              </summary>
+              <dl class="params">
+                <dt>
+                  <code data-view="javascript" class="language-javascript">w : number</code>
+                  <code data-view="c++" class="language-cpp">int w</code>
+                </dt>
+                <dd>
+                  the width.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">h : number</code>
+                  <code data-view="c++" class="language-cpp">int h</code>
+                </dt>
+                <dd>
+                  the height.
+                </dd>
+              </dl>
+            </details>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">static infinite() : Dimension</code>
+            <code data-view="c++" class="language-cpp">static Dimension infinite()</code>
+          </dt>
+          <dd>
+            <p>
+              Creates a <code class="language-javascript token class-name">Dimension</code>
+              that is larger than all other <code class="language-javascript token class-name">Dimension</code>.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">w : number</code>
+            <code data-view="c++" class="language-cpp">int w</code>
+          </dt>
+          <dd>
+            <p>
+              The width.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">h : number</code>
+            <code data-view="c++" class="language-cpp">int h</code>
+          </dt>
+          <dd>
+            <p>
+              The height.
+            </p>
+          </dd>
+        </dl>
+      </section>
+    </section>
+    <section class="info" id="rectangle">
+      <h2>Rectangle</h2>
+      <p>
+        A <code class="language-javascript token class-name">Rectangle</code> is
+        basically a combination of a
+        <code class="language-javascript token class-name">Position</code> and a
+        <code class="language-javascript token class-name">Dimension</code>.
+      </p>
+      <section class="interface">
+        <h3>Interface</h3>
+        <dl>
+          <dt>
+            <ol data-view="javascript">
+              <li><code class="language-javascript">constructor(x : number, y : number, w : number, h : number)</code></li>
+              <li><code class="language-javascript">constructor(p : Position, d : Dimension)</code></li>
+            </ol>
+            <ol data-view="c++">
+              <li><code class="language-cpp">Dimension(int x, int y, int w, int h)</code></li>
+              <li><code class="language-cpp">Dimension(Position p, Dimension d)</code></li>
+            </ol>
+          </dt>
+          <dd>
+            <details>
+              <summary>
+                <p>
+                  Make a <code class="language-javascript token class-name">Rectangle</code>.
+                </p>
+              </summary>
+              <dl class="params">
+                <dt>
+                  <code data-view="javascript" class="language-javascript">x : number</code>
+                  <code data-view="c++" class="language-cpp">int x</code>
+                </dt>
+                <dd>
+                  the x coordinate.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">y : number</code>
+                  <code data-view="c++" class="language-cpp">int y</code>
+                </dt>
+                <dd>
+                  the y coordinate.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">w : number</code>
+                  <code data-view="c++" class="language-cpp">int w</code>
+                </dt>
+                <dd>
+                  the width.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">h : number</code>
+                  <code data-view="c++" class="language-cpp">int h</code>
+                </dt>
+                <dd>
+                  the height.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">p : Position</code>
+                  <code data-view="c++" class="language-cpp">Position p</code>
+                </dt>
+                <dd>
+                  the x and y coordinates.
+                </dd>
+                <dt>
+                  <code data-view="javascript" class="language-javascript">d : Dimension</code>
+                  <code data-view="c++" class="language-cpp">Dimension d</code>
+                </dt>
+                <dd>
+                  the width and height.
+                </dd>
+              </dl>
+            </details>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">x : number</code>
+            <code data-view="c++" class="language-cpp">int x</code>
+          </dt>
+          <dd>
+            <p>
+              The x coordinate.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">y : number</code>
+            <code data-view="c++" class="language-cpp">int y</code>
+          </dt>
+          <dd>
+            <p>
+              The y coordinate.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">w : number</code>
+            <code data-view="c++" class="language-cpp">int w</code>
+          </dt>
+          <dd>
+            <p>
+              The width.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">h : number</code>
+            <code data-view="c++" class="language-cpp">int h</code>
+          </dt>
+          <dd>
+            <p>
+              The height.
+            </p>
+          </dd>
+        </dl>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

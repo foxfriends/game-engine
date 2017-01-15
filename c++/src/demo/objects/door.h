@@ -10,6 +10,7 @@ namespace Demo {
         Game::Position _pos, _outpos;
         Player * _player;
         Game::Sound * _sound;
+        bool check_collision();
     public:
         Door(const Game::Position & pos, const Game::Position & outpos);
         virtual void init();
@@ -28,8 +29,17 @@ namespace Demo {
     }
 
     template<typename Dest>
+    bool Door<Dest>::check_collision() {
+        auto box = bbox();
+        auto where = position();
+        box.x += where.x;
+        box.y += where.y;
+        return game().collides(box, *_player);
+    }
+
+    template<typename Dest>
     void Door<Dest>::step() {
-        if(game().collides(bbox(), *_player)) {
+        if(check_collision()) {
             _sound->play();
             _player->sprite().x = _outpos.x;
             _player->sprite().y = _outpos.y;
@@ -44,7 +54,7 @@ namespace Demo {
 
     template<typename Dest>
     Game::Rectangle Door<Dest>::bbox() const {
-        return { position().x, position().y, 32, 32 };
+        return { 0, 0, 32, 32 };
     }
 }
 

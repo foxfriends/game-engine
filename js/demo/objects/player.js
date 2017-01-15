@@ -56,14 +56,21 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
     this.vsp = this.speed * (super.game.keystate('ArrowDown') - super.game.keystate('ArrowUp'));
   }
 
+  checkCollision() {
+    const box = new Rectangle(...this.bbox);
+    box.x += this.position.x;
+    box.y += this.position.y;
+    return super.game.collides(box, 'room');
+  }
+
   @override
   stepend() {
     this.sprite.x += this.hsp;
-    while(super.game.collides(this.bbox, 'room') && this.hsp) {
+    while(this.checkCollision() && this.hsp) {
       this.sprite.x -= Math.sign(this.hsp);
     }
     this.sprite.y += this.vsp;
-    while(super.game.collides(this.bbox, 'room') && this.vsp) {
+    while(this.checkCollision() && this.vsp) {
       this.sprite.y -= Math.sign(this.vsp);
     }
     if(this.hsp !== 0 || this.vsp !== 0) {

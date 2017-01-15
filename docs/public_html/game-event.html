@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - struct GameEvent</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1><span data-view="javascript">Game</span>Event</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The {{GameEvent}} structure is used to represent the different events that
+        occur in the game. Though mainly used internally, there are occasions in
+        more advanced use when a {{GameEvent}} may make it to the surface.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt id="type">
+          <code data-view="javascript" class="language-javascript">type : string</code>
+          <code data-view="c++" class="language-cpp">int type</code>
+        </dt>
+        <dd>
+          The type of event that was recorded.
+          <span data-view="javascript">
+            The value of the string is an event which exactly matches one of the
+            <a href="game-object.html">event handler method</a> names.
+          </span>
+          <span data-view="c++">
+            The value of the integer is one of the values in the event type enum.
+          </span>
+        </dd>
+        <dt id="data">
+          <code data-view="javascript" class="language-javascript">data : any[]</code>
+          <code data-view="c++" class="language-cpp">std::vector&lt;int&gt; data</code>
+        </dt>
+        <dd>
+          Some data about what exactly happened to trigger this event.
+        </dd>
+      </dl>
+      <h3>Event Types</h3>
+      <dl>
+        <dt id="quit">
+          <code data-view="javascript" class="language-javascript">'quit'</code>
+          <code data-view="c++" class="language-cpp">Event::Quit</code>
+        </dt>
+        <dd>
+          A Quit event. Ends the game, no matter how you handle it.
+        </dd>
+        <dt id="gamestart">
+          <code data-view="javascript" class="language-javascript">'gamestart'</code>
+          <code data-view="c++" class="language-cpp">Event::GameStart</code>
+        </dt>
+        <dd>
+          A Game Start event. No data.
+        </dd>
+        <dt id="gameend">
+          <code data-view="javascript" class="language-javascript">'gameend'</code>
+          <code data-view="c++" class="language-cpp">Event::GameEnd</code>
+        </dt>
+        <dd>
+          A Game End event. No data.
+        </dd>
+        <dt id="roomload">
+          <code data-view="javascript" class="language-javascript">'roomload'</code>
+          <code data-view="c++" class="language-cpp">Event::RoomLoad</code>
+        </dt>
+        <dd>
+          A Room Load event. Data holds two room <span data-view="javascript">classes</span><span data-view="c++">ids</span>:
+          the room just closed, and the room currently loading.
+        </dd>
+        <dt id="roomstart">
+          <code data-view="javascript" class="language-javascript">'roomstart'</code>
+          <code data-view="c++" class="language-cpp">Event::RoomStart</code>
+        </dt>
+        <dd>
+          A Room Start event. Data holds two room <span data-view="javascript">classes</span><span data-view="c++">ids</span>:
+          the room just closed, and the room that is starting.
+        </dd>
+        <dt id="roomend">
+          <code data-view="javascript" class="language-javascript">'roomend'</code>
+          <code data-view="c++" class="language-cpp">Event::RoomEnd</code>
+        </dt>
+        <dd>
+          A Room End event. Data holds two room <span data-view="javascript">classes</span><span data-view="c++">ids</span>:
+          the room just closed, and the room that is starting.
+        </dd>
+        <dt id="stepstart">
+          <code data-view="javascript" class="language-javascript">'stepstart'</code>
+          <code data-view="c++" class="language-cpp">Event::StepStart</code>
+        </dt>
+        <dd>
+          A Step Start event. No data.
+        </dd>
+        <dt id="step">
+          <code data-view="javascript" class="language-javascript">'step'</code>
+          <code data-view="c++" class="language-cpp">Event::Step</code>
+        </dt>
+        <dd>
+          A Step event. No data.
+        </dd>
+        <dt id="stepend">
+          <code data-view="javascript" class="language-javascript">'stepend'</code>
+          <code data-view="c++" class="language-cpp">Event::StepEnd</code>
+        </dt>
+        <dd>
+          A Step End event. No data.
+        </dd>
+        <dt id="keydown">
+          <code data-view="javascript" class="language-javascript">'keydown'</code>
+          <code data-view="c++" class="language-cpp">Event::KeyDown</code>
+        </dt>
+        <dd>
+          A Key Down event. Data holds an identifier for which key was pressed down.
+        </dd>
+        <dt id="keyup">
+          <code data-view="javascript" class="language-javascript">'keyup'</code>
+          <code data-view="c++" class="language-cpp">Event::KeyUp</code>
+        </dt>
+        <dd>
+          A Key Up event. Data holds an identifier for which key was released.
+        </dd>
+        <dt id="mousedown">
+          <code data-view="javascript" class="language-javascript">'mousedown'</code>
+          <code data-view="c++" class="language-cpp">Event::MouseDown</code>
+        </dt>
+        <dd>
+          A Mouse Down event. Data holds an identifier for which mouse button was pressed down.
+        </dd>
+        <dt id="mouseup">
+          <code data-view="javascript" class="language-javascript">'mouseup'</code>
+          <code data-view="c++" class="language-cpp">Event::MouseUp</code>
+        </dt>
+        <dd>
+          A Mouse Up event. Data holds an identifier for which mouse button was released.
+        </dd>
+        <dt id="mousemove">
+          <code data-view="javascript" class="language-javascript">'mousemove'</code>
+          <code data-view="c++" class="language-cpp">Event::MouseMove</code>
+        </dt>
+        <dd>
+          A Mouse Move event. Data holds two numbers, which correspond to the new
+          x and y position of the mouse cursor.
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          import { Room, @override } from 'engine';
+
+          class MouseOnly extends Room {
+            @override
+            proc(event) {
+              switch(event.type) {
+                case 'keydown':
+                case 'keyup':
+                  // suppress keydown events in this room
+                  break;
+                default:
+                  // do normal things for other events
+                  super.proc(event);
+                  break;
+              }
+            }
+          }
+
+          export default MouseOnly;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+
+          class MouseOnly : public Room {
+            virtual void proc(const Event &amp; event) override {
+              switch(event.type) {
+                case Event::KeyDown:
+                case Event::KeyUp:
+                  // suppress keydown events in this room
+                  break;
+                default:
+                  Room::proc(event);
+                  break;
+              }
+            }
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

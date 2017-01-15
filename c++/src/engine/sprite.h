@@ -20,8 +20,9 @@ namespace Game {
         Sprite(TexturePage & page, const std::vector<int> & frames, const std::string & name);
 
         float frame() const;
-        float frame(float f);
+        void frame(float f);
 
+        // internalize
         TexturePage & texture() const;
         const std::string & name() const;
         Rectangle src() const;

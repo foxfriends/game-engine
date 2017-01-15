@@ -17,7 +17,7 @@ namespace Game {
         GameUtility(Engine &eng);
 
         // viewport
-        Rectangle &view() const;
+        Rectangle view() const;
         void view(const Rectangle & v, bool constrain = true);
         void view(const Position & v, bool constrain = true);
 
@@ -43,10 +43,15 @@ namespace Game {
 
         // objects
         template<typename T, typename ... Args>
-        void spawn(Args ... args);
+        T * spawn(Args ... args);
+
         template<typename T>
         std::vector<T *> find();
+
         void destroy(Object & who);
+        template<typename T>
+        void destroy();
+
         // any (including room)
         bool collides(const Rectangle & where) const;
         // specific collider
@@ -57,7 +62,7 @@ namespace Game {
         // the room only
         bool collides_room(const Rectangle & where) const;
 
-        // sprites
+        // sprites (is this necessary? should it be internal?)
         std::unique_ptr<Sprite> make_sprite(const std::string & name);
     };
 
@@ -106,13 +111,17 @@ namespace Game {
     }
 
     template<typename T, typename ... Args>
-    void GameUtility::spawn(Args ... args) {
-        _eng.spawn<T>(args ...);
+    T * GameUtility::spawn(Args ... args) {
+        return _eng.spawn<T>(args ...);
     }
 
     template<typename T>
     std::vector<T *> GameUtility::find() {
         return _eng._rooms.back()->find<T>();
+    }
+    template<typename T>
+    void GameUtility::destroy() {
+        return _eng._rooms.back()->destroy<T>();
     }
 
     template<typename T>

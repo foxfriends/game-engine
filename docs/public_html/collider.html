@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - interface Collider</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Collider</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The <code class="language-javascript token class-name">Collider</code>
+        <span data-view="javascript">mixin provides an interface</span>
+        <span data-view="c++">class acts as an interface</span>
+        which allows a
+        <a href="game-object.html">{{GameObject}}</a> to collide with other
+        <a href="game-object.html">{{GameObject}}s</a>.
+        If a <a href="game-object.html">{{GameObject}}</a>
+        does not explicity implement this interface, it will be impossible to
+        check for collisions against it.
+      </p>
+      <p data-view="javascript">
+        Note that as JavaScript does not support multiple inheritance, <code class="language-javascript token class-name">Collider</code>
+        is a mixin and so the class must be &ldquo;called&rdquo; with its base class, which
+        should have <a href="game-object.html">{{GameObject}}</a> at its innermost level.
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt data-view="javascript" id="collider">
+          <code class="language-javascript">Collider(bbox : Rectangle)(base : class)</code>
+        </dt>
+        <dd data-view="javascript">
+          <details>
+            <summary>
+              <p>
+                The mixin that is to be extended.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code class="language-javascript">bbox : Rectangle</code></dt>
+              <dd>
+                the box, relative to the position, to check for collisions in.
+              </dd>
+              <dt><code class="language-javascript">base : class</code></dt>
+              <dd>
+                the class to mix this in with.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="position">
+          <code data-view="javascript" class="language-javascript">position : Position</code><em data-view="javascript">read-only</em>
+          <code data-view="c++" class="language-cpp">virtual Position position() const = 0</code>
+        </dt>
+        <dd>
+          <p>
+            the x, y, coordinates of this object. <span data-view="javascript">By
+            default, it attempts to infer the position based on the
+            <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>. If
+            there is no sprite this method must be overriden.</span>
+          </p>
+        </dd>
+        <dt id="bbox">
+          <code data-view="javascript" class="language-javascript">bbox : Rectangle</code><em data-view="javascript">read-only</em>
+          <code data-view="c++" class="language-cpp">virtual Rectangle bbox() const = 0</code>
+        </dt>
+        <dd>
+          <p>
+            the area, relative to the position, within which to check for collisions.
+            <span data-view="javascript">By default, this is the value passed in
+            to the mixin when it is attached.</span>
+          </p>
+        </dd>
+        <dt id="collides">
+          <code data-view="javascript" class="language-javascript">collides(where : Rectangle) : bool</code>
+          <code data-view="c++" class="language-cpp">bool collides(Rectangle where)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Checks for a collision with this <a href="game-object.html">{{GameObject}}</a> at the given
+                location.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">where : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle where</code>
+              </dt>
+              <dd>
+                the area to check for collisions against.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          'use strict';
+
+          import { Drawable, Collider, GameObject, override, persistent, sprite, Rectangle, Position } from '../../engine';
+
+          @persistent
+          @sprite('sarah_idle_south')
+                               // add collisions and the default bounding box
+          class Player extends Collider(new Rectangle(16, 32, 32, 32))(Drawable(GameObject))) {
+            hsp = 0;
+            vsp = 0;
+            // lots of other things ...
+
+            checkCollision() {
+              // check for collisions
+              const box = new Rectangle(...this.bbox);
+              box.x += this.position.x;
+              box.y += this.position.y;
+              return super.game.collides(box, 'room');
+            }
+
+            @override
+            stepend() {
+              // calculate movements
+              this.sprite.x += this.hsp;
+              // use the collisions
+              while(this.checkCollision() &amp;&amp; this.hsp) {
+                this.sprite.x -= Math.sign(this.hsp);
+              }
+              this.sprite.y += this.vsp;
+              while(this.checkCollision() &amp;&amp; this.vsp) {
+                this.sprite.y -= Math.sign(this.vsp);
+              }
+            }
+          }
+
+          export default Player;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+
+          class Player : public virtual Game::Object, public Game::Drawable, public Game::Collider {
+            private:
+              int _hsp = 0, _vsp = 0;
+              bool check_collision() {
+                // check for collisions
+                Rectangle box = bbox();
+                Position where = position();
+                box.x += where.x;
+                box.y += where.y;
+                return game().collides_room(box);
+              }
+            public:
+              // lots of other things...
+
+              virtual void stepend() override {
+                // calculate movements
+                sprite().x += _hsp;
+                // use the collisions
+                while(check_collision() &amp;&amp; _hsp != 0) {
+                  sprite().x -= _hsp / std::abs(_hsp);
+                }
+                sprite().y += _vsp;
+                while(check_collision() &amp;&amp; _vsp != 0) {
+                  sprite().y -= _vsp / std::abs(_vsp);
+                }
+              }
+
+              virtual Game::Position position() const override {
+                // position for collisions
+                return { sprite().x, sprite().y };
+              }
+
+              virtual Game::Rectangle bbox() const override {
+                // box for collisions
+                return { 16, 32, 32, 32 };
+              }
+            };
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

@@ -15,6 +15,9 @@ import { PAGES, SOUNDS, MUSIC } from './const';
 const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS] =
       [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
+// TODO: rewrite everything to use private methods using out-of-class bound
+//       functions and internal methods using shared symbols
+
 class Engine {
   [ROOMS] = [];
   [OBJECTS] = [[]];
@@ -23,6 +26,8 @@ class Engine {
 
   constructor(canvas, {w, h}) {
     this[CANVAS] = document.querySelector(canvas);
+    this[CANVAS].setAttribute('tabindex', 0);
+    this[CANVAS].style.outline = 'none';
     this[CANVAS].width = w;
     this[CANVAS].height = h;
     this[VIEWS][0].w = w;
@@ -83,7 +88,6 @@ class Engine {
   end() {}
 
   // runs the game
-  // HACK: internalize
   run() {
     let me = 0;
     const takeStep = () => {
@@ -139,163 +143,187 @@ class Engine {
     return this[ROOMS].length;
   }
 
-  // utilities - TODO: does this need to be modularized?
+  // utilities - TODO: this should be put in another module
   get util() {
-    return {
-      // get/set the view port, optionally constrained within the room
-      // boundaries if possible, and with the entire room centred if not
-      view: (view, constrain = true) => {
-        if(view === undefined) {
-          return this[VIEWS][0];
-        }
-        if(view instanceof Position) {
-          view = new Rectangle(view.x - this[VIEWS][0].w / 2, view.y - this[VIEWS][0].h / 2, this[VIEWS][0].w, this[VIEWS][0].h);
-        }
-        if(constrain) {
-          const { w, h } = this[ROOMS][0].size;
-          const [ r, b ] = [
-            view.x + view.w,
-            view.y + view.h
-          ];
-          if(view.w > w) {
-            view.x = (w - view.w) / 2;
-          } else if(view.x < 0) {
-            view.x = 0;
-          } else if(r > w) {
-            view.x = w - view.w;
-          }
-          if(view.h > h) {
-            view.y = (h - view.h) / 2;
-          } else if(view.y < 0) {
-            view.y = 0;
-          } else if(b > h) {
-            view.y = h - view.h;
-          }
-        }
-        return this[VIEWS][0] = new Rectangle(...view);
-      },
-      room: {
-        // go to the given room
-        goto: (Rm) => {
-          let old = null;
-          if(this[ROOMS][0]) {
-            old = this[ROOMS][0].constructor;
-            this.proc(new GameEvent('roomend', old, Rm));
-            this[ROOMS][0].end();
-          }
-          this[ROOMS].unshift(new Rm(this));
-          this[OBJECTS].splice(1, 1, []);
-          this[VIEWS].unshift(new Rectangle(0, 0, ...this.size))
-          if(!(this[ROOMS][0] instanceof Room)) {
-            throw `${this[ROOMS][0].constructor.name} is not a Room`;
-          }
-          (async () => {
-            this[ROOMS][0].load();
-            this.proc(new GameEvent('roomload', old, Rm));
-            await this[ROOMS][0].loaded;
-            // remove the old room, which was temporarily shifted
-            if(this[ROOMS][1]) {
-              this[ROOMS].splice(1, 1)[0].destructor();
-              this[OBJECTS].splice(1, 1);
-              this[VIEWS].splice(1, 1);
-            }
-            this[ROOMS][0].start();
-            this.proc(new GameEvent('roomstart', old, Rm));
-          })();
-        },
-        // freeze the current room and put this one over top
-        overlay: (Rm) => {
-          const old = this[ROOMS][0].constructor;
-          this[ROOMS].unshift(new Rm(this));
-          this[OBJECTS].unshift([]);
-          this[VIEWS].unshift(new Rectangle(0, 0, ...this.size));
-          if(!(this[ROOMS][0] instanceof Room)) {
-            throw `${this[ROOMS][0].constructor.name} is not a Room`;
-          }
-          (async () => {
-            this[ROOMS][0].load();
-            this.proc(new GameEvent('roomload', null, Rm));
-            await this[ROOMS][0].loaded;
-            this[ROOMS][0].start();
-            this.proc(new GameEvent('roomstart', null, Rm));
-          })();
-        },
-        // closes the current room overlay
-        close: () => {
-          this.proc(new GameEvent('roomend', this[ROOMS][0].constructor, null));
-          this[ROOMS][0].end();
-          this[ROOMS][0].destructor();
-          this[ROOMS].shift();
-          this[OBJECTS].shift();
-          this[VIEWS].shift();
-          if(this[ROOMS].length === 0) {
-            throw `You closed the last room... please don't do that`;
-          }
-        }
-      },
-      mousestate: (button) => {
-        return this[INPUT].mousestate(button);
-      },
-      keystate: (key) => {
-        return this[INPUT].keystate(key);
-      },
-      // end the game
-      // NOTE: for JS version of this engine, this function isn't all that
-      // useful since you can't really 'close' a canvas
-      end: () => {
-        this.proc(new GameEvent('gameend'));
-        this.end();
-        window.cancelAnimationFrame(this[RAF]);
-        this[RAF] = null;
-        this[ROOMS] = [];
-        this[OBJECTS] = [[]];
-      },
-      // end the game and run it again
-      restart: () => {
-        this.util.end();
-        this.run();
-      },
-      // spaw an object
-      spawn: (...args) => {
-        this[ROOMS][0].spawn(...args);
-      },
-      // destroy an object
-      destroy: (obj) => {
-        this[ROOMS][0].destroy(obj);
-      },
-      // find an object
-      find: (Obj) => {
-        return this[ROOMS][0].find(Obj);
-      },
-      // checks if two colliders are colliding
-      collides: (where, what) => {
-        if(what instanceof Collider) {
-          return what.collides(where);
-        }
-        if(this[ROOMS][0].collides(where, what)) {
-          return true;
-        }
-        if(what !== 'room') {
-          what = what === 'any'
-            ? this[OBJECTS][0].filter(o => o instanceof Collider)
-            : this[OBJECTS][0].filter(o => o instanceof what);
-          for(let it of what) {
-            if(it.collides(where)) {
-              return true;
-            }
-          }
-        }
-        return false;
-      },
-      sound: (name) => {
-        return this[SOUND_MANAGER].sound(name);
-      },
-      music: (name) => {
-        return this[SOUND_MANAGER].music(name);
-      }
-    };
+    return new GameUtility(this);
   }
 }
+
+const [ ENGINE ] = [ Symbol() ];
+
+// TODO: move this into another module once the internal function sharing is set up
+class GameUtility {
+  [ENGINE] = null;
+
+  constructor(engine) {
+    this[ENGINE] = engine
+  }
+  // get/set the view port, optionally constrained within the room
+  // boundaries if possible, and with the entire room centred if not
+  view(view, constrain = true) {
+    if(view === undefined) {
+      return this[ENGINE][VIEWS][0];
+    }
+    if(view instanceof Position) {
+      view = new Rectangle(view.x - this[ENGINE][VIEWS][0].w / 2, view.y - this[ENGINE][VIEWS][0].h / 2, this[ENGINE][VIEWS][0].w, this[ENGINE][VIEWS][0].h);
+    }
+    if(constrain) {
+      const { w, h } = this[ENGINE][ROOMS][0].size;
+      const [ r, b ] = [
+        view.x + view.w,
+        view.y + view.h
+      ];
+      if(view.w > w) {
+        view.x = (w - view.w) / 2;
+      } else if(view.x < 0) {
+        view.x = 0;
+      } else if(r > w) {
+        view.x = w - view.w;
+      }
+      if(view.h > h) {
+        view.y = (h - view.h) / 2;
+      } else if(view.y < 0) {
+        view.y = 0;
+      } else if(b > h) {
+        view.y = h - view.h;
+      }
+    }
+    this[ENGINE][VIEWS][0] = new Rectangle(...view);
+  }
+
+  get room() {
+    return {
+      // go to the given room
+      goto: (Rm) => {
+        let old = null;
+        if(this[ENGINE][ROOMS][0]) {
+          old = this[ENGINE][ROOMS][0].constructor;
+          this[ENGINE].proc(new GameEvent('roomend', old, Rm));
+          this[ENGINE][ROOMS][0].end();
+        }
+        this[ENGINE][ROOMS].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][OBJECTS].splice(1, 1, []);
+        this[ENGINE][VIEWS].unshift(new Rectangle(0, 0, ...this[ENGINE].size))
+        if(!(this[ENGINE][ROOMS][0] instanceof Room)) {
+          throw `${this[ENGINE][ROOMS][0].constructor.name} is not a Room`;
+        }
+        (async () => {
+          this[ENGINE][ROOMS][0].load();
+          this[ENGINE].proc(new GameEvent('roomload', old, Rm));
+          await this[ENGINE][ROOMS][0].loaded;
+          // remove the old room, which was temporarily shifted
+          if(this[ENGINE][ROOMS][1]) {
+            this[ENGINE][ROOMS].splice(1, 1)[0].destructor();
+            this[ENGINE][OBJECTS].splice(1, 1);
+            this[ENGINE][VIEWS].splice(1, 1);
+          }
+          this[ENGINE][ROOMS][0].start();
+          this[ENGINE].proc(new GameEvent('roomstart', old, Rm));
+        })();
+      },
+      // freeze the current room and put this[ENGINE] one over top
+      overlay: (Rm) => {
+        const old = this[ENGINE][ROOMS][0].constructor;
+        this[ENGINE][ROOMS].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][OBJECTS].unshift([]);
+        this[ENGINE][VIEWS].unshift(new Rectangle(0, 0, ...this[ENGINE].size));
+        if(!(this[ENGINE][ROOMS][0] instanceof Room)) {
+          throw `${this[ENGINE][ROOMS][0].constructor.name} is not a Room`;
+        }
+        (async () => {
+          this[ENGINE][ROOMS][0].load();
+          this[ENGINE].proc(new GameEvent('roomload', null, Rm));
+          await this[ENGINE][ROOMS][0].loaded;
+          this[ENGINE][ROOMS][0].start();
+          this[ENGINE].proc(new GameEvent('roomstart', null, Rm));
+        })();
+      },
+      // closes the current room overlay
+      close: () => {
+        this[ENGINE].proc(new GameEvent('roomend', this[ENGINE][ROOMS][0].constructor, null));
+        this[ENGINE][ROOMS][0].end();
+        this[ENGINE][ROOMS][0].destructor();
+        this[ENGINE][ROOMS].shift();
+        this[ENGINE][OBJECTS].shift();
+        this[ENGINE][VIEWS].shift();
+        if(this[ENGINE][ROOMS].length === 0) {
+          throw `You closed the last room... please don't do that`;
+        }
+      }
+    }
+  }
+
+  mousestate(button) {
+    return this[ENGINE][INPUT].mousestate(button);
+  }
+
+  keystate(key) {
+    return this[ENGINE][INPUT].keystate(key);
+  }
+
+  // end the game
+  // NOTE: for JS version of this[ENGINE] engine, this[ENGINE] function isn't all that
+  // useful since you can't really 'close' a canvas
+  end() {
+    this[ENGINE].proc(new GameEvent('gameend'));
+    this[ENGINE].end();
+    window.cancelAnimationFrame(this[ENGINE][RAF]);
+    this[ENGINE][RAF] = null;
+    this[ENGINE][ROOMS] = [];
+    this[ENGINE][OBJECTS] = [[]];
+  }
+
+  // end the game and run it again
+  restart() {
+    this[ENGINE].util.end();
+    this[ENGINE].run();
+  }
+
+  sound(name) {
+    return this[ENGINE][SOUND_MANAGER].sound(name);
+  }
+
+  music(name) {
+    this[ENGINE][SOUND_MANAGER].music(name);
+  }
+
+  // spawn an object
+  spawn(...args) {
+    return this[ENGINE][ROOMS][0].spawn(...args);
+  }
+
+  // find an object
+  find(Obj) {
+    return this[ENGINE][ROOMS][0].find(Obj);
+  }
+
+  // destroy an object
+  destroy(obj) {
+    this[ENGINE][ROOMS][0].destroy(obj);
+  }
+
+  // checks if two colliders are colliding
+  collides(where, what) {
+    if(what instanceof Collider) {
+      return what.collides(where);
+    }
+    if(this[ENGINE][ROOMS][0].collides(where, what)) {
+      return true;
+    }
+    if(what !== 'room') {
+      what = what === 'any'
+        ? this[ENGINE][OBJECTS][0].filter(o => o instanceof Collider)
+        : this[ENGINE][OBJECTS][0].filter(o => o instanceof what);
+      for(let it of what) {
+        if(it.collides(where)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+}
+
 
 export { Engine };
 export default Engine;

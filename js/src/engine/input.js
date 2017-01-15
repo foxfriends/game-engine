@@ -5,6 +5,8 @@ import GameEvent from './game-event';
 const [QUEUE, STATE] = [Symbol(), Symbol()];
 
 class Input {
+  static preventDefault = false;
+
   [QUEUE] = {
     keydown: [],
     keyup: [],
@@ -36,20 +38,31 @@ class Input {
   }
 
   keydown(event) {
-    this[QUEUE].keydown.push(new GameEvent('keydown', event.key));
-    this[STATE].key[event.key] = true;
+    if(this.canvas === document.activeElement) {
+      event.preventDefault();
+      this[QUEUE].keydown.push(new GameEvent('keydown', event.key));
+      this[STATE].key[event.key] = true;
+    }
   }
   keyup(event) {
-    this[QUEUE].keyup.push(new GameEvent('keyup', event.key));
-    this[STATE].key[event.key] = false;
+    if(this.canvas === document.activeElement) {
+      event.preventDefault();
+      this[QUEUE].keyup.push(new GameEvent('keyup', event.key));
+      this[STATE].key[event.key] = false;
+    }
   }
   mousedown(event) {
-    this[QUEUE].mousedown.push(new GameEvent('mousedown', event.button));
-    this[STATE].mouse[event.button] = true;
+    if(this.canvas === document.activeElement) {
+      this[QUEUE].mousedown.push(new GameEvent('mousedown', event.button));
+      this[STATE].mouse[event.button] = true;
+    }
   }
   mouseup(event) {
-    this[QUEUE].mouseup.push(new GameEvent('mouseup', event.button));
-    this[STATE].mouse[event.button] = false;
+    if(this === document.activeElement) {
+      event.preventDefault();
+      this[QUEUE].mouseup.push(new GameEvent('mouseup', event.button));
+      this[STATE].mouse[event.button] = false;
+    }
   }
   mousemove(event) {
     const {left: x, top: y} = this.canvas.getBoundingClientRect();

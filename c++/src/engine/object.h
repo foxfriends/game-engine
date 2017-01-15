@@ -28,7 +28,7 @@ namespace Game {
         // occurs before inputs are processed
         virtual void stepstart();
         // process each input (arbitrary order here)
-        virtual void mousemove(const Position &where);
+        virtual void mousemove(const Position & where);
         virtual void keydown(const int which);
         virtual void mousedown(const int which);
         virtual void keyup(const int which);

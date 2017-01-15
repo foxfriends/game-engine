@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class Sound</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Sound</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        While music is handled internally, the <code class="language-javascript token class-name">Sound</code>
+        class gives a point from which sound resources can be played. Once a sound is
+        played, a <code class="language-javascript token class-name">PlayingSound</code>
+        is produced, which can be used to maniuplate and observe the sound as it plays.
+      </p>
+      <p data-view="javascript">
+        For the JavaScript version, the <code class="language-javascript token class-name">PlayingSound</code>
+        is a subclass of <code class="language-javascript token class-name">Promise</code>, which
+        resolves when the sound playback finishes successfully. This can be used to
+        set up repeats or chain sounds together.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <h3><code class="language-javascript token class-name">Sound</code></h3>
+      <dl>
+        <dt>
+          <code data-view="javascript" class="language-javascript">play() : PlayingSound</code>
+          <code data-view="c++" class="language-cpp">PlayingSound play()</code>
+        </dt>
+        <dd>
+          Plays the sound, immediately, and returns a <code class="language-javascript token class-name">PlayingSound</code>
+          attached to it.
+        </dd>
+      </dl>
+      <h3><code class="language-javascript token class-name">PlayingSound</code></h3>
+      <dl>
+        <dt>
+          <code data-view="javascript" class="language-javascript">stop() : void</code>
+          <code data-view="c++" class="language-cpp">void stop()</code>
+        </dt>
+        <dd>
+          Stops the sound playback immediately. <span data-view="javascript">Calls
+          any rejection handlers of the <code class="language-javascript token class-name">Promise</code>.</span>
+        </dd>
+        <dt>
+          <code data-view="javascript" class="language-javascript">volume : number</code>
+          <ol data-view="c++">
+            <li><code data-view="c++" class="language-cpp">float volume()</code></li>
+            <li><code data-view="c++" class="language-cpp">void volume(float amt)</code></li>
+          </ol>
+        </dt>
+        <dd>
+          <p data-view="javascript">
+            The relative volume to play the sound at. 1 = full, 0 = silent.
+          </p>
+          <details data-view="c++">
+            <summary>
+              <p>
+                The relative volume to play the sound at. 1 = full, 0 = silent.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt><code data-view="c++" class="language-cpp">float amt</code></dt>
+              <dd>
+                the volume to set it to.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          @override
+          init(dest, position, outpos) {
+            [this[PLAYER]] = super.game.find(Player);
+            // acquire the sound
+            this.sound = super.game.sound('door');
+            this.dest = dest;
+            this.pos = position;
+            this.outpos = outpos;
+          }
+
+          // other things...
+
+          @override
+          step() {
+            if(this.checkCollision()) {
+              // play the sound
+              this.sound.play();
+              super.game.room.goto(this.dest);
+              this[PLAYER].doorPos = this.outpos;
+              super.game.destroy(this);
+            }
+          }
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          template&lt;typename Dest&gt;
+          void Door&lt;Dest&gt;::init() {
+            // acquire the sound
+            _sound = &amp; game().sound("door");
+            _player = game().template find&lt;Player&gt;().back();
+          }
+
+          // other things...
+
+          template&lt;typename Dest&gt;
+          void Door&lt;Dest&gt;::step() {
+            if(check_collision()) {
+              // play the sound
+              _sound->play();
+              _player->sprite().x = _outpos.x;
+              _player->sprite().y = _outpos.y;
+              game().template room_goto&lt;Dest&gt;();
+            }
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

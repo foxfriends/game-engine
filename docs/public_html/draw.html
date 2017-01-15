@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class Draw</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Draw</h1>
+      <!-- NOTE: this class is very incomplete and much functionality is not consistent with these docs -->
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        As drawing can be a sensitive operation, all drawing operations are
+        limited to the drawing phase, at which time any components of the game
+        which have something to draw are given an instance of this
+        <code class="language-javascript token class-name">Draw</code> class.
+      </p>
+      <p>
+        The <code class="language-javascript token class-name">Draw</code> class
+        provides an interface for drawing shapes, text, and sprites at any
+        position and depth. Additionally, all methods are chainable to make
+        working with the drawing functions as fluid as possible.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt id="alpha">
+          <code data-view="javascript" class="language-javascript">alpha(alpha : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; alpha(float alpha)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Set the drawing alpha until it is set again. Defaults to 1.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">alpha : number</code>
+                <code data-view="c++" class="language-cpp">float alpha</code>
+              </dt>
+              <dd>
+                the new alpha value. 0 = invisible, 1 = opaque.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="color">
+          <code data-view="javascript" class="language-javascript">color(color : number | string) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; color(Uint8 r, Uint8 g, Uint8 b)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Set the shape and text drawing color until it is set again.
+                Defaults to black.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt data-view="javascript">
+                <code class="language-javascript">color : number | string</code>
+              </dt>
+              <dd data-view="javascript">
+                the new color value. A number parameter is converted to a hex color
+                value, string values are kept as is. Responds to any colors
+                recognized by the browser.
+              </dd>
+              <dt data-view="c++">
+                <code class="language-cpp">Uint8 r</code>
+              </dt>
+              <dd data-view="c++">
+                the red value of the new color.
+              </dd>
+              <dt data-view="c++">
+                <code class="language-cpp">Uint8 g</code>
+              </dt>
+              <dd data-view="c++">
+                the green value of the new color.
+              </dd>
+              <dt data-view="c++">
+                <code class="language-cpp">Uint8 b</code>
+              </dt>
+              <dd data-view="c++">
+                the blue value of the new color.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="font">
+          <code data-view="javascript" class="language-javascript">font(font : string) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; font(std::string font)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Set the text drawing font until it is set again. Be sure to set
+                this at least once before drawing any text.
+              </p>
+              <p data-view="javascript">
+                This behaviour is inconsistent on the JavaScript target.
+                <!-- TODO: make it not inconsistent -->
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">font : string</code>
+                <code data-view="c++" class="language-cpp">std::string font</code>
+              </dt>
+              <dd>
+                the name of the font resource which is to be used.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="valign">
+          <code data-view="javascript" class="language-javascript">valign(valign : string) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; valign(std::string valign)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Set the text drawing vertical alignment. Defaults to top.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">valign : string</code>
+                <code data-view="c++" class="language-cpp">std::string valign</code>
+              </dt>
+              <dd>
+                the alignment to use.
+                <span data-view="javascript">Responds to any alignment that the browser recognizes.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="halign">
+          <code data-view="javascript" class="language-javascript">halign(halign : string) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; halign(std::string halign)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Set the text drawing horizontal alignment. Defaults to left.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">halign : string</code>
+                <code data-view="c++" class="language-cpp">std::string halign</code>
+              </dt>
+              <dd>
+                the alignment to use.
+                <span data-view="javascript">Responds to any alignment that the browser recognizes.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="rect">
+          <code data-view="javascript" class="language-javascript">rect(rect : Rectangle, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; rect(Rectangle rect, int depth)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draws a filled rectangle.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">rect : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle rect</code>
+              </dt>
+              <dd>
+                the rectangle to draw
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="point">
+          <code data-view="javascript" class="language-javascript">point(pos : Position, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; point(Position pos, int depth)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draws a single pixel.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">pos : Position</code>
+                <code data-view="c++" class="language-cpp">Position pos</code>
+              </dt>
+              <dd>
+                the position to draw at
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="sprite">
+          <code data-view="javascript" class="language-javascript">sprite(sprite : Sprite, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; sprite(Sprite rect, int depth)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draws a <code class="language-jaasacript token class-name">Sprite</code>,
+                using its position and current frame.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">rect : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle rect</code>
+              </dt>
+              <dd>
+                the <code class="language-javascript token class-name">Sprite</code> to draw.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="text">
+          <code data-view="javascript" class="language-javascript">text(str : string, pos : Position, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; text(std::string str, Position pos, int depth)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draw some text using the current font.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">str : string</code>
+                <code data-view="c++" class="language-cpp">std::string str</code>
+              </dt>
+              <dd>
+                the text to draw.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">pos : Position</code>
+                <code data-view="c++" class="language-cpp">Position pos</code>
+              </dt>
+              <dd>
+                the position to draw at
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          'use strict';
+          import { Drawable, GameObject, override, Position } from '../../engine';
+
+          // a base class for showing simple menus
+          class Menu extends Drawable(GameObject) {
+            opts = {};
+            cur = 0;
+
+            @override
+            keydown(which) {
+              // react to input
+              switch(which) {
+                case 'Enter':
+                  // do the action
+                  this.opts[Object.keys(this.opts)[this.cur]].call(this);
+                  break;
+                case 'ArrowDown':
+                  // loop options down
+                  this.cur = (this.cur + 1) % Object.keys(this.opts).length;
+                  break;
+                case 'ArrowUp':
+                  // loop options up
+                  this.cur = (this.cur - 1 + Object.keys(this.opts).length) % Object.keys(this.opts).length;
+                  break;
+              }
+            }
+
+            @override
+            draw(draw) {
+              let i = 0;
+              draw.font('hack')
+                  .alpha(1);
+              // draw each option
+              for(let opt of Object.keys(this.opts)) {
+                draw.color(i === this.cur ? 0xFF0000 : 0) // highlight the selected option
+                    .text(opt, new Position(64, 128 + 32 * i)); // draw the text
+                ++i;
+              }
+            }
+          }
+
+          export default Menu;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+          #include &lt;string&gt;
+          #include &lt;map&gt;
+          #include &lt;functional&gt;
+
+          // a base class for showing simple menus
+          class Menu : public virtual Game::Object, public Game::Drawable {
+          public:
+            typedef std::pair&lt;std::string, std::function&lt;void(void)&gt;&gt; Option;
+          private:
+            unsigned int _cur = 0;
+            std::vector&lt;Option&gt; _opts;
+          public:
+            Menu(const std::vector&lt;Option&gt; &amp; opts) : _opts { opts } {}
+
+            virtual void keydown(int key) override {
+              // react to input
+              switch(key) {
+              case SDL_SCANCODE_DOWN:
+                // loop options down
+                _cur = (_cur + 1) % _opts.size();
+                break;
+              case SDL_SCANCODE_UP:
+                // loop options up
+                _cur = (_cur + _opts.size() - 1) % _opts.size();
+                break;
+              case SDL_SCANCODE_RETURN:
+                // do the action
+                _opts.at(_cur).second();
+                break;
+              }
+            }
+
+            virtual void draw(Game::Draw &amp; draw) const override {
+              // draw the menu text
+              Game::Position where { 64, 128 };
+              draw.font("hack")
+                  .alpha(1);
+              // draw each option
+              for(unsigned int i = 0; i < _opts.size(); ++i) {
+                std::string &amp; opt = _opts[i].first;
+                where.y = 128 + 32 * i;
+                if(i == _cur) {
+                  // highlight the selected option
+                  draw.color(0xff, 0, 0);
+                } else {
+                  draw.color(0, 0, 0);
+                }
+                // draw the text
+                draw.text(opt, where);
+              }
+            }
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class Engine</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Engine</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The <code class="language-javascript token class-name">Engine</code> class is the base of
+        the system. Internally, it manages the state of the game. The flow of the
+        game is specified by extending this base class to define the steps
+        required to start and end the game.
+      </p>
+      <p data-view="javascript">
+        The resource <a href="resources.html#config">configuration file</a> is attached to this class using the
+        <a href="decorators.html#config"><code class="language-javascript">@config</code> decorator</a>.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt id="constructor">
+          <code data-view="javascript" class="language-javascript">constructor(canvas : string, size : Dimension)</code>
+          <code data-view="c++" class="language-cpp">Engine(std::string title, Game::Dimension size, std::string cfg)</code><em data-view="c++">protected</em>
+        </dt>
+        <dd>
+          <details>
+            <dl class="params">
+              <dt data-view="c++">
+                <code class="language-cpp">std::string title</code>
+              </dt>
+              <dd data-view="c++">
+                the window title
+              </dd>
+              <dt data-view="javascript">
+                <code class="language-javascript">canvas : string</code>
+              </dt>
+              <dd data-view="javascript">
+                a CSS selector to identify the canvas element to be used for this game
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">size : Dimension</code>
+                <code data-view="c++" class="language-cpp">Game::Dimension size</code>
+              </dt>
+              <dd>
+                the width and height of the <span data-view="javascript">canvas</span><span data-view="c++">window</span>
+              </dd>
+              <dt data-view="c++">
+                <code class="language-cpp">std::string cfg</code> <em>optional</em>
+              </dt>
+              <dd data-view="c++">
+                the path to the config file, relative to the running executable
+              </dd>
+            </dl>
+            <summary>
+              <p data-view="javascript">
+                Attaches this <code class="language-javascript token class-name">Engine</code>
+                to a canvas on the page, and sets its dimensions.
+              </p>
+              <p data-view="c++">
+                Creates the game window, setting its title and dimensions.
+                The resource <a href="resources.html#config">configuration file</a>
+                is also passed into the underlying
+                <code class="language-javascript token class-name">Engine</code> here.
+              </p>
+            </summary>
+          </details>
+        </dd>
+        <dt id="start">
+          <code data-view="javascript" class="language-javascript">start() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void start()</code><em data-view="c++">private</em>
+        </dt>
+        <dd>
+          <p>
+            Doesn't do anything by default, but can be overriden to provide the
+            actions that must be performed to start the game.
+            <span data-view="javascript">To be used internally &ndash; do not
+            call this method manually.</span>
+          </p>
+        </dd>
+        <dt id="end">
+          <code data-view="javascript" class="language-javascript">end() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void end()</code><em data-view="c++">private</em>
+        </dt>
+        <dd>
+          <p>
+            Doesn't do anything by default, but can be overriden to provide the
+            actions that must be performed once the game has ended.
+            <span data-view="javascript">To be used internally &ndash; do not
+            call this method manually.</span>
+          </p>
+        </dd>
+        <dt id="run">
+          <code data-view="javascript" class="language-javascript">run() : void</code>
+          <code data-view="c++" class="language-cpp">int run()</code>
+        </dt>
+        <dd>
+          <p data-view="javascript">
+            Runs the game (asynchronously).
+          </p>
+          <details data-view="c++">
+            <dl class="params">
+              <dt>Return value</dt>
+              <dd>
+                An integer status code depending on the game's success.
+              </dd>
+            </dl>
+            <summary>
+              <p>
+                Runs the game as a blocking operation.
+              </p>
+            </summary>
+          </details>
+        </dd>
+        <dt id="util">
+          <code data-view="javascript" class="language-javascript">util : GameUtility</code><em data-view="javascript">read-only</em>
+          <code data-view="c++" class="language-cpp">GameUtility &amp; util()</code>
+        </dt>
+        <dd>
+          <p>
+            Provides a <a href="game-utility.html"><code class="language-javascript token class-name">GameUtility</code>
+            instance</a> that exposes a number of useful functions to allow the game's
+            components to influence its state.
+          </p>
+        </dd>
+      </dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          import { Engine, override } from 'engine';
+          import cfg from '../resources/config.json';
+          import Level1 from './rooms/level-1';
+
+          @config('resources', cfg)
+          class MyGame extends Engine {
+            constructor() {
+              super('#game', new Dimension(1024, 768));
+            }
+
+            @override
+            start() {
+              // start the first room
+              this.util.room.goto(Level1);
+            }
+          }
+
+          // actually start the game
+          const myGame = new MyGame();
+          myGame.run();
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+          #include "rooms/level-1.h"
+
+          class MyGame : public Game::Engine {
+            void start() override {
+              util().room_goto&lt;Game::Level1&gt;();
+            }
+          };
+
+          int main() {
+            MyGame game;
+            return game.run();
+          }
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>

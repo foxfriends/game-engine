@@ -14,15 +14,12 @@ function Collider(bbox) {
       }
       // get the collision box for this object
       get bbox() {
-        // TODO: position arithmetic??
-        const pos = new Position(this.position.x + bbox.x, this.position.y + bbox.y);
-        return new Rectangle(...pos, bbox.w, bbox.h);
+        return bbox;
       }
-      // actually check a collision
-      // HACK: internalize (?)
+      // actually for check a collision
       collides(where) {
-        return Math.abs((where.x + where.w) - (this.bbox.x + this.bbox.w)) < (where.w + this.bbox.w) / 2 &&
-          Math.abs((where.y + where.h) - (this.bbox.y + this.bbox.h)) < (where.h + this.bbox.h) / 2;
+        return Math.abs((where.x + where.w) - (this.bbox.x + this.position.x + this.bbox.w)) < (where.w + this.bbox.w) / 2 &&
+          Math.abs((where.y + where.h) - (this.bbox.y + this.position.y + this.bbox.h)) < (where.h + this.bbox.h) / 2;
       }
     };
   }

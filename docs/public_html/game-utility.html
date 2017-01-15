@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class GameUtility</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>GameUtility</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The <code class="language-javascript token class-name">GameUtility</code>
+        is where most control over the state of the game comes from.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt id="view">
+          <ol data-view="javascript">
+            <li>
+              <code class="language-javascript">view() : Rectange</code>
+            </li>
+            <li>
+              <code class="language-javascript">view(center : Position, constrain : bool) : void</code>
+            </li>
+            <li>
+              <code class="language-javascript">view(bounds : Rectangle, constrain : bool) : void</code>
+            </li>
+          </ol>
+          <ol data-view="c++">
+            <li>
+              <code class="language-cpp">Rectangle view()</code>
+            </li>
+            <li>
+              <code class="language-cpp">void view(Position center, bool constrain)</code>
+            </li>
+            <li>
+              <code class="language-cpp">void view(Rectangle bounds, bool constrain)</code>
+            </li>
+          </ol>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Get or set the current viewport into the room.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">center : Position</code>
+                <code data-view="c++" class="language-cpp">Position center</code>
+              </dt>
+              <dd>
+                the position that should be in the center of the view. Current
+                viewport dimensions are preserved.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">bounds : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle bounds</code>
+              </dt>
+              <dd>
+                the area of the room that should be visible in the view.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">constrain : bool</code>
+                <code data-view="c++" class="language-cpp">bool constrain</code><em>default: true</em>
+              </dt>
+              <dd>
+                Whether the view should be constrained within the room boundaries
+                (default), or be allowed to look outside the room.
+                If a dimension is larger than the room with constrain turned on,
+                the room is centered in that dimension.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="room-goto">
+          <code data-view="javascript" class="language-javascript">room.goto(Rm : class)</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename Rm&gt; void room_goto()</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Closes the current <a href="room.html">Room</a>, and moves on to the next one. If multiple
+                layers are open, only the top (active) layer is changed.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">Rm : class</code>
+                <code data-view="c++" class="language-cpp">typename Rm</code>
+              </dt>
+              <dd>
+                the <a href="room.html">Room</a> to start next.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="room-overlay">
+          <code data-view="javascript" class="language-javascript">room.overlay(Rm : class)</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename Rm&gt; void room_overlay()</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Opens the given room in a new layer, over top of the current one.
+                The current room becomes disabled.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">Rm : class</code>
+                <code data-view="c++" class="language-cpp">typename Rm</code>
+              </dt>
+              <dd>
+                the <a href="room.html">Room</a> to open.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="room-close">
+          <code data-view="javascript" class="language-javascript">room.close()</code>
+          <code data-view="c++" class="language-cpp">void room_close()</code>
+        </dt>
+        <dd>
+          <p>
+            Closes the currently active (top) layer. If the last layer is closed
+            an error is thrown.
+          </p>
+        </dd>
+        <dt id="mousestate">
+          <code data-view="javascript" class="language-javascript">mousestate(button : number) : bool</code>
+          <code data-view="c++" class="language-cpp">bool mousestate(int button)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Get the current pressed state of a mouse button.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">button : number</code>
+                <code data-view="c++" class="language-cpp">int button</code>
+              </dt>
+              <dd>
+                the button to check.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button"><code class="language-javascript">KeyboardEvent.button</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_MouseButtonEvent"><code class="language-cpp">SDL_BUTTON_*</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="keystate">
+          <code data-view="javascript" class="language-javascript">keystate(key : string) : bool</code>
+          <code data-view="c++" class="language-cpp">bool keystate(int key)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Get the current pressed state of a key.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">key : string</code>
+                <code data-view="c++" class="language-cpp">int key</code>
+              </dt>
+              <dd>
+                the key to check.
+                <span data-view="javascript">Corresponds to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code#Code_values"><code class="language-javascript">KeyboardEvent.code</code> values</a>.</span>
+                <span data-view="c++">Corresponds to <a href="https://wiki.libsdl.org/SDL_Scancode"><code class="language-cpp">SDL_Scancode</code> values</a>.</span>
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="end">
+          <code data-view="javascript" class="language-javascript">end() : void</code>
+          <code data-view="c++" class="language-cpp">void end()</code>
+        </dt>
+        <dd>
+          <p>
+            Ends the game<span data-view="c++">, closing the game window</span>.
+            <span data-view="javascript">Not very useful in the JavaScript version,
+            as the game window can't really be closed.</span>
+          </p>
+        </dd>
+        <dt id="restart">
+          <code data-view="javascript" class="language-javascript">restart() : void</code>
+          <code data-view="c++" class="language-cpp">void restart()</code>
+        </dt>
+        <dd>
+          <p>
+            Ends the game and then starts it again, using the same instance of
+            the <a href="engine.html"><code class="language-javascript token class-name">Engine</code></a>.
+          </p>
+        </dd>
+        <dt id="sound">
+          <code data-view="javascript" class="language-javascript">sound(name : string) : Sound</code>
+          <code data-view="c++" class="language-cpp">Sound &amp; sound(std::string name)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Gets a reference to the <a href="sound.html"><code class="language-javascript token class-name">Sound</code></a>
+                with the given name. If the requested <a href="sound.html"><code class="language-javascript token class-name">Sound</code></a> has not been loaded, an
+                error is thrown. <a href="decorators.html#persistent">Persistent</a> <a href="game-object.html">{{GameObject}}s</a>
+                who carry a <a href="sound.html"><code class="language-javascript token class-name">Sound</code></a>
+                reference between <a href="room.html"><code class="language-javascript token class-name">Room</code>s</a>
+                that do not each individually load the sound are not permitted, and their behaviour is
+                undefined.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">name : string</code>
+                <code data-view="c++" class="language-cpp">std::string name</code>
+              </dt>
+              <dd>
+                the name of the <a href="sound.html"><code class="language-javascript token class-name">Sound</code></a>
+                to find.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="music">
+          <code data-view="javascript" class="language-javascript">music(name : string) : void</code>
+          <code data-view="c++" class="language-cpp">void music(std::string name)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Changes the current background <a href="resources.html">music</a> to the one given. The <a href="resources.html">music</a>
+                will loop until it is changed again. If a
+                <a href="room.html"><code class="language-javascript token class-name">Room</code></a> is entered that
+                does not have the currently playing <a href="resources.html">music</a>
+                loaded, playback will be stopped.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">name : string</code>
+                <code data-view="c++" class="language-cpp">std::string name</code>
+              </dt>
+              <dd>
+                the name of the <a href="resources.html">music resource</a>
+                to play.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="spawn">
+          <code data-view="javascript" class="language-javascript">spawn(T : class, ...args : ...any) : T</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename T, typename ... Args&gt; T * spawn(Args ... args)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Spawns a new <a href="game-object.html">{{GameObject}}</a> of the
+                given type.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the class of the {{GameObject}} you wish to spawn.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">...args : ...any</code>
+                <code data-view="c++" class="language-cpp">Args ... args</code>
+              </dt>
+              <dd>
+                the parameters to pass to the
+                <a data-view="javascript" href="game-object.html#init"><code class="language-javascript token class-name">GameObject.init()</code> method</a>
+                <a data-view="c++" href="game-object.html#constructor">constructor</a>.
+              </dd>
+              <dt>
+                <code class="language-javsacript token keyword keyword-return">return</code>
+              </dt>
+              <dd>
+                <span data-view="cpp">a pointer to </span>the newly spawned instance.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="find">
+          <code data-view="javascript" class="language-javascript">find(T : class) : T[]</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename T&gt; std::vector&lt;T *&gt; find()</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Searches the current <code class="language-cpp token class-name">Room</code>
+                for all instances of <code class="language-javascript token class-name">T</code>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the type to search the <code class="language-cpp token class-name">Room</code> for.
+              </dd>
+              <dt>
+                <code class="language-javascript token keyword keyword-return">return</code>
+              </dt>
+              <dd>
+                a list of <span data-view="c++">pointers to </span>the instances found.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="destroy">
+          <span data-view="javascript">
+            <ol>
+              <li><code class="language-javascript">destroy(who : GameObject) : void</code></li>
+              <li><code class="language-javascript">destroy(T : class) : void</code></li>
+            </ol>
+          </span>
+          <span data-view="c++">
+            <ol>
+              <li><code class="language-cpp">void destroy(Object &amp; who)</code></li>
+              <li><code class="language-cpp">template&lt;typename T&gt; void destroy()</code></li>
+            </ol>
+          </span>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Destroys an instance <span class="reference">(1)</span>, or all
+                instances of a type <span class="reference">(2)</span> that are
+                currently in the <code class="language-javascript token class-name">Room</code>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the type of instance to destroy all of.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">who : T</code>
+                <code data-view="c++" class="language-cpp">Object &amp; who</code>
+              </dt>
+              <dd>
+                the instance to destroy.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="collides">
+          <span data-view="javascript">
+            <ol>
+              <li><code class="language-javascript">collides(where : Rectangle, who : Collider)</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, T : class)</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, 'room')</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle)</code></li>
+            </ol>
+          </span>
+          <span data-view="c++">
+            <ol>
+              <li><code class="language-cpp">template&lt;typename T&gt; bool collides(Rectangle where)</code></li>
+              <li><code class="language-cpp">bool collides(Rectangle where, Collider &amp; who)</code></li>
+              <li><code class="language-cpp">bool collides_room(Rectangle where)</code></li>
+              <li><code class="language-cpp">bool collides(Rectangle where)</code></li>
+            </ol>
+          </span>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              Checks for a collision with another <a href="game-object.html#collider"><code class="language-cpp token class-name">Collider</code></a>,
+              <span class="reference">(1)</span>,
+              or any instance of a given type <span class="reference">(2)</span>.
+              the tilemap <span class="reference">(3)</span>,
+              or with anything
+              (tilemap or any <a href="game-object.html#collider"><code class="language-cpp token class-name">Collider</code></a>)
+              <span class="reference">(4)</span>.</span>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="c++" class="language-javascript">where : Rectangle</code>
+                <code data-view="javascript" class="language-cpp">Rectangle where</code>
+              </dt>
+              <dd>
+                the area in which to check for collisions.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">who : Collider</code>
+                <code data-view="c++" class="language-cpp">Collider &amp; who</code>
+              </dt>
+              <dd>
+                the <a href="game-object.html#collider"><code class="language-cpp token class-name">Collider</code></a>
+                to check for collisions with.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the class to check for collisions with.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>

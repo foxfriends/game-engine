@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Game Engine - class Room</title>
+  <meta charset="UTF-8" />
+  <script src="index.min.js" type="text/javascript" defer></script>
+</head>
+<body>
+  <nav>
+    <div data-tab="javascript">JavaScript</div>
+    <div data-tab="c++">C++</div>
+  </nav>
+  <header>
+    <hgroup>
+      <h1>Room</h1>
+      <hr />
+    </hgroup>
+  </header>
+  <main>
+    <section class="overview">
+      <p>
+        The <code class="language-javascript token class-name">Room</code> class
+        provides a base from which you can a level or state for the game. There
+        must be at least one <code class="language-javascript token class-name">Room</code>
+        active at all times. <a href="game-object.html">{{GameObject}}s</a>
+        are spawned in rooms and are able to interact with the <code class="language-javascript token class-name">Room</code> and with
+        other <a href="game-object.html">{{GameObject}}s</a>.
+      </p>
+      <p>
+        The tilemap, texture page, sound, and music <a href="resources.html">resources</a> that need to be loaded
+        in order to display this room are
+        <span data-view="javascript">attached to this class with their respective <a href="decorators.html">decorators</a>.</span>
+        <span data-view="c++">passed into the superclass constructor.</span>
+        While not every resource may need to be used at the start of the room, they
+        must all be loaded before the room can be displayed. Any resources that
+        are not loaded when the game attempts to use it will cause a runtime error.
+      </p>
+    </section>
+    <section class="interface">
+      <h3>Interface</h3>
+      <dl>
+        <dt data-view="c++" id="constructor">
+          <pre>
+            <code data-view="c++" class="block language-cpp">
+              Room(
+                int id,
+                std::initializer_list&lt;std::string&gt; textures,
+                std::initializer_list&lt;std::string&gt; sound,
+                std::initializer_list&lt;std::string&gt; music,
+                std::string tilemap
+              )
+            </code>
+          </pre>
+        </dt>
+        <dd data-view="c++">
+          <details>
+            <summary>
+              <p>
+                Initializes the room with any configuration information it needs.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code class="language-cpp">int id</code>
+              </dt>
+              <dd>
+                a number, likely different from every other room's number, that
+                is used to identify this room in the
+                <a href="game-object.html"><code class="language-cpp token class-name">Object</code>'s</a>
+                <code class="language-cpp token function">room_start</code> and
+                <code class="language-cpp token function">room_end</code> methods.
+              </dd>
+              <dt>
+                <code class="language-cpp">std::initializer_list&lt;std::string&gt; textures</code><em>optional</em>
+              </dt>
+              <dd>
+                lists all <a href="resources.html#texture-page">texture pages</a>
+                that are required to show anything that may occur in the
+                <code class="language-cpp token class-name">Room</code>.
+                Texture pages that are part of a tilemap are included automatically.
+              </dd>
+              <dt>
+                <code class="language-cpp">std::initializer_list&lt;std::string&gt; sound</code><em>optional</em>
+              </dt>
+              <dd>
+                lists all <a href="resources.html#sound">sound resources</a> that
+                are required to handle any sound effects that may be required to play
+                in the <code class="language-cpp token class-name">Room</code>.
+              </dd>
+              <dt>
+                <code class="language-cpp">std::initializer_list&lt;std::string&gt; music</code><em>optional</em>
+              </dt>
+              <dd>
+                lists all <a href="resources.html#music">music resources</a> that
+                are required to handle any music changes that may occur in the
+                <code class="language-cpp token class-name">Room</code>.
+              </dd>
+              <dt>
+                <code class="language-cpp">std::string tilemap</code><em>optional</em>
+              </dt>
+              <dd>
+                the name of the <a href="resources.html#tilemap">tilemap</a> to
+                use for this <code class="language-javascript token class-name">Room</code>. A <code class="language-javascript token class-name">Room</code> can have only one tilemap.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="load">
+          <code data-view="javascript" class="language-javascript">load() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void load()</code>
+        </dt>
+        <dd>
+          <p>
+            Does nothing by default, but can be overriden to provide any action that
+            must be performed as soon as the <code class="language-cpp token class-name">Room</code>
+            starts loading. This method is called automatically before the room starts.
+            To be called internally &ndash; do not call this method manually.
+          </p>
+          <p data-view="c++">
+            Currently, the C++ version loads all resources synchronously, so this
+            event is not all that useful.
+          </p>
+        </dd>
+        <dt id="start">
+          <code data-view="javascript" class="language-javascript">start() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void start()</code>
+        </dt>
+        <dd>
+          <p>
+            Does nothing by default, but can be overriden to provide any action that
+            must be performed to start the <code class="language-cpp token class-name">Room</code>.
+            This method is called automatically once all the resources have been
+            loaded.
+            To be called internally &ndash; do not call this method manually.
+          </p>
+        </dd>
+        <dt id="end">
+          <code data-view="javascript" class="language-javascript">end() : void</code>
+          <code data-view="c++" class="language-cpp">virtual void end()</code>
+        </dt>
+        <dd>
+          <p>
+            Does nothing by default, but can be overriden to provide any action that
+            must be performed to ends the <code class="language-cpp token class-name">Room</code>.
+            This method is called automatically when the <code class="language-cpp token class-name">Room</code> is closed.
+            To be called internally &ndash; do not call this method manually.
+          </p>
+        </dd>
+        <dt id="proc">
+          <code data-view="javascript" class="language-javascript">proc(event : GameEvent) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void proc(const Event &amp; event)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                By default, triggers events on all
+                <a href="game-object.html">{{GameObject}}s</a>
+                currently in the <code class="language-cpp token class-name">Room</code>. Can be overriden to change this behaviour, or to
+                allow the <code class="language-cpp token class-name">Room</code>
+                itself to react to events as well. If overriden, be sure to call the
+                original method in order to trigger the
+                <a href="game-object.html"><code data-view="c++" class="language-cpp token class-name">Object</code><code data-view="javascript" class="language-javascript token class-name">GameObject</code>s</a>
+                events as well.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">event : GameEvent</code>
+              </dt>
+              <dd>
+                the
+                <a href="game-event.html">{{GameEvent}}</a>
+                that is to be processed at this time.
+              </dd>
+            </dl>
+          </details>
+        </dt>
+          <dt id="draw">
+          <code data-view="javascript" class="language-javascript">draw(draw : Draw) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void draw(Draw &amp; draw)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                By defualt, draws the tilemap and all
+                <a href="drawable.html"><code class="language-cpp token class-name">Drawable</code>s</a>
+                currently in the <code class="language-cpp token class-name">Room</code>.
+                Can be overriden to change this behaviour, or to
+                allow the <code class="language-cpp token class-name">Room</code>
+                itself to draw something specific. If overriden, be sure to call the
+                original method in order to draw all other components as well.
+              </p>
+              <p>
+                This event is automatically called internally at the end of every
+                frame. Do not call it manually.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">draw : Draw</code>
+                <code data-view="c++" class="language-cpp">Draw &amp; draw</code>
+              </dt>
+              <dd>
+                The <a href="draw.html"><code class="language-javascript token class-name">Draw</code></a>
+                interface, which can be used to draw whatever is needed.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="spawn">
+          <code data-view="javascript" class="language-javascript">spawn(T : class, ...args : ...any) : T</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename T, typename ... Args&gt; T * spawn(Args ... args)</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Creates an
+                <a href="game-object.html">{{GameObject}}</a>
+                of the given class <code class="language-javascript token class-name">T</code>
+                and adds it to the <code class="language-cpp token class-name">Room</code>. Objects spawned this way will be destroyed
+                at the end of the <code class="language-cpp token class-name">Room</code> unless persistent.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the class of the {{GameObject}} you wish to spawn.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">...args : ...any</code>
+                <code data-view="c++" class="language-cpp">Args ... args</code>
+              </dt>
+              <dd>
+                the parameters to pass to the
+                <a data-view="javascript" href="game-object.html#init"><code class="language-javascript token class-name">GameObject.init()</code> method</a>
+                <a data-view="c++" href="game-object.html#constructor">constructor</a>.
+              </dd>
+              <dt>
+                <code class="language-javsacript token keyword keyword-return">return</code>
+              </dt>
+              <dd>
+                <span data-view="cpp">a pointer to </span>the newly spawned instance.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="find">
+          <code data-view="javascript" class="language-javascript">find(T : class) : T[]</code>
+          <code data-view="c++" class="language-cpp">template&lt;typename T&gt; std::vector&lt;T *&gt; find()</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Searches the current <code class="language-cpp token class-name">Room</code>
+                for all instances of <code class="language-javascript token class-name">T</code>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the type to search the <code class="language-cpp token class-name">Room</code> for.
+              </dd>
+              <dt>
+                <code class="language-javascript token keyword keyword-return">return</code>
+              </dt>
+              <dd>
+                a list of <span data-view="c++">pointers to </span>the instances found.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="destroy">
+          <span data-view="javascript">
+            <ol>
+              <li><code class="language-javascript">destroy(who : GameObject) : void</code></li>
+              <li><code class="language-javascript">destroy(T : class) : void</code></li>
+            </ol>
+          </span>
+          <span data-view="c++">
+            <ol>
+              <li><code class="language-cpp">void destroy(Object &amp; who)</code></li>
+              <li><code class="language-cpp">template&lt;typename T&gt; void destroy()</code></li>
+            </ol>
+          </span>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Destroys an instance <span class="reference">(1)</span>, or all instances of a type <span class="reference">(2)</span> that are
+                currently in the <code class="language-javascript token class-name">Room</code>.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the type of instance to destroy all of.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">who : T</code>
+                <code data-view="c++" class="language-cpp">Object &amp; who</code>
+              </dt>
+              <dd>
+                the instance to destroy.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="collides">
+          <span data-view="javascript">
+            <ol>
+              <li><code class="language-javascript">collides(where : Rectangle, 'room')</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, T : class)</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle)</code></li>
+            </ol>
+          </span>
+          <span data-view="c++">
+            <ol>
+              <li><code class="language-cpp">bool collides(Rectangle where)</code></li>
+              <li><code class="language-cpp">template&lt;typename T&gt; bool collides(Rectangle where)</code></li>
+            </ol>
+          </span>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              Checks for a collision with the tilemap <span class="reference">(1)</span>,
+              or any instance of a given type <span class="reference">(2)</span>.
+              To match any type,
+              <a href="game-object.html#collider"><code class="language-cpp token class-name">Collider</code></a>
+              may be passed. <span data-view="javascript">A collision with anything
+              (tilemap or any object) can be checked using <span class="reference">(3)</span>.</span>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="c++" class="language-javascript">where : Rectangle</code>
+                <code data-view="javascript" class="language-cpp">Rectangle where</code>
+              </dt>
+              <dd>
+                the area in which to check for collisions.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">T : class</code>
+                <code data-view="c++" class="language-cpp">typename T</code>
+              </dt>
+              <dd>
+                the class to check for collisions with.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="game">
+          <code data-view="javascript" class="language-javascript">game : GameUtility</code><em data-view="javascript">read-only</em>
+          <code data-view="c++" class="language-cpp">GameUtility &amp; game()</code>
+        </dt>
+        <dd>
+          <p>
+            Provides a <a href="game-utility.html"><code class="language-javascript token class-name">GameUtility</code>
+            instance</a> that exposes a number of useful functions to allow the game's
+            components to influence its state.
+          </p>
+        </dd>
+      <dl>
+    </section>
+    <section class="examples">
+      <h3>Example</h3>
+      <pre data-view="javascript">
+        <code class="block language-javascript">
+          import { Room, override, texturepage, tilemap, Position, music, sound } from '../../engine';
+          import Player from '../objects/player';
+          import Door from '../objects/door';
+          import Loader from '../objects/loader';
+          import * as Outside from './outside';
+
+          @texturepage('sarah')
+          @tilemap('home')
+          @music('overworld')
+          @sound('door')
+          class Home extends Room {
+            @override
+            load() {
+              // show the loading screen until the resources are finished loading
+              super.spawn(Loader);
+            }
+
+            @override
+            start() {
+              // start the music
+              this.game.music('overworld');
+              // only spawn a Player if there isn't one already
+              if(!super.find(Player).length) {
+                super.spawn(Player);
+              }
+              // spawn the door to the next room
+              super.spawn(Door, Outside.v,
+                new Position(18 * 32, 18 * 32 - 16),
+                new Position(10 * 32 - 16, 8 * 32 - 16)
+              );
+            }
+          };
+
+          // expose the room class + circular dependency resolution
+          export { Home as v };
+          export default Home;
+        </code>
+      </pre>
+      <pre data-view="c++">
+        <code class="block language-cpp">
+          #include &lt;engine.h&gt;
+          #include "home.h"
+          #include "outside.h"
+          #include "../objects/player.h"
+          #include "../objects/door.h"
+
+          class RmHome : public Game::Room {
+            RmHome() : Room{ 2, { "sarah" }, { "door" }, { "overworld" }, "home" } {}
+
+            virtual void start() override {
+              // start the music
+              game().music("overworld");
+              // only spawn a Player if there isn't one already
+              if(find&lt;Player&gt;().empty()) {
+                spawn&lt;Player&gt;();
+              }
+              // spawn the door to the next room
+              spawn&lt;Door&lt;RmOutside&gt;&gt;(
+                Game::Position{18 * 32, 18 * 32 - 16},
+                Game::Position{10 * 32 - 16, 8 * 32 - 16}
+              );
+            }
+          };
+        </code>
+      </pre>
+    </section>
+  </main>
+</body>
+</html>
