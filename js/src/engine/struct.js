@@ -7,6 +7,10 @@ class Position {
   }
 
   *[Symbol.iterator] () { yield* [this.x, this.y]; }
+
+  static add(l, r) {
+    return new Position(l.x + r.x, l.y + r.y);
+  }
 }
 
 class Dimension {
@@ -34,6 +38,9 @@ class Rectangle {
     this.h = h;
   }
 
+  static shift(rect, amt) {
+    return new Rectangle(rect.x + amt.x, rect.y + amt.y, rect.w, rect.h);
+  }
   *[Symbol.iterator] () { yield* [this.x, this.y, this.w, this.h]; }
 };
 

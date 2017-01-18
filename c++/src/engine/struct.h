@@ -9,6 +9,7 @@ namespace Game {
         int x, y;
         Position(int x, int y) noexcept : x{ x }, y{ y } {}
         operator SDL_Point() const { return { x, y }; }
+        Position operator + (const Position & r) const { return { x + r.x, y + r.y }; };
     };
     struct Dimension {
         int w, h;
@@ -20,6 +21,7 @@ namespace Game {
         Rectangle(int x, int y, int w, int h) noexcept : Position{ x, y }, Dimension{ w, h } {}
         Rectangle(const Position & p, const Dimension & d) noexcept : Position{ p }, Dimension{ d } {}
         operator SDL_Rect() const { return { x, y, w, h }; }
+        Rectangle operator + (const Position & r) const { return { x + r.x, y + r.y, w, h }; };
     };
 }
 

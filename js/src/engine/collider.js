@@ -18,8 +18,8 @@ function Collider(bbox) {
       }
       // actually for check a collision
       collides(where) {
-        return Math.abs((where.x + where.w) - (this.bbox.x + this.position.x + this.bbox.w)) < (where.w + this.bbox.w) / 2 &&
-          Math.abs((where.y + where.h) - (this.bbox.y + this.position.y + this.bbox.h)) < (where.h + this.bbox.h) / 2;
+        return Math.abs((where.x + where.w / 2) - (this.bbox.x + this.position.x + this.bbox.w / 2)) < (where.w + this.bbox.w) / 2 &&
+          Math.abs((where.y + where.h / 2) - (this.bbox.y + this.position.y + this.bbox.h / 2)) < (where.h + this.bbox.h) / 2;
       }
     };
   }

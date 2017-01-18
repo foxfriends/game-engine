@@ -61,7 +61,7 @@
         </dd>
         <dt id="draw">
           <code data-view="javascript" class="language-javascript">draw(draw : Draw) : void</code>
-          <code data-view="c++" class="language-cpp">virtual void draw(Draw &amp; draw)</code>
+          <code data-view="c++" class="language-cpp">virtual void draw(Draw &amp; draw) const</code>
         </dt>
         <dd>
           <details>
@@ -69,7 +69,11 @@
               <p>
                 By default, draws the
                 <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code></a>
-                if one is set, or does nothing otherwise.
+                if one is set, or does nothing otherwise. This event is run regardless
+                of whether the <a href="room.html"><code class="language-javascript token class-name">Room</code></a>
+                is currently on active (on the top layer), so
+                it is often best to avoid doing any intensive calculations, or modifying
+                the state of the game or the {{GameObject}} during this method.
               </p>
             </summary>
             <dl class="params">

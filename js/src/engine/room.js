@@ -122,6 +122,7 @@ class Room {
     for(let obj of this[OBJECTS]) {
       obj instanceof Drawable && obj.draw(draw);
     }
+    draw.alpha(1);
     this[TILEMAP] && this[TILEMAP].draw(draw);
   }
 

@@ -80,6 +80,15 @@
               The y coordinate.
             </p>
           </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">static add(l : Position, r : Position) : Position</code>
+            <code data-view="c++" class="language-cpp">Position operator + (Position r)</code>
+          </dt>
+          <dd>
+            <p>
+              Adds together two <code class="language-javascript token class-name">Position</code>s.
+            </p>
+          </dd>
         </dl>
       </section>
     </section>
@@ -260,6 +269,17 @@
           <dd>
             <p>
               The height.
+            </p>
+          </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">static shift(rect : Rectangle, amt : Position) : Rectangle</code>
+            <code data-view="c++" class="language-cpp">Rectangle operator + (Position r)</code>
+          </dt>
+          <dd>
+            <p>
+              Creates a new <code class="language-javascript token class-name">Rectangle</code>
+              that is equal to the original <code class="language-javascript token class-name">Rectangle</code>
+              with its x and y coordinates shifted by the given <code class="language-javascript token class-name">Position</code>.
             </p>
           </dd>
         </dl>
