@@ -11,6 +11,14 @@ class Position {
   static add(l, r) {
     return new Position(l.x + r.x, l.y + r.y);
   }
+
+  static sub(l, r) {
+    return new Position(l.x - r.x, l.y - r.y);
+  }
+
+  static equal(l, r) {
+    return l.x === r.x && l.y === r.y;
+  }
 }
 
 class Dimension {
@@ -21,6 +29,14 @@ class Dimension {
 
   static infinite() {
     return new Dimension(Infinity, Infinity);
+  }
+
+  static extend(l, r) {
+    return new Dimension(l.w + r.w, l.h + r.h);
+  }
+
+  static equal(l, r) {
+    return l.w === r.w && l.h === r.h;
   }
 
   *[Symbol.iterator] () { yield* [this.w, this.h]; }
@@ -41,6 +57,15 @@ class Rectangle {
   static shift(rect, amt) {
     return new Rectangle(rect.x + amt.x, rect.y + amt.y, rect.w, rect.h);
   }
+
+  static extend(rect, amt) {
+    return new Rectangle(rect.x, rect.y, rect.w + amt.w, rect.h + amt.h);
+  }
+
+  static equal(l, r) {
+    return l.x === r.x && l.y === r.y && l.w === r.w && l.h === r.h;
+  }
+
   *[Symbol.iterator] () { yield* [this.x, this.y, this.w, this.h]; }
 };
 

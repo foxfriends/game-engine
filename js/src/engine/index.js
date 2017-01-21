@@ -203,7 +203,7 @@ class GameUtility {
         }
         this[ENGINE][ROOMS].unshift(new Rm(this[ENGINE]));
         this[ENGINE][OBJECTS].splice(1, 1, []);
-        this[ENGINE][VIEWS].unshift(new Rectangle(0, 0, ...this[ENGINE].size))
+        this[ENGINE][VIEWS].unshift(new Rectangle(0, 0, ...this[ENGINE].size));
         if(!(this[ENGINE][ROOMS][0] instanceof Room)) {
           throw `${this[ENGINE][ROOMS][0].constructor.name} is not a Room`;
         }
