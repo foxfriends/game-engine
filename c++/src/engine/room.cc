@@ -35,16 +35,25 @@ namespace Game {
             o->proc(event);
         }
     }
-    void Room::draw(Draw &draw) {
+    void Room::draw(Draw & draw) const {
         if(_tilemap) {
             _tilemap->draw(draw);
         }
-        for(auto &o : _objects) {
+        for(auto & o : _objects) {
             if(auto d = dynamic_cast<const Drawable *>(o.get())) {
                 d->draw(draw);
             }
         }
     }
+
+    void Room::drawGUI(Draw & draw) const {
+        for(auto & o : _objects) {
+            if(auto d = dynamic_cast<const Drawable *>(o.get())) {
+                d->drawGUI(draw);
+            }
+        }
+    }
+
     void Room::end() {}
 
     void Room::destroy(Object & who) {

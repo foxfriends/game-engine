@@ -126,6 +126,12 @@ class Room {
     this[TILEMAP] && this[TILEMAP].draw(draw);
   }
 
+  drawGUI(draw) {
+    for(let obj of this[OBJECTS]) {
+      obj instanceof Drawable && obj.drawGUI(draw);
+    }
+  }
+
   // check if there is a collision in this room
   collides(where, what = 'any') {
     if(what === 'room' || what === 'any') {

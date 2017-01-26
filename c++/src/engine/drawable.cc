@@ -33,4 +33,6 @@ namespace Game {
             draw.sprite(*_sprite.get());
         }
     }
+
+    void Drawable::drawGUI(Draw & draw) const {}
 }

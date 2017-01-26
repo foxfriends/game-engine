@@ -88,6 +88,32 @@
             </dl>
           </details>
         </dd>
+        <dt id="drawGUI">
+          <code data-view="javascript" class="language-javascript">drawGUI(draw : Draw) : void</code>
+          <code data-view="c++" class="language-cpp">virtual void drawGUI(Draw &amp; draw) const</code>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                By default, does nothing, but can be overriden to draw a GUI layer.
+                The GUI layer is drawn overtop of everything else in the room, and
+                the coordinates used are relative to the screen, rather than the
+                current view port.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">draw : Draw</code>
+                <code data-view="c++" class="language-cpp">Draw &amp; draw</code>
+              </dt>
+              <dd>
+                the instance of the <a href="draw.html"><code class="language-javascript token class-name">Draw</code> class</a>
+                to be used for drawing.
+              </dd>
+            </dl>
+          </details>
+        </dd>
         <dt id="sprite">
           <ol data-view="javascript">
             <li><code class="language-javascript">sprite : Sprite</code></li>

@@ -243,6 +243,8 @@ function Drawable(Base = class {}) {
     draw(draw) {
       draw.self();
     }
+    // draw relative to the screen instead of the room
+    drawGUI(draw) {}
 
     get sprite() {
       return this[SPRITE];
@@ -262,7 +264,7 @@ function Drawable(Base = class {}) {
 Object.defineProperty(Drawable, Symbol.hasInstance, {
   value(instance) {
     // TODO: should this not be duck typed?
-    return typeof instance.draw === 'function';
+    return typeof instance.draw === 'function' && typeof instance.drawGUI === 'function';
   }
 });
 
@@ -477,6 +479,12 @@ let Room = class Room {
     }
     draw.alpha(1);
     this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].draw(draw);
+  }
+
+  drawGUI(draw) {
+    for (let obj of this[OBJECTS]) {
+      obj instanceof __WEBPACK_IMPORTED_MODULE_0__drawable__["b" /* default */] && obj.drawGUI(draw);
+    }
   }
 
   // check if there is a collision in this room
@@ -1162,20 +1170,21 @@ let Engine = class Engine {
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
-    for (let i = this[ROOMS].length - 1; i > 0; --i) {
+    for (let i = this[ROOMS].length - 1; i >= 0; --i) {
       drawer.view(this[VIEWS][i]);
       for (let obj of this[OBJECTS][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].draw(drawer);
       drawer.render();
+      // draw GUI
+      drawer.view(new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, ...this.size));
+      for (let obj of this[OBJECTS][i]) {
+        obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.drawGUI(drawer.object(obj));
+      }
+      this[ROOMS][i] && this[ROOMS][i].drawGUI(drawer);
+      drawer.render();
     }
-    drawer.view(this[VIEWS][0]);
-    for (let obj of this[OBJECTS][0]) {
-      obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
-    }
-    this[ROOMS][0] && this[ROOMS][0].draw(drawer);
-    drawer.render();
   }
   // run at the end of a game
   end() {}

@@ -37,7 +37,8 @@ namespace Game {
         // process an event
         virtual void proc(const Event &event);
         // draw all objects
-        virtual void draw(Draw &draw);
+        virtual void draw(Draw &draw) const;
+        virtual void drawGUI(Draw &draw) const;
         // end the room
         virtual void end();
 

@@ -69,20 +69,21 @@ class Engine {
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
-    for(let i = this[ROOMS].length - 1; i > 0; --i) {
-      drawer.view(this[VIEWS][i])
+    for(let i = this[ROOMS].length - 1; i >= 0; --i) {
+      drawer.view(this[VIEWS][i]);
       for(let obj of this[OBJECTS][i]) {
         obj instanceof Drawable && obj.draw(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].draw(drawer);
       drawer.render();
+      // draw GUI
+      drawer.view(new Rectangle(0, 0, ...this.size));
+      for(let obj of this[OBJECTS][i]) {
+        obj instanceof Drawable && obj.drawGUI(drawer.object(obj));
+      }
+      this[ROOMS][i] && this[ROOMS][i].drawGUI(drawer);
+      drawer.render();
     }
-    drawer.view(this[VIEWS][0]);
-    for(let obj of this[OBJECTS][0]) {
-      obj instanceof Drawable && obj.draw(drawer.object(obj));
-    }
-    this[ROOMS][0] && this[ROOMS][0].draw(drawer);
-    drawer.render();
   }
   // run at the end of a game
   end() {}

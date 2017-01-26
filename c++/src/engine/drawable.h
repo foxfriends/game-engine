@@ -17,6 +17,7 @@ namespace Game {
         const Sprite & sprite() const;
         void sprite(const std::string & name);
         virtual void draw(Draw & draw) const;
+        virtual void drawGUI(Draw & draw) const;
     };
 }
 

@@ -116,6 +116,16 @@ namespace Game {
             _rooms.at(i)->draw(*_draw);
             _draw->render();
         }
+        _draw->view(Rectangle{0, 0, _size.w, _size.h});
+        for(unsigned int i = 0; i < _rooms.size(); ++i) {
+            for(auto &o : _objects.at(i)) {
+                if(auto d = dynamic_cast<const Drawable *>(o.get())) {
+                    d->drawGUI(*_draw);
+                }
+            }
+            _rooms.at(i)->drawGUI(*_draw);
+            _draw->render();
+        }
         _draw->present();
     }
 

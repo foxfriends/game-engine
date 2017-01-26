@@ -17,6 +17,8 @@ function Drawable(Base = class{}) {
     }
     // draw this thing using a Draw (./draw.js)
     draw(draw) { draw.self(); }
+    // draw relative to the screen instead of the room
+    drawGUI(draw) {}
 
     get sprite() { return this[SPRITE]; }
     set sprite(sprite) {
@@ -32,7 +34,7 @@ function Drawable(Base = class{}) {
 Object.defineProperty(Drawable, Symbol.hasInstance, {
   value(instance) {
     // TODO: should this not be duck typed?
-    return typeof instance.draw === 'function';
+    return typeof instance.draw === 'function' && typeof instance.drawGUI === 'function';
   }
 });
 
