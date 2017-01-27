@@ -306,10 +306,11 @@ class GameUtility {
   // checks if two colliders are colliding
   collides(where, what) {
     if(what instanceof Collider) {
-      return what.collides(where);
+      return what.collides(where) ? what : null;
     }
-    if(this[ENGINE][ROOMS][0].collides(where, what)) {
-      return true;
+    const room = this[ENGINE][ROOMS][0].collides(where, what);
+    if(room) {
+      return room;
     }
     if(what !== 'room') {
       what = what === 'any'
@@ -317,11 +318,11 @@ class GameUtility {
         : this[ENGINE][OBJECTS][0].filter(o => o instanceof what);
       for(let it of what) {
         if(it.collides(where)) {
-          return true;
+          return it;
         }
       }
     }
-    return false;
+    return null;
   }
 }
 

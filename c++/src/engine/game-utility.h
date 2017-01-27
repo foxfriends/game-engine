@@ -53,14 +53,14 @@ namespace Game {
         void destroy();
 
         // any (including room)
-        bool collides(const Rectangle & where) const;
+        bool collides(const Rectangle & where);
         // specific collider
         template<typename T>
-        bool collides(const Rectangle & where) const;
+        T * collides(const Rectangle & where);
         // a specific instance
-        bool collides(const Rectangle & where, const Collider & who) const;
+        Collider * collides(const Rectangle & where, Collider & who);
         // the room only
-        bool collides_room(const Rectangle & where) const;
+        bool collides_room(const Rectangle & where);
 
         // sprites (is this necessary? should it be internal?)
         std::unique_ptr<Sprite> make_sprite(const std::string & name);
@@ -125,19 +125,20 @@ namespace Game {
     }
 
     template<typename T>
-    bool GameUtility::collides(const Rectangle &where) const {
-        if(_eng._rooms.back()->collides<T>(where)) {
-            return true;
+    T * GameUtility::collides(const Rectangle &where) {
+        auto room = _eng._rooms.back()->collides<T>(where);
+        if(room) {
+            return room;
         } else {
             for(auto &o : _eng._objects.back()) {
-                if(auto b = dynamic_cast<const T *>(o.get())) {
+                if(auto b = dynamic_cast<T *>(o.get())) {
                     if(b->collides(where)) {
-                        return true;
+                        return b;
                     }
                 }
             }
         }
-        return false;
+        return nullptr;
     }
 }
 #endif

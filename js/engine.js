@@ -491,18 +491,18 @@ let Room = class Room {
   collides(where, what = 'any') {
     if (what === 'room' || what === 'any') {
       if (this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].collides(where)) {
-        return true;
+        return this;
       }
     }
     if (what !== 'room') {
       what = what === 'any' ? this[OBJECTS].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[OBJECTS].filter(o => o instanceof what);
       for (let it of what) {
         if (it.collides(where)) {
-          return true;
+          return it;
         }
       }
     }
-    return false;
+    return null;
   }
 };
 
@@ -1408,20 +1408,21 @@ let GameUtility = class GameUtility {
   // checks if two colliders are colliding
   collides(where, what) {
     if (what instanceof __WEBPACK_IMPORTED_MODULE_4__collider__["b" /* default */]) {
-      return what.collides(where);
+      return what.collides(where) ? what : null;
     }
-    if (this[ENGINE][ROOMS][0].collides(where, what)) {
-      return true;
+    const room = this[ENGINE][ROOMS][0].collides(where, what);
+    if (room) {
+      return room;
     }
     if (what !== 'room') {
       what = what === 'any' ? this[ENGINE][OBJECTS][0].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_4__collider__["b" /* default */]) : this[ENGINE][OBJECTS][0].filter(o => o instanceof what);
       for (let it of what) {
         if (it.collides(where)) {
-          return true;
+          return it;
         }
       }
     }
-    return false;
+    return null;
   }
 };
 

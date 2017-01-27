@@ -378,16 +378,16 @@
         <dt id="collides">
           <span data-view="javascript">
             <ol>
-              <li><code class="language-javascript">collides(where : Rectangle, who : Collider)</code></li>
-              <li><code class="language-javascript">collides(where : Rectangle, T : class)</code></li>
-              <li><code class="language-javascript">collides(where : Rectangle, 'room')</code></li>
-              <li><code class="language-javascript">collides(where : Rectangle)</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, who : Collider) : Collider | null</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, T : class) : T | null</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle, 'room') : Room</code></li>
+              <li><code class="language-javascript">collides(where : Rectangle) : Collider | Room</code></li>
             </ol>
           </span>
           <span data-view="c++">
             <ol>
-              <li><code class="language-cpp">bool collides(Rectangle where, Collider &amp; who)</code></li>
-              <li><code class="language-cpp">template&lt;typename T&gt; bool collides(Rectangle where)</code></li>
+              <li><code class="language-cpp">Collider * collides(Rectangle where, Collider &amp; who)</code></li>
+              <li><code class="language-cpp">template&lt;typename T&gt; T * collides(Rectangle where)</code></li>
               <li><code class="language-cpp">bool collides_room(Rectangle where)</code></li>
               <li><code class="language-cpp">bool collides(Rectangle where)</code></li>
             </ol>

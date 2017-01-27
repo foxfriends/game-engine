@@ -74,15 +74,15 @@ namespace Game {
         _eng._rooms[0]->destroy(who);
     }
 
-    bool GameUtility::collides(const Rectangle & where) const {
+    bool GameUtility::collides(const Rectangle & where) {
         return collides_room(where) || collides<Collider>(where);
     }
 
-    bool GameUtility::collides(const Rectangle & where, const Collider & who) const {
-        return who.collides(where);
+    Collider * GameUtility::collides(const Rectangle & where, Collider & who) {
+        return who.collides(where) ? &who : nullptr;
     }
 
-    bool GameUtility::collides_room(const Rectangle & where) const {
+    bool GameUtility::collides_room(const Rectangle & where) {
         return _eng._rooms.back()->collides(where);
     }
 

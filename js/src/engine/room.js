@@ -136,7 +136,7 @@ class Room {
   collides(where, what = 'any') {
     if(what === 'room' || what === 'any') {
       if(this[TILEMAP] && this[TILEMAP].collides(where)) {
-        return true;
+        return this;
       }
     }
     if(what !== 'room') {
@@ -145,11 +145,11 @@ class Room {
         : this[OBJECTS].filter(o => o instanceof what);
       for(let it of what) {
         if(it.collides(where)) {
-          return true;
+          return it;
         }
       }
     }
-    return false;
+    return null;
   }
 }
 

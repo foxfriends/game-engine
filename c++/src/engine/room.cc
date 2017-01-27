@@ -66,7 +66,7 @@ namespace Game {
         _eng->destroy(who);
     }
 
-    bool Room::collides(const Rectangle & where) const {
+    bool Room::collides(const Rectangle & where) {
         return _tilemap && _tilemap->collides(where);
     }
 

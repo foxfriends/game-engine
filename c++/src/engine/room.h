@@ -54,8 +54,8 @@ namespace Game {
         void destroy(Object & who);
 
         template<typename T>
-        bool collides(const Rectangle & where) const;
-        bool collides(const Rectangle & where) const;
+        T * collides(const Rectangle & where);
+        bool collides(const Rectangle & where);
         Dimension size() const;
 
         TileMap * tilemap() const;
@@ -97,15 +97,15 @@ namespace Game {
     }
 
     template<typename T>
-    bool Room::collides(const Rectangle & where) const {
+    T * Room::collides(const Rectangle & where) {
         for(auto &o : _objects) {
-            if(auto b = dynamic_cast<const T *> (o.get())) {
+            if(auto b = dynamic_cast<T *> (o.get())) {
                 if(b->collides(where)) {
-                    return true;
+                    return b;
                 }
             }
         }
-        return false;
+        return nullptr;
     }
 }
 
