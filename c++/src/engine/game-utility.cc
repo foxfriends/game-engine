@@ -6,6 +6,10 @@
 namespace Game {
     GameUtility::GameUtility(Engine & eng) : _eng{ eng } {}
 
+    Dimension GameUtility::size() const {
+        return _eng.size();
+    }
+
     Rectangle GameUtility::view() const {
         return _eng._views.back();
     }

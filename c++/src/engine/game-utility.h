@@ -16,6 +16,8 @@ namespace Game {
     public:
         GameUtility(Engine &eng);
 
+        // window size
+        Dimension size() const;
         // viewport
         Rectangle view() const;
         void view(const Rectangle & v, bool constrain = true);
