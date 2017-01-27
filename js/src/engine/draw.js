@@ -1,7 +1,7 @@
 'use strict';
 
-const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTEXT, VIEWPORT] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Draw {
   [STACK] = {};
@@ -13,8 +13,9 @@ class Draw {
   [HALIGN] = 'top';
   [VALIGN] = 'left'
 
-  constructor(context) {
-    this[CONTEXT] = context;
+  constructor(container) {
+    this[CONTAINER] = container;
+    this[CONTEXT] = [];
   }
 
   // the current object being drawn
@@ -117,20 +118,46 @@ class Draw {
   }
 
   // actually draw each item in the stack at the right depth
-  render() {
-    this[CONTEXT].save();
-    if(this[VIEWPORT]) {
-      const { width, height } = this[CONTEXT].canvas;
-      this[CONTEXT].scale(width / this[VIEWPORT][2], height / this[VIEWPORT][3]);
-      this[CONTEXT].translate(-this[VIEWPORT][0], -this[VIEWPORT][1]);
+  render(i) {
+    if(!this[CONTEXT][i]) {
+      this[CONTEXT][i] = document.createElement('CANVAS');
+      this[CONTEXT][i].style.position = 'absolute';
+      this[CONTEXT][i].style.left = 0;
+      this[CONTEXT][i].style.top = 0;
+      this[CONTEXT][i].style.width = '100%';
+      this[CONTEXT][i].style.height = '100%';
+      this[CONTEXT][i].style.pointerEvents = 'none';
+      this[CONTEXT][i].style.zIndex = i;
+      this[CONTAINER].appendChild(this[CONTEXT][i]);
+      this[CONTEXT][i] = this[CONTEXT][i].getContext('2d');
     }
+    const context = this[CONTEXT][i];
+    if(this[VIEWPORT][2] !== context.canvas.width) {
+      context.canvas.width = this[VIEWPORT][2];
+    }
+    if(this[VIEWPORT][3] !== context.canvas.height) {
+      context.canvas.height = this[VIEWPORT][3];
+    }
+    context.save();
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    context.translate(-this[VIEWPORT][0], -this[VIEWPORT][1]);
     for(let depth of Object.keys(this[STACK]).map(x=>+x).sort((a,b)=>a-b)) {
       for(let item of this[STACK][depth]) {
-        item(this[CONTEXT]);
+        item(context);
       }
     }
-    this[CONTEXT].restore();
+    context.restore();
     this[STACK] = {};
+  }
+
+  // removes extra canvases from the DOM
+  removeCanvases(i) {
+    for(; i < this[CONTEXT].length; ++i) {
+      if(this[CONTEXT][i]) {
+        this[CONTEXT][i].canvas.parentNode.removeChild(this[CONTEXT][i].canvas);
+        delete this[CONTEXT][i];
+      }
+    }
   }
 }
 

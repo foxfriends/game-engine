@@ -12,8 +12,8 @@ import SoundManager from './sound-manager';
 import { PAGES, SOUNDS, MUSIC } from './const';
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOMS, OBJECTS, RAF, CONTAINER, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, SIZE, DRAWER] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 // TODO: rewrite everything to use private methods using out-of-class bound
 //       functions and internal methods using shared symbols
@@ -23,21 +23,23 @@ class Engine {
   [OBJECTS] = [[]];
   [RAF] = null;
   [VIEWS] = [new Rectangle(0, 0, 300, 150)];
+  [DRAWER] = null;
 
-  constructor(canvas, {w, h}) {
-    this[CANVAS] = document.querySelector(canvas);
-    this[CANVAS].setAttribute('tabindex', 0);
-    this[CANVAS].style.outline = 'none';
-    this[CANVAS].width = w;
-    this[CANVAS].height = h;
+  constructor(container, {w, h}) {
+    this[SIZE] = new Dimension(w, h);
+    this[CONTAINER] = document.querySelector(container);
+    this[CONTAINER].setAttribute('tabindex', 0);
+    this[CONTAINER].style.position = 'relative';
+    this[CONTAINER].style.width = w + 'px';
+    this[CONTAINER].style.height = h + 'px';
+    this[CONTAINER].style.outline = 'none';
     this[VIEWS][0].w = w;
     this[VIEWS][0].h = h;
-    this[CONTEXT] = this[CANVAS].getContext('2d');
-    this[INPUT] = new Input(this[CANVAS]);
+    this[INPUT] = new Input(this[CONTAINER]);
     this[TEXTURE_MANAGER] = new TextureManager(this.constructor[PAGES]);
     this[SOUND_MANAGER] = new SoundManager(this.constructor[SOUNDS], this.constructor[MUSIC]);
   }
-  get size() { return new Dimension(this[CANVAS].width, this[CANVAS].height); }
+  get size() { return this[SIZE]; }
 
   // triggers the event for all objects currently active
   // HACK: internalize
@@ -63,26 +65,26 @@ class Engine {
   // refreshes the game screen
   // HACK: internalize
   draw() {
-    this[CONTEXT].clearRect(0, 0, ...this.size);
-    const drawer = new Draw(this[CONTEXT]);
+    const drawer = this[DRAWER] || (this[DRAWER] = new Draw(this[CONTAINER]));
     // draw under layers first
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
+    drawer.removeCanvases(this[ROOMS].length * 2);
     for(let i = this[ROOMS].length - 1; i >= 0; --i) {
       drawer.view(this[VIEWS][i]);
       for(let obj of this[OBJECTS][i]) {
         obj instanceof Drawable && obj.draw(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].draw(drawer);
-      drawer.render();
+      drawer.render(i);
       // draw GUI
       drawer.view(new Rectangle(0, 0, ...this.size));
       for(let obj of this[OBJECTS][i]) {
         obj instanceof Drawable && obj.drawGUI(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].drawGUI(drawer);
-      drawer.render();
+      drawer.render(this[ROOMS].length + i);
     }
   }
   // run at the end of a game
@@ -159,6 +161,9 @@ class GameUtility {
   constructor(engine) {
     this[ENGINE] = engine
   }
+
+  get size() { return new Dimension(...this[ENGINE].size); }
+
   // get/set the view port, optionally constrained within the room
   // boundaries if possible, and with the entire room centred if not
   view(view, constrain = true) {

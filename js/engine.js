@@ -1111,33 +1111,35 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 // NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [ROOMS, OBJECTS, RAF, CONTAINER, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, SIZE, DRAWER] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 // TODO: rewrite everything to use private methods using out-of-class bound
 //       functions and internal methods using shared symbols
 
 let Engine = class Engine {
 
-  constructor(canvas, { w, h }) {
+  constructor(container, { w, h }) {
     this[ROOMS] = [];
     this[OBJECTS] = [[]];
     this[RAF] = null;
     this[VIEWS] = [new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, 300, 150)];
+    this[DRAWER] = null;
 
-    this[CANVAS] = document.querySelector(canvas);
-    this[CANVAS].setAttribute('tabindex', 0);
-    this[CANVAS].style.outline = 'none';
-    this[CANVAS].width = w;
-    this[CANVAS].height = h;
+    this[SIZE] = new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](w, h);
+    this[CONTAINER] = document.querySelector(container);
+    this[CONTAINER].setAttribute('tabindex', 0);
+    this[CONTAINER].style.position = 'relative';
+    this[CONTAINER].style.width = w + 'px';
+    this[CONTAINER].style.height = h + 'px';
+    this[CONTAINER].style.outline = 'none';
     this[VIEWS][0].w = w;
     this[VIEWS][0].h = h;
-    this[CONTEXT] = this[CANVAS].getContext('2d');
-    this[INPUT] = new __WEBPACK_IMPORTED_MODULE_6__input__["a" /* default */](this[CANVAS]);
+    this[INPUT] = new __WEBPACK_IMPORTED_MODULE_6__input__["a" /* default */](this[CONTAINER]);
     this[TEXTURE_MANAGER] = new __WEBPACK_IMPORTED_MODULE_7__texture_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["b" /* PAGES */]]);
     this[SOUND_MANAGER] = new __WEBPACK_IMPORTED_MODULE_8__sound_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["c" /* SOUNDS */]], this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["d" /* MUSIC */]]);
   }
   get size() {
-    return new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](this[CANVAS].width, this[CANVAS].height);
+    return this[SIZE];
   }
 
   // triggers the event for all objects currently active
@@ -1164,26 +1166,26 @@ let Engine = class Engine {
   // refreshes the game screen
   // HACK: internalize
   draw() {
-    this[CONTEXT].clearRect(0, 0, ...this.size);
-    const drawer = new __WEBPACK_IMPORTED_MODULE_0__draw__["a" /* default */](this[CONTEXT]);
+    const drawer = this[DRAWER] || (this[DRAWER] = new __WEBPACK_IMPORTED_MODULE_0__draw__["a" /* default */](this[CONTAINER]));
     // draw under layers first
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
+    drawer.removeCanvases(this[ROOMS].length * 2);
     for (let i = this[ROOMS].length - 1; i >= 0; --i) {
       drawer.view(this[VIEWS][i]);
       for (let obj of this[OBJECTS][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].draw(drawer);
-      drawer.render();
+      drawer.render(i);
       // draw GUI
       drawer.view(new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, ...this.size));
       for (let obj of this[OBJECTS][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.drawGUI(drawer.object(obj));
       }
       this[ROOMS][i] && this[ROOMS][i].drawGUI(drawer);
-      drawer.render();
+      drawer.render(this[ROOMS].length + i);
     }
   }
   // run at the end of a game
@@ -1262,6 +1264,11 @@ let GameUtility = class GameUtility {
 
     this[ENGINE] = engine;
   }
+
+  get size() {
+    return new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](...this[ENGINE].size);
+  }
+
   // get/set the view port, optionally constrained within the room
   // boundaries if possible, and with the entire room centred if not
   view(view, constrain = true) {
@@ -1457,11 +1464,11 @@ module.exports = __webpack_require__(5).String.padStart;
 "use strict";
 
 
-const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTEXT, VIEWPORT] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 let Draw = class Draw {
 
-  constructor(context) {
+  constructor(container) {
     this[STACK] = {};
     this[COLOR] = '#000000';
     this[ALPHA] = 1;
@@ -1471,7 +1478,8 @@ let Draw = class Draw {
     this[HALIGN] = 'top';
     this[VALIGN] = 'left';
 
-    this[CONTEXT] = context;
+    this[CONTAINER] = container;
+    this[CONTEXT] = [];
   }
 
   // the current object being drawn
@@ -1574,20 +1582,46 @@ let Draw = class Draw {
   }
 
   // actually draw each item in the stack at the right depth
-  render() {
-    this[CONTEXT].save();
-    if (this[VIEWPORT]) {
-      const { width, height } = this[CONTEXT].canvas;
-      this[CONTEXT].scale(width / this[VIEWPORT][2], height / this[VIEWPORT][3]);
-      this[CONTEXT].translate(-this[VIEWPORT][0], -this[VIEWPORT][1]);
+  render(i) {
+    if (!this[CONTEXT][i]) {
+      this[CONTEXT][i] = document.createElement('CANVAS');
+      this[CONTEXT][i].style.position = 'absolute';
+      this[CONTEXT][i].style.left = 0;
+      this[CONTEXT][i].style.top = 0;
+      this[CONTEXT][i].style.width = '100%';
+      this[CONTEXT][i].style.height = '100%';
+      this[CONTEXT][i].style.pointerEvents = 'none';
+      this[CONTEXT][i].style.zIndex = i;
+      this[CONTAINER].appendChild(this[CONTEXT][i]);
+      this[CONTEXT][i] = this[CONTEXT][i].getContext('2d');
     }
+    const context = this[CONTEXT][i];
+    if (this[VIEWPORT][2] !== context.canvas.width) {
+      context.canvas.width = this[VIEWPORT][2];
+    }
+    if (this[VIEWPORT][3] !== context.canvas.height) {
+      context.canvas.height = this[VIEWPORT][3];
+    }
+    context.save();
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    context.translate(-this[VIEWPORT][0], -this[VIEWPORT][1]);
     for (let depth of Object.keys(this[STACK]).map(x => +x).sort((a, b) => a - b)) {
       for (let item of this[STACK][depth]) {
-        item(this[CONTEXT]);
+        item(context);
       }
     }
-    this[CONTEXT].restore();
+    context.restore();
     this[STACK] = {};
+  }
+
+  // removes extra canvases from the DOM
+  removeCanvases(i) {
+    for (; i < this[CONTEXT].length; ++i) {
+      if (this[CONTEXT][i]) {
+        this[CONTEXT][i].canvas.parentNode.removeChild(this[CONTEXT][i].canvas);
+        delete this[CONTEXT][i];
+      }
+    }
   }
 };
 
@@ -1610,7 +1644,7 @@ const [QUEUE, STATE] = [Symbol(), Symbol()];
 
 let Input = (_temp = _class = class Input {
 
-  constructor(canvas) {
+  constructor(container) {
     this[QUEUE] = {
       keydown: [],
       keyup: [],
@@ -1623,7 +1657,7 @@ let Input = (_temp = _class = class Input {
       key: {}
     };
 
-    this.canvas = canvas;
+    this.container = container;
     window.addEventListener('keydown', this.keydown.bind(this), true);
     window.addEventListener('keyup', this.keyup.bind(this), true);
     window.addEventListener('mousedown', this.mousedown.bind(this), true);
@@ -1640,21 +1674,21 @@ let Input = (_temp = _class = class Input {
   }
 
   keydown(event) {
-    if (this.canvas === document.activeElement) {
+    if (this.container === document.activeElement) {
       event.preventDefault();
       this[QUEUE].keydown.push(new __WEBPACK_IMPORTED_MODULE_0__game_event__["a" /* default */]('keydown', event.key));
       this[STATE].key[event.key] = true;
     }
   }
   keyup(event) {
-    if (this.canvas === document.activeElement) {
+    if (this.container === document.activeElement) {
       event.preventDefault();
       this[QUEUE].keyup.push(new __WEBPACK_IMPORTED_MODULE_0__game_event__["a" /* default */]('keyup', event.key));
       this[STATE].key[event.key] = false;
     }
   }
   mousedown(event) {
-    if (this.canvas === document.activeElement) {
+    if (this.container === document.activeElement) {
       this[QUEUE].mousedown.push(new __WEBPACK_IMPORTED_MODULE_0__game_event__["a" /* default */]('mousedown', event.button));
       this[STATE].mouse[event.button] = true;
     }
@@ -1667,7 +1701,7 @@ let Input = (_temp = _class = class Input {
     }
   }
   mousemove(event) {
-    const { left: x, top: y } = this.canvas.getBoundingClientRect();
+    const { left: x, top: y } = this.container.getBoundingClientRect();
     this[QUEUE].mousemove = [event.clientX - x, event.clientY - y];
   }
 

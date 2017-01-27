@@ -20,8 +20,8 @@ class Input {
     key: {}
   }
 
-  constructor(canvas) {
-    this.canvas = canvas;
+  constructor(container) {
+    this.container = container;
     window.addEventListener('keydown', this.keydown.bind(this), true);
     window.addEventListener('keyup', this.keyup.bind(this), true);
     window.addEventListener('mousedown', this.mousedown.bind(this), true);
@@ -38,21 +38,21 @@ class Input {
   }
 
   keydown(event) {
-    if(this.canvas === document.activeElement) {
+    if(this.container === document.activeElement) {
       event.preventDefault();
       this[QUEUE].keydown.push(new GameEvent('keydown', event.key));
       this[STATE].key[event.key] = true;
     }
   }
   keyup(event) {
-    if(this.canvas === document.activeElement) {
+    if(this.container === document.activeElement) {
       event.preventDefault();
       this[QUEUE].keyup.push(new GameEvent('keyup', event.key));
       this[STATE].key[event.key] = false;
     }
   }
   mousedown(event) {
-    if(this.canvas === document.activeElement) {
+    if(this.container === document.activeElement) {
       this[QUEUE].mousedown.push(new GameEvent('mousedown', event.button));
       this[STATE].mouse[event.button] = true;
     }
@@ -65,7 +65,7 @@ class Input {
     }
   }
   mousemove(event) {
-    const {left: x, top: y} = this.canvas.getBoundingClientRect();
+    const {left: x, top: y} = this.container.getBoundingClientRect();
     this[QUEUE].mousemove = [event.clientX - x, event.clientY - y];
   }
 
