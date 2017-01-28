@@ -119,24 +119,26 @@ class Draw {
 
   // actually draw each item in the stack at the right depth
   render(i) {
+    const { width, height } = this[CONTAINER].getBoundingClientRect();
     if(!this[CONTEXT][i]) {
       this[CONTEXT][i] = document.createElement('CANVAS');
       this[CONTEXT][i].style.position = 'absolute';
       this[CONTEXT][i].style.left = 0;
       this[CONTEXT][i].style.top = 0;
-      this[CONTEXT][i].style.width = '100%';
-      this[CONTEXT][i].style.height = '100%';
       this[CONTEXT][i].style.pointerEvents = 'none';
       this[CONTEXT][i].style.zIndex = i;
+      this[CONTEXT][i].style.transformOrigin = '0 0';
       this[CONTAINER].appendChild(this[CONTEXT][i]);
       this[CONTEXT][i] = this[CONTEXT][i].getContext('2d');
     }
     const context = this[CONTEXT][i];
     if(this[VIEWPORT][2] !== context.canvas.width) {
       context.canvas.width = this[VIEWPORT][2];
+      this[CONTEXT][i].canvas.style.transform = `scale(${width / this[VIEWPORT][2]}, ${height / this[VIEWPORT][3]})`;
     }
     if(this[VIEWPORT][3] !== context.canvas.height) {
       context.canvas.height = this[VIEWPORT][3];
+      this[CONTEXT][i].canvas.style.transform = `scale(${width / this[VIEWPORT][2]}, ${height / this[VIEWPORT][3]})`;
     }
     context.save();
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
