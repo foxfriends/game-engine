@@ -107,6 +107,20 @@
               Checks if two <code class="language-javascript token class-name">Position</code>s are the same
             </p>
           </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">static inside(l : Position, r : Circle | Rectangle) : bool</code>
+            <ol data-view="c++">
+              <li><code class="language-cpp">bool operator | (Rectangle r)</code><em data-view="c++">Currently unsupported</em></li>
+              <li><code class="language-cpp">bool operator | (Circle r)</code><em data-view="c++">Currently unsupported</em></li>
+            </ol>
+          </dt>
+          <dd>
+            <p>
+              Checks if a <code class="language-javascript token class-name">Position</code>
+              lies inside of a <code class="language-javascript token class-name">Rectangle</code>
+              or <code class="language-javascript token class-name">Circle</code>
+            </p>
+          </dd>
         </dl>
       </section>
     </section>
@@ -214,8 +228,8 @@
               <li><code class="language-javascript">constructor(p : Position, d : Dimension)</code></li>
             </ol>
             <ol data-view="c++">
-              <li><code class="language-cpp">Dimension(int x, int y, int w, int h)</code></li>
-              <li><code class="language-cpp">Dimension(Position p, Dimension d)</code></li>
+              <li><code class="language-cpp">Rectangle(int x, int y, int w, int h)</code></li>
+              <li><code class="language-cpp">Rectangle(Position p, Dimension d)</code></li>
             </ol>
           </dt>
           <dd>
@@ -338,8 +352,145 @@
               Checks if two <code class="language-javascript token class-name">Rectangle</code>s are the same
             </p>
           </dd>
+          <dt>
+            <code data-view="javascript" class="language-javascript">static intersects(l : Rectangle, r : Circle | Rectangle) : bool</code>
+            <ol data-view="c++">
+              <li><code class="language-cpp">bool operator | (Rectangle r)</code><em data-view="c++">Currently unsupported</em></li>
+              <li><code class="language-cpp">bool operator | (Circle r)</code><em data-view="c++">Currently unsupported</em></li>
+            </ol>
+          </dt>
+          <dd>
+            <p>
+              Checks if a <code class="language-javascript token class-name">Rectangle</code>
+              intersects another <code class="language-javascript token class-name">Rectangle</code>
+              or <code class="language-javascript token class-name">Circle</code>
+            </p>
+          </dd>
         </dl>
       </section>
+      <section class="info" id="circle">
+        <h2>Circle</h2>
+        <em data-view="c++">Currently unsupported</em>
+        <p>
+          A <code class="language-javascript token class-name">Circle</code> is
+          <code class="language-javascript token class-name">Position</code> and a
+          radius.
+        </p>
+        <section class="interface">
+          <h3>Interface</h3>
+          <dl>
+            <dt>
+              <ol data-view="javascript">
+                <li><code class="language-javascript">constructor(x : number, y : number, r : number)</code></li>
+                <li><code class="language-javascript">constructor(p : Position, r : Radius)</code></li>
+              </ol>
+              <ol data-view="c++">
+                <li><code class="language-cpp">Circle(int x, int y, int radius)</code></li>
+                <li><code class="language-cpp">Circle(Position p, int radius)</code></li>
+              </ol>
+            </dt>
+            <dd>
+              <details>
+                <summary>
+                  <p>
+                    Make a <code class="language-javascript token class-name">Circle</code>.
+                  </p>
+                </summary>
+                <dl class="params">
+                  <dt>
+                    <code data-view="javascript" class="language-javascript">x : number</code>
+                    <code data-view="c++" class="language-cpp">int x</code>
+                  </dt>
+                  <dd>
+                    the x coordinate.
+                  </dd>
+                  <dt>
+                    <code data-view="javascript" class="language-javascript">y : number</code>
+                    <code data-view="c++" class="language-cpp">int y</code>
+                  </dt>
+                  <dd>
+                    the y coordinate.
+                  </dd>
+                  <dt>
+                    <code data-view="javascript" class="language-javascript">r : number</code>
+                    <code data-view="c++" class="language-cpp">int r</code>
+                  </dt>
+                  <dd>
+                    the radius
+                  </dd>
+                  <dt>
+                    <code data-view="javascript" class="language-javascript">p : Position</code>
+                    <code data-view="c++" class="language-cpp">Position p</code>
+                  </dt>
+                  <dd>
+                    the x and y coordinates.
+                  </dd>
+                </dl>
+              </details>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">x : number</code>
+              <code data-view="c++" class="language-cpp">int x</code>
+            </dt>
+            <dd>
+              <p>
+                The x coordinate.
+              </p>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">y : number</code>
+              <code data-view="c++" class="language-cpp">int y</code>
+            </dt>
+            <dd>
+              <p>
+                The y coordinate.
+              </p>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">r : number</code>
+              <code data-view="c++" class="language-cpp">int r</code>
+            </dt>
+            <dd>
+              <p>
+                The radius.
+              </p>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">static shift(circle : Circle, amt : Position) : Rectangle</code>
+              <code data-view="c++" class="language-cpp">Circle operator + (Position r)</code>
+            </dt>
+            <dd>
+              <p>
+                Creates a new <code class="language-javascript token class-name">Circle</code>
+                that is equal to the original <code class="language-javascript token class-name">Circle</code>
+                with its x and y coordinates shifted by the given <code class="language-javascript token class-name">Position</code>.
+              </p>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">static equal(l : Circle, r : Circle) : bool</code>
+              <code data-view="c++" class="language-cpp">bool operator == (Circle r)</code>
+            </dt>
+            <dd>
+              <p>
+                Checks if two <code class="language-javascript token class-name">Circle</code>s are the same
+              </p>
+            </dd>
+            <dt>
+              <code data-view="javascript" class="language-javascript">static intersects(l : Circle, r : Circle | Rectangle) : bool</code>
+              <ol data-view="c++">
+                <li><code class="language-cpp">bool operator | (Circle r)</code></li>
+                <li><code class="language-cpp">bool operator | (Rectangle r)</code></li>
+              </ol>
+            </dt>
+            <dd>
+              <p>
+                Checks if a <code class="language-javascript token class-name">Circle</code>
+                intersects another <code class="language-javascript token class-name">Circle</code>
+                or <code class="language-javascript token class-name">Rectangle</code>
+              </p>
+            </dd>
+          </dl>
+        </section>
     </section>
   </main>
 </body>

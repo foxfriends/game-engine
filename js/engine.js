@@ -75,6 +75,7 @@ module.exports =
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Position; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return Dimension; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return Rectangle; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return Circle; });
 
 
 let Position = class Position {
@@ -97,6 +98,15 @@ let Position = class Position {
 
   static equal(l, r) {
     return l.x === r.x && l.y === r.y;
+  }
+
+  static inside(p, o) {
+    switch (o.constructor) {
+      case Rectangle:
+        return Rectangle.intersects(o, new Rectangle(...p, 0, 0));
+      case Circle:
+        return Circle.intersects(o, new Circle(...p, 0));
+    }
   }
 };
 let Dimension = class Dimension {
@@ -145,11 +155,68 @@ let Rectangle = class Rectangle {
     return l.x === r.x && l.y === r.y && l.w === r.w && l.h === r.h;
   }
 
+  static intersects(r, o) {
+    switch (o.constructor) {
+      case Rectangle:
+        return Math.abs(o.x + o.w / 2 - (r.x + r.w / 2)) < (o.w + r.w) / 2 && Math.abs(o.y + o.h / 2 - (r.y + r.h / 2)) < (o.h + r.h) / 2;
+      case Circle:
+        return Circle.intersects(o, r);
+    }
+    throw "Rectangle.intersects: Non-shape given";
+  }
+
   *[Symbol.iterator]() {
     yield* [this.x, this.y, this.w, this.h];
   }
 };
-;
+let Circle = class Circle {
+  constructor(x, y, r) {
+    if (r === undefined) {
+      r = y;
+      [x, y] = x;
+    }
+    this.x = x;
+    this.y = y;
+    this.r = r;
+  }
+
+  static shift(circle, amt) {
+    return new Circle(circle.x + amt.x, circle.y + amt.y, circle.r);
+  }
+
+  static equal(l, r) {
+    return l.x === r.x && l.y === r.y && l.r === r.r;
+  }
+
+  static intersects(r, o) {
+    switch (o.constructor) {
+      case Rectangle:
+        const [dx, dy] = [Math.abs(r.x - (o.x + o.w / 2)), Math.abs(r.y - (o.y + o.h / 2))];
+        if (dx > o.w / 2 + r.r) {
+          return false;
+        }
+        if (dy > o.h / 2 + r.r) {
+          return false;
+        }
+        if (dx <= o.w / 2) {
+          return true;
+        }
+        if (dy <= o.h / 2) {
+          return true;
+        }
+        const c = Math.pow(dx - o.w / 2, 2) + Math.pow(dy - o.h / 2, 2);
+        return c <= Math.pow(r.r, 2);
+      case Circle:
+        return Math.pow(r.x - o.x, 2) + Math.pow(r.y - o.y, 2) <= Math.pow(r.r + o.r, 2);
+    }
+    throw "Circle.intersects: Non-shape given";
+  }
+
+  *[Symbol.iterator]() {
+    yield* [this.x, this.y, this.r];
+  }
+};
+
 
 
 
@@ -199,7 +266,7 @@ function Collider(bbox) {
       }
       // actually for check a collision
       collides(where) {
-        return Math.abs(where.x + where.w / 2 - (this.bbox.x + this.position.x + this.bbox.w / 2)) < (where.w + this.bbox.w) / 2 && Math.abs(where.y + where.h / 2 - (this.bbox.y + this.position.y + this.bbox.h / 2)) < (where.h + this.bbox.h) / 2;
+        return this.bbox.constructor.intersects(this.bbox.constructor.shift(this.bbox, this.position), where);
       }
     };
   };
@@ -207,7 +274,7 @@ function Collider(bbox) {
 
 Object.defineProperty(Collider, Symbol.hasInstance, {
   value(instance) {
-    return typeof instance.collides === 'function' && instance.position instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */] && instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */];
+    return typeof instance.collides === 'function' && instance.position instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */] && (instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */] || instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Circle */]);
   }
 });
 
@@ -555,6 +622,14 @@ let Sprite = class Sprite extends __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* R
   }
   get dest() {
     return [...this];
+  }
+
+  get position() {
+    return new __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */](this.x, this.y);
+  }
+  set position(pos) {
+    this.x = pos.x;
+    this.y = pos.y;
   }
 };
 
@@ -1142,13 +1217,17 @@ let Engine = class Engine {
     return this[SIZE];
   }
 
-  // triggers the event for all objects currently active
+  // triggers the event for all objects in a layer, defaulting to the active layer
   // HACK: internalize
-  proc(event) {
-    for (let obj of this[OBJECTS][0]) {
+  proc(event, room = this[ROOMS][0]) {
+    let i = 0;
+    while (room !== this[ROOMS][i]) {
+      ++i;
+    }
+    for (let obj of this[OBJECTS][i]) {
       obj.proc(event);
     }
-    this[ROOMS][0] && this[ROOMS][0].proc(event);
+    this[ROOMS][i] && this[ROOMS][i].proc(event);
   }
 
   // specifies how to start a game
@@ -1318,17 +1397,18 @@ let GameUtility = class GameUtility {
           throw `${ this[ENGINE][ROOMS][0].constructor.name } is not a Room`;
         }
         _asyncToGenerator(function* () {
-          _this[ENGINE][ROOMS][0].load();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm));
-          yield _this[ENGINE][ROOMS][0].loaded;
+          let room = _this[ENGINE][ROOMS][0];
+          room.load();
+          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm), room);
+          yield room.loaded;
           // remove the old room, which was temporarily shifted
           if (_this[ENGINE][ROOMS][1]) {
             _this[ENGINE][ROOMS].splice(1, 1)[0].destructor();
             _this[ENGINE][OBJECTS].splice(1, 1);
             _this[ENGINE][VIEWS].splice(1, 1);
           }
-          _this[ENGINE][ROOMS][0].start();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm));
+          room.start();
+          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm), room);
         })();
       },
       // freeze the current room and put this[ENGINE] one over top
@@ -1341,11 +1421,12 @@ let GameUtility = class GameUtility {
           throw `${ this[ENGINE][ROOMS][0].constructor.name } is not a Room`;
         }
         _asyncToGenerator(function* () {
-          _this[ENGINE][ROOMS][0].load();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm));
-          yield _this[ENGINE][ROOMS][0].loaded;
-          _this[ENGINE][ROOMS][0].start();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm));
+          let room = _this[ENGINE][ROOMS][0];
+          room.load();
+          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm), room);
+          yield room.loaded;
+          room.start();
+          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm), room);
         })();
       },
       // closes the current room overlay
@@ -1409,7 +1490,9 @@ let GameUtility = class GameUtility {
 
   // destroy an object
   destroy(obj) {
-    this[ENGINE][ROOMS][0].destroy(obj);
+    for (let room of this[ENGINE][ROOMS]) {
+      room.destroy(obj);
+    }
   }
 
   // checks if two colliders are colliding
@@ -1462,9 +1545,12 @@ module.exports = __webpack_require__(5).String.padStart;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
 
 
-const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+
+
+const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT, ROTATION] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 let Draw = class Draw {
 
@@ -1475,11 +1561,26 @@ let Draw = class Draw {
     this[FONT] = '14px Arial';
     this[WHO] = null;
     this[VIEWPORT] = null;
+    this[CONTAINER] = null;
+    this[CONTEXT] = [];
     this[HALIGN] = 'top';
     this[VALIGN] = 'left';
+    this[ROTATION] = { angle: 0, origin: [0, 0] };
 
     this[CONTAINER] = container;
-    this[CONTEXT] = [];
+    this.generateCanvas(0);
+  }
+
+  generateCanvas(layer) {
+    const canvas = document.createElement('CANVAS');
+    canvas.style.position = 'absolute';
+    canvas.style.left = 0;
+    canvas.style.top = 0;
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = layer;
+    canvas.style.transformOrigin = '0 0';
+    this[CONTAINER].appendChild(canvas);
+    this[CONTEXT][layer] = canvas.getContext('2d');
   }
 
   // the current object being drawn
@@ -1517,6 +1618,10 @@ let Draw = class Draw {
     this[VALIGN] = align;
     return this;
   }
+  rotation(angle, origin = [0, 0]) {
+    this[ROTATION] = { angle, origin: [...origin] };
+    return this;
+  }
 
   // draw a rectangle
   rect(rect, depth = 0) {
@@ -1526,6 +1631,19 @@ let Draw = class Draw {
       con.fillStyle = color;
       con.globalAlpha = alpha;
       con.fillRect(...rect);
+    });
+    return this;
+  }
+  // draw a circle
+  circle(circle, depth = 0) {
+    this[STACK][depth] = this[STACK][depth] || [];
+    const [color, alpha] = [this[COLOR], this[ALPHA]];
+    this[STACK][depth].push(con => {
+      con.fillStyle = color;
+      con.globalAlpha = alpha;
+      con.beginPath();
+      con.arc(...circle, 0, Math.PI * 2);
+      con.fill();
     });
     return this;
   }
@@ -1543,10 +1661,22 @@ let Draw = class Draw {
   // draw a sprite
   sprite(sprite, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const alpha = this[ALPHA];
+    const [{ angle, origin }, alpha] = [this[ROTATION], this[ALPHA]];
+    const src = [...sprite.src];
+    const dest = [...sprite.dest];
     this[STACK][depth].push(con => {
       con.globalAlpha = alpha;
-      con.drawImage(sprite.texture, ...sprite.src, ...sprite.dest);
+      if (angle !== 0) {
+        con.save();
+        con.translate(dest[0] + origin[0], dest[1] + origin[1]);
+        con.rotate(angle);
+        dest[0] = -origin[0];
+        dest[1] = -origin[1];
+      }
+      con.drawImage(sprite.texture, ...src, ...dest);
+      if (angle !== 0) {
+        con.restore();
+      }
     });
     return this;
   }
@@ -1559,6 +1689,12 @@ let Draw = class Draw {
       con.drawImage(image, ...src, ...dest);
     });
     return this;
+  }
+
+  textSize(str) {
+    this[CONTEXT][0].font = this[FONT];
+    const { width, height } = this[CONTEXT][0].measureText(str);
+    return new Rectangle(width, height);
   }
   // draw some text
   text(str, where, depth = 0) {
@@ -1585,15 +1721,7 @@ let Draw = class Draw {
   render(i) {
     const { width, height } = this[CONTAINER].getBoundingClientRect();
     if (!this[CONTEXT][i]) {
-      this[CONTEXT][i] = document.createElement('CANVAS');
-      this[CONTEXT][i].style.position = 'absolute';
-      this[CONTEXT][i].style.left = 0;
-      this[CONTEXT][i].style.top = 0;
-      this[CONTEXT][i].style.pointerEvents = 'none';
-      this[CONTEXT][i].style.zIndex = i;
-      this[CONTEXT][i].style.transformOrigin = '0 0';
-      this[CONTAINER].appendChild(this[CONTEXT][i]);
-      this[CONTEXT][i] = this[CONTEXT][i].getContext('2d');
+      this.generateCanvas(i);
     }
     const context = this[CONTEXT][i];
     if (this[VIEWPORT][2] !== context.canvas.width) {
@@ -2115,11 +2243,19 @@ let TileMap = class TileMap {
 
   // check if a given Rectangle collides with the collision map
   collides(box) {
-    box = [...box];
-    box[2] = Math.ceil((box[0] + box[2]) / this.tw);
-    box[3] = Math.ceil((box[1] + box[3]) / this.th);
-    box[0] = Math.floor(box[0] / this.tw);
-    box[1] = Math.floor(box[1] / this.th);
+    if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */]) {
+      box = [...box];
+      box[2] = Math.ceil((box[0] + box[2]) / this.tw);
+      box[3] = Math.ceil((box[1] + box[3]) / this.th);
+      box[0] = Math.floor(box[0] / this.tw);
+      box[1] = Math.floor(box[1] / this.th);
+    } else if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Circle */]) {
+      const { x, y, r } = box;
+      box[0] = Math.floor(x - r);
+      box[1] = Math.floor(y - r);
+      box[2] = Math.ceil(x + r);
+      box[3] = Math.ceil(y + r);
+    }
     for (let i = box[0]; i < box[2]; ++i) {
       for (let j = box[1]; j < box[3]; ++j) {
         if (this[COLLISIONS][j] && this[COLLISIONS][j][i]) {
@@ -2617,6 +2753,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Position", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Dimension", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Rectangle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Circle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["d"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__engine_struct__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__engine_timing__ = __webpack_require__(21);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SECOND", function() { return __WEBPACK_IMPORTED_MODULE_2__engine_timing__["a"]; });

@@ -1,6 +1,6 @@
 'use strict';
 
-import { Rectangle } from './struct';
+import { Rectangle, Position } from './struct';
 
 const [PAGE, FRAMES, FRAME] = [Symbol(), Symbol(), Symbol()];
 
@@ -29,6 +29,14 @@ class Sprite extends Rectangle {
   get texture() { return this[PAGE]; }
   get src() { return this[PAGE].frame(this[FRAMES][Math.floor(this[FRAME])]); }
   get dest() { return [...this]; }
+
+  get position() {
+    return new Position(this.x, this.y);
+  }
+  set position(pos) {
+    this.x = pos.x;
+    this.y = pos.y;
+  }
 }
 
 export { Sprite };

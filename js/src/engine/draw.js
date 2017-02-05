@@ -1,7 +1,9 @@
 'use strict';
 
-const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+import { Position } from './struct';
+
+const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT, ROTATION] =
+      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 class Draw {
   [STACK] = {};
@@ -10,12 +12,27 @@ class Draw {
   [FONT] = '14px Arial';
   [WHO] = null;
   [VIEWPORT] = null;
+  [CONTAINER] = null;
+  [CONTEXT] = [];
   [HALIGN] = 'top';
-  [VALIGN] = 'left'
+  [VALIGN] = 'left';
+  [ROTATION] = { angle: 0, origin: [0, 0] };
 
   constructor(container) {
     this[CONTAINER] = container;
-    this[CONTEXT] = [];
+    this.generateCanvas(0);
+  }
+
+  generateCanvas(layer) {
+    const canvas = document.createElement('CANVAS');
+    canvas.style.position = 'absolute';
+    canvas.style.left = 0;
+    canvas.style.top = 0;
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = layer;
+    canvas.style.transformOrigin = '0 0';
+    this[CONTAINER].appendChild(canvas);
+    this[CONTEXT][layer] = canvas.getContext('2d');
   }
 
   // the current object being drawn
@@ -53,6 +70,10 @@ class Draw {
     this[VALIGN] = align;
     return this;
   }
+  rotation(angle, origin = [0, 0]) {
+    this[ROTATION] = { angle, origin: [...origin] };
+    return this;
+  }
 
   // draw a rectangle
   rect(rect, depth = 0) {
@@ -62,6 +83,19 @@ class Draw {
       con.fillStyle = color;
       con.globalAlpha = alpha;
       con.fillRect(...rect);
+    });
+    return this;
+  }
+  // draw a circle
+  circle(circle, depth = 0) {
+    this[STACK][depth] = this[STACK][depth] || [];
+    const [color, alpha] = [this[COLOR], this[ALPHA]];
+    this[STACK][depth].push(con => {
+      con.fillStyle = color;
+      con.globalAlpha = alpha;
+      con.beginPath();
+      con.arc(...circle, 0, Math.PI * 2);
+      con.fill();
     });
     return this;
   }
@@ -79,10 +113,22 @@ class Draw {
   // draw a sprite
   sprite(sprite, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const alpha = this[ALPHA];
+    const [{ angle, origin }, alpha] = [this[ROTATION], this[ALPHA]];
+    const src = [...sprite.src];
+    const dest = [...sprite.dest];
     this[STACK][depth].push(con => {
       con.globalAlpha = alpha;
-      con.drawImage(sprite.texture, ...sprite.src, ...sprite.dest);
+      if(angle !== 0) {
+        con.save();
+        con.translate(dest[0] + origin[0], dest[1] + origin[1]);
+        con.rotate(angle);
+        dest[0] = -origin[0];
+        dest[1] = -origin[1];
+      }
+      con.drawImage(sprite.texture, ...src, ...dest);
+      if(angle !== 0) {
+        con.restore();
+      }
     });
     return this;
   }
@@ -96,10 +142,16 @@ class Draw {
     });
     return this;
   }
+
+  textSize(str) {
+    this[CONTEXT][0].font = this[FONT];
+    const { width, height } = this[CONTEXT][0].measureText(str);
+    return new Rectangle(width, height);
+  }
   // draw some text
   text(str, where, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
-    const [font, alpha, color, ha, va] = [this[FONT], this[ALPHA], this[COLOR], this[HALIGN], this[VALIGN]]
+    const [font, alpha, color, ha, va] = [this[FONT], this[ALPHA], this[COLOR], this[HALIGN], this[VALIGN]];
     this[STACK][depth].push(con => {
       con.font = font;
       con.globalAlpha = alpha;
@@ -121,15 +173,7 @@ class Draw {
   render(i) {
     const { width, height } = this[CONTAINER].getBoundingClientRect();
     if(!this[CONTEXT][i]) {
-      this[CONTEXT][i] = document.createElement('CANVAS');
-      this[CONTEXT][i].style.position = 'absolute';
-      this[CONTEXT][i].style.left = 0;
-      this[CONTEXT][i].style.top = 0;
-      this[CONTEXT][i].style.pointerEvents = 'none';
-      this[CONTEXT][i].style.zIndex = i;
-      this[CONTEXT][i].style.transformOrigin = '0 0';
-      this[CONTAINER].appendChild(this[CONTEXT][i]);
-      this[CONTEXT][i] = this[CONTEXT][i].getContext('2d');
+      this.generateCanvas(i);
     }
     const context = this[CONTEXT][i];
     if(this[VIEWPORT][2] !== context.canvas.width) {

@@ -38,7 +38,7 @@
       <h3>Interface</h3>
       <dl>
         <dt data-view="javascript" id="collider">
-          <code class="language-javascript">Collider(bbox : Rectangle)(base : class)</code>
+          <code class="language-javascript">Collider(bbox : Rectangle | Circle)(base : class)</code>
         </dt>
         <dd data-view="javascript">
           <details>
@@ -48,9 +48,9 @@
               </p>
             </summary>
             <dl class="params">
-              <dt><code class="language-javascript">bbox : Rectangle</code></dt>
+              <dt><code class="language-javascript">bbox : Rectangle | Circle</code></dt>
               <dd>
-                the box, relative to the position, to check for collisions in.
+                the area, relative to the position, to check for collisions in.
               </dd>
               <dt><code class="language-javascript">base : class</code></dt>
               <dd>
@@ -72,7 +72,7 @@
           </p>
         </dd>
         <dt id="bbox">
-          <code data-view="javascript" class="language-javascript">bbox : Rectangle</code><em data-view="javascript">read-only</em>
+          <code data-view="javascript" class="language-javascript">bbox : Circle | Rectangle</code><em data-view="javascript">read-only</em>
           <code data-view="c++" class="language-cpp">virtual Rectangle bbox() const = 0</code>
         </dt>
         <dd>
@@ -83,8 +83,11 @@
           </p>
         </dd>
         <dt id="collides">
-          <code data-view="javascript" class="language-javascript">collides(where : Rectangle) : bool</code>
-          <code data-view="c++" class="language-cpp">bool collides(Rectangle where)</code>
+          <code data-view="javascript" class="language-javascript">collides(where : Rectangle | Circle) : bool</code>
+          <ol data-view="c++">
+            <li><code data-view="c++" class="language-cpp">bool collides(Rectangle where)</code></li>
+            <li><code data-view="c++" class="language-cpp">bool collides(Circle where)</code><em>Currently unsupported</em></li>
+          </ol>
         </dt>
         <dd>
           <details>

@@ -41,13 +41,15 @@ class Engine {
   }
   get size() { return this[SIZE]; }
 
-  // triggers the event for all objects currently active
+  // triggers the event for all objects in a layer, defaulting to the active layer
   // HACK: internalize
-  proc(event) {
-    for(let obj of this[OBJECTS][0]) {
+  proc(event, room = this[ROOMS][0]) {
+    let i = 0;
+    while(room !== this[ROOMS][i]) { ++i; }
+    for(let obj of this[OBJECTS][i]) {
       obj.proc(event);
     }
-    this[ROOMS][0] && this[ROOMS][0].proc(event);
+    this[ROOMS][i] && this[ROOMS][i].proc(event);
   }
 
   // specifies how to start a game
@@ -214,17 +216,18 @@ class GameUtility {
           throw `${this[ENGINE][ROOMS][0].constructor.name} is not a Room`;
         }
         (async () => {
-          this[ENGINE][ROOMS][0].load();
-          this[ENGINE].proc(new GameEvent('roomload', old, Rm));
-          await this[ENGINE][ROOMS][0].loaded;
+          let room = this[ENGINE][ROOMS][0];
+          room.load();
+          this[ENGINE].proc(new GameEvent('roomload', old, Rm), room);
+          await room.loaded;
           // remove the old room, which was temporarily shifted
           if(this[ENGINE][ROOMS][1]) {
             this[ENGINE][ROOMS].splice(1, 1)[0].destructor();
             this[ENGINE][OBJECTS].splice(1, 1);
             this[ENGINE][VIEWS].splice(1, 1);
           }
-          this[ENGINE][ROOMS][0].start();
-          this[ENGINE].proc(new GameEvent('roomstart', old, Rm));
+          room.start();
+          this[ENGINE].proc(new GameEvent('roomstart', old, Rm), room);
         })();
       },
       // freeze the current room and put this[ENGINE] one over top
@@ -237,11 +240,12 @@ class GameUtility {
           throw `${this[ENGINE][ROOMS][0].constructor.name} is not a Room`;
         }
         (async () => {
-          this[ENGINE][ROOMS][0].load();
-          this[ENGINE].proc(new GameEvent('roomload', null, Rm));
-          await this[ENGINE][ROOMS][0].loaded;
-          this[ENGINE][ROOMS][0].start();
-          this[ENGINE].proc(new GameEvent('roomstart', null, Rm));
+          let room = this[ENGINE][ROOMS][0];
+          room.load();
+          this[ENGINE].proc(new GameEvent('roomload', null, Rm), room);
+          await room.loaded;
+          room.start();
+          this[ENGINE].proc(new GameEvent('roomstart', null, Rm), room);
         })();
       },
       // closes the current room overlay
@@ -305,7 +309,9 @@ class GameUtility {
 
   // destroy an object
   destroy(obj) {
-    this[ENGINE][ROOMS][0].destroy(obj);
+    for(let room of this[ENGINE][ROOMS]) {
+      room.destroy(obj);
+    }
   }
 
   // checks if two colliders are colliding

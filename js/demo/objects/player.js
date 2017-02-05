@@ -41,7 +41,6 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
   init() {
     this.sprite.x = 500;
     this.sprite.y = 400;
-    super.game.view(new Rectangle(0, 0, 500, 500));
   }
 
   @override

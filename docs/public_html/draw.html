@@ -21,8 +21,9 @@
     <section class="overview">
       <p>
         As drawing can be a sensitive operation, all drawing operations are
-        limited to the drawing phase, at which time any components of the game
-        which have something to draw are given an instance of this
+        limited to the drawing phase, at which time any
+        <a href="drawable.html"><code class="language-javascript token class-name">Drawable</code></a>
+        components of the game are given an instance of this
         <code class="language-javascript token class-name">Draw</code> class.
       </p>
       <p>
@@ -172,6 +173,37 @@
             </dl>
           </details>
         </dd>
+        <dt id="rotation">
+          <code data-view="javascript" class="language-javascript">rotation(angle : number, origin : Position) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; rotation(double angle, Position origin)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Rotates <a href="sprite.html"><code class="language-javascript token class-name">Sprite</code>s</a>
+                drawn by the given angle, around a position relative to the <code class="language-javascript token class-name">Sprite</code>'s position
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">angle : number</code>
+                <code data-view="c++" class="language-cpp">double angle</code>
+              </dt>
+              <dd>
+                the angle to rotate by (in radians)
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">origin : Position</code>
+                <code data-view="c++" class="language-cpp">Position origin</code><em>Default: Position(0, 0)</em>
+              </dt>
+              <dd>
+                the origin around which to rotate, relative to the sprite's
+                position (top left corner)
+              </dd>
+            </dl>
+          </details>
+        </dd>
         <dt id="rect">
           <code data-view="javascript" class="language-javascript">rect(rect : Rectangle, depth : number) : this</code>
           <code data-view="c++" class="language-cpp">Draw &amp; rect(Rectangle rect, int depth)</code>
@@ -190,6 +222,35 @@
               </dt>
               <dd>
                 the rectangle to draw
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="circle">
+          <code data-view="javascript" class="language-javascript">rect(circle : Circle, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; circle(Circle circle, int depth)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draws a filled circle.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">circle : Circle</code>
+                <code data-view="c++" class="language-cpp">Circle circle</code>
+              </dt>
+              <dd>
+                the circle to draw
               </dd>
               <dt>
                 <code data-view="javascript" class="language-javascript">depth : number</code>
@@ -292,6 +353,29 @@
               </dt>
               <dd>
                 the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="textSize">
+          <code data-view="javascript" class="language-javascript">textSize(str : string) : Rectangle</code>
+          <code data-view="c++" class="language-cpp">Rectangle textSize(std::string str)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Determines the dimensions of the text, if it were drawn with the
+                current settings.
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">str : string</code>
+                <code data-view="c++" class="language-cpp">std::string str</code>
+              </dt>
+              <dd>
+                the text to measure.
               </dd>
             </dl>
           </details>

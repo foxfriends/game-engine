@@ -1,6 +1,6 @@
 'use strict';
 
-import { Dimension, Rectangle } from './struct';
+import { Dimension, Rectangle, Circle } from './struct';
 const [COLLISIONS, IMAGES, LOADED, PAGES] = [Symbol(), Symbol(), Symbol(), Symbol()];
 
 // a TileMap provides an efficient way to store and render a static tile map
@@ -65,11 +65,19 @@ class TileMap {
 
   // check if a given Rectangle collides with the collision map
   collides(box) {
-    box = [...box];
-    box[2] = Math.ceil((box[0] + box[2]) / this.tw);
-    box[3] = Math.ceil((box[1] + box[3]) / this.th);
-    box[0] = Math.floor(box[0] / this.tw);
-    box[1] = Math.floor(box[1] / this.th);
+    if(box instanceof Rectangle) {
+      box = [...box];
+      box[2] = Math.ceil((box[0] + box[2]) / this.tw);
+      box[3] = Math.ceil((box[1] + box[3]) / this.th);
+      box[0] = Math.floor(box[0] / this.tw);
+      box[1] = Math.floor(box[1] / this.th);
+    } else if(box instanceof Circle) {
+      const {x, y, r} = box;
+      box[0] = Math.floor(x - r);
+      box[1] = Math.floor(y - r);
+      box[2] = Math.ceil(x + r);
+      box[3] = Math.ceil(y + r);
+    }
     for(let i = box[0]; i < box[2]; ++i) {
       for(let j = box[1]; j < box[3]; ++j) {
         if(this[COLLISIONS][j] && this[COLLISIONS][j][i]) { return true; }

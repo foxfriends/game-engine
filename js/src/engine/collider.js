@@ -1,6 +1,6 @@
 'use strict';
 
-import { Rectangle, Position } from './struct';
+import { Rectangle, Circle, Position } from './struct';
 
 function Collider(bbox) {
   return function(Base = class{}) {
@@ -18,8 +18,7 @@ function Collider(bbox) {
       }
       // actually for check a collision
       collides(where) {
-        return Math.abs((where.x + where.w / 2) - (this.bbox.x + this.position.x + this.bbox.w / 2)) < (where.w + this.bbox.w) / 2 &&
-          Math.abs((where.y + where.h / 2) - (this.bbox.y + this.position.y + this.bbox.h / 2)) < (where.h + this.bbox.h) / 2;
+        return this.bbox.constructor.intersects(this.bbox.constructor.shift(this.bbox, this.position), where);
       }
     };
   }
@@ -29,7 +28,7 @@ Object.defineProperty(Collider, Symbol.hasInstance, {
   value(instance) {
     return typeof instance.collides === 'function' &&
       instance.position instanceof Position &&
-      instance.bbox instanceof Rectangle;
+      (instance.bbox instanceof Rectangle || instance.bbox instanceof Circle);
   }
 });
 
