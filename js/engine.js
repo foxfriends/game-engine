@@ -1073,9 +1073,9 @@ function config(dir, cfg) {
   for (let key of Object.keys(cfg)) {
     for (let item of Object.keys(cfg[key])) {
       if (typeof cfg[key][item] === 'string') {
-        cfg[key][item] = __WEBPACK_IMPORTED_MODULE_0_path___default.a.resolve(dir, cfg[key][item]);
+        cfg[key][item] = __WEBPACK_IMPORTED_MODULE_0_path___default.a.resolve(__WEBPACK_IMPORTED_MODULE_0_path___default.a.dirname(window.location.pathname), dir, cfg[key][item]);
       } else {
-        cfg[key][item][0] = __WEBPACK_IMPORTED_MODULE_0_path___default.a.relative(dir, cfg[key][item][0]);
+        cfg[key][item][0] = __WEBPACK_IMPORTED_MODULE_0_path___default.a.relative(__WEBPACK_IMPORTED_MODULE_0_path___default.a.dirname(window.location.pathname), dir, cfg[key][item][0]);
       }
     }
   }

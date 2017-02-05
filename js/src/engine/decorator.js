@@ -45,9 +45,9 @@ function config(dir, cfg) {
   for(let key of Object.keys(cfg)) {
     for(let item of Object.keys(cfg[key])) {
       if(typeof cfg[key][item] === 'string') {
-        cfg[key][item] = path.resolve(dir, cfg[key][item]);
+        cfg[key][item] = path.resolve(path.dirname(window.location.pathname), dir, cfg[key][item]);
       } else {
-        cfg[key][item][0] = path.relative(dir, cfg[key][item][0]);
+        cfg[key][item][0] = path.relative(path.dirname(window.location.pathname), dir, cfg[key][item][0]);
       }
     }
   }
