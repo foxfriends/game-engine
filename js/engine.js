@@ -322,8 +322,10 @@ function Drawable(Base = class {}) {
       }
       const { x, y } = this[SPRITE] || { x: 0, y: 0 };
       this[SPRITE] = sprite ? this[ENGINE].texture.sprite(sprite) : null;
-      this[SPRITE].x = x;
-      this[SPRITE].y = y;
+      if (this[SPRITE]) {
+        this[SPRITE].x = x;
+        this[SPRITE].y = y;
+      }
     }
   };
 }
@@ -612,8 +614,7 @@ let Sprite = class Sprite extends __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* R
     return this[FRAME];
   }
 
-  // accessors for the drawing methods
-  // HACK: internalize
+  // accessors for the drawing methods and for custom surface drawing
   get texture() {
     return this[PAGE];
   }
@@ -1514,6 +1515,11 @@ let GameUtility = class GameUtility {
     }
     return null;
   }
+
+  // get new sprites
+  sprite(name) {
+    return this[ENGINE].texture.sprite(name) || null;
+  }
 };
 
 
@@ -1680,7 +1686,7 @@ let Draw = class Draw {
     });
     return this;
   }
-  // draw a tilemap
+  // draw an image (tilemap, surface, etc)
   image(image, src, dest, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const alpha = this[ALPHA];

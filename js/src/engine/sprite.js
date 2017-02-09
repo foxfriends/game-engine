@@ -24,8 +24,7 @@ class Sprite extends Rectangle {
   }
   get frame() { return this[FRAME]; }
 
-  // accessors for the drawing methods
-  // HACK: internalize
+  // accessors for the drawing methods and for custom surface drawing
   get texture() { return this[PAGE]; }
   get src() { return this[PAGE].frame(this[FRAMES][Math.floor(this[FRAME])]); }
   get dest() { return [...this]; }

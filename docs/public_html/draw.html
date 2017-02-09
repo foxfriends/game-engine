@@ -293,7 +293,7 @@
         </dd>
         <dt id="sprite">
           <code data-view="javascript" class="language-javascript">sprite(sprite : Sprite, depth : number) : this</code>
-          <code data-view="c++" class="language-cpp">Draw &amp; sprite(Sprite rect, int depth)</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; sprite(Sprite sorite, int depth)</code>
         </dt>
         <dd>
           <details>
@@ -305,11 +305,58 @@
             </summary>
             <dl class="params">
               <dt>
-                <code data-view="javascript" class="language-javascript">rect : Rectangle</code>
-                <code data-view="c++" class="language-cpp">Rectangle rect</code>
+                <code data-view="javascript" class="language-javascript">sprite : Sprite</code>
+                <code data-view="c++" class="language-cpp">Sprite sprite</code>
               </dt>
               <dd>
                 the <code class="language-javascript token class-name">Sprite</code> to draw.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">depth : number</code>
+                <code data-view="c++" class="language-cpp">int depth</code><em>Default: 0</em>
+              </dt>
+              <dd>
+                the depth to draw at. A larger number is closer to the screen.
+              </dd>
+            </dl>
+          </details>
+        </dd>
+        <dt id="image">
+          <code data-view="javascript" class="language-javascript">image(image : Image | HTMLCanvasElement, src : Rectangle, dest : Rectangle, depth : number) : this</code>
+          <code data-view="c++" class="language-cpp">Draw &amp; image(Image image, src : Rectangle, dest : Rectangle, int depth)</code><em data-view="c++">Currently unsupported</em>
+        </dt>
+        <dd>
+          <details>
+            <summary>
+              <p>
+                Draws any platform standard image. This includes
+                <span data-view="javascript">
+                  <code class="language-jaasacript token class-name">Image</code>
+                  and <code class="language-jaasacript token class-name">HTMLCanvasElement</code>.
+                </span>
+              </p>
+            </summary>
+            <dl class="params">
+              <dt>
+                <code data-view="javascript" class="language-javascript">image : Image | HTMLCanvasElement</code>
+                <code data-view="c++" class="language-cpp">Image image</code>
+              </dt>
+              <dd>
+                the image to draw.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">src : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle src</code>
+              </dt>
+              <dd>
+                the source area within the image to draw.
+              </dd>
+              <dt>
+                <code data-view="javascript" class="language-javascript">dest : Rectangle</code>
+                <code data-view="c++" class="language-cpp">Rectangle dest</code>
+              </dt>
+              <dd>
+                the destination area in the room to draw the image at.
               </dd>
               <dt>
                 <code data-view="javascript" class="language-javascript">depth : number</code>

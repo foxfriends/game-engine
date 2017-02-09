@@ -132,7 +132,7 @@ class Draw {
     });
     return this;
   }
-  // draw a tilemap
+  // draw an image (tilemap, surface, etc)
   image(image, src, dest, depth = 0) {
     this[STACK][depth] = this[STACK][depth] || [];
     const alpha = this[ALPHA];

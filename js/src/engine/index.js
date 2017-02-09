@@ -335,6 +335,11 @@ class GameUtility {
     }
     return null;
   }
+
+  // get new sprites
+  sprite(name) {
+    return this[ENGINE].texture.sprite(name) || null;
+  }
 }
 
 

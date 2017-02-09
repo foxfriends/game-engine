@@ -25,8 +25,10 @@ function Drawable(Base = class{}) {
       if(this[SPRITE] && this[SPRITE].name === sprite) { return; }
       const {x, y} = this[SPRITE] || {x: 0, y: 0};
       this[SPRITE] = sprite ? this[ENGINE].texture.sprite(sprite) : null;
-      this[SPRITE].x = x;
-      this[SPRITE].y = y;
+      if(this[SPRITE]) {
+        this[SPRITE].x = x;
+        this[SPRITE].y = y;
+      }
     }
   };
 }
