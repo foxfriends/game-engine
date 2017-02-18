@@ -158,18 +158,50 @@ let Rectangle = class Rectangle {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+const [
+// decorator properties
+SPRITE, PAGES, MUSIC, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED,
+// main engine methods
+ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, PROC] = function* () {
+  for (;;) yield Symbol();
+}();
+/* harmony export (immutable) */ exports["f"] = SPRITE;
+
+/* harmony export (immutable) */ exports["p"] = PROC;
+
+/* harmony export (immutable) */ exports["j"] = VIEWS;
+
+/* harmony export (immutable) */ exports["o"] = SOUND_MANAGER;
+
+/* harmony export (immutable) */ exports["n"] = TEXTURE_MANAGER;
+
+/* harmony export (immutable) */ exports["m"] = INPUT;
+
+/* harmony export (immutable) */ exports["l"] = CONTEXT;
+
+/* harmony export (immutable) */ exports["k"] = CANVAS;
+
+/* harmony export (immutable) */ exports["h"] = OBJECTS;
+
+/* harmony export (immutable) */ exports["g"] = ROOMS;
+
 /* unused harmony export LOADED */
-/* harmony export (binding) */ __webpack_require__.d(exports, "f", function() { return SPRITE; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return SOUNDS; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "g", function() { return FONTS; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return PAGES; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return PERSISTENT; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return TILEMAP; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return MUSIC; });
 
+/* harmony export (immutable) */ exports["a"] = TILEMAP;
 
-const [SPRITE, PAGES, MUSIC, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
+/* harmony export (immutable) */ exports["e"] = PERSISTENT;
 
+/* harmony export (immutable) */ exports["q"] = FONTS;
+
+/* harmony export (immutable) */ exports["c"] = SOUNDS;
+
+/* harmony export (immutable) */ exports["d"] = MUSIC;
+
+/* harmony export (immutable) */ exports["b"] = PAGES;
+
+/* harmony export (immutable) */ exports["i"] = RAF;
 
 
 /***/ },
@@ -999,7 +1031,7 @@ function config(dir, cfg) {
   return function (target) {
     Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["b" /* PAGES */], { value: cfg['texture-pages'] });
     Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["a" /* TILEMAP */], { value: cfg['tile-maps'] });
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["g" /* FONTS */], { value: cfg['fonts'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["q" /* FONTS */], { value: cfg['fonts'] });
     Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["c" /* SOUNDS */], { value: cfg['sounds'] });
     Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["d" /* MUSIC */], { value: cfg['music'] });
   };
@@ -1080,16 +1112,14 @@ let GameObject = class GameObject {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__struct__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__drawable__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__collider__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__room__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__input__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__texture_manager__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__sound_manager__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__const__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__input__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__texture_manager__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__sound_manager__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__const__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__game_utility__ = __webpack_require__(48);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Engine; });
 
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 
 
@@ -1099,11 +1129,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 
 
-
-
-
-// NOTE : maybe I should bring in that Symbolic thing...
-const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
 // TODO: rewrite everything to use private methods using out-of-class bound
 //       functions and internal methods using shared symbols
@@ -1111,70 +1136,67 @@ const [ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAG
 let Engine = class Engine {
 
   constructor(canvas, { w, h }) {
-    this[ROOMS] = [];
-    this[OBJECTS] = [[]];
-    this[RAF] = null;
-    this[VIEWS] = [new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, 300, 150)];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]] = [];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]] = [[]];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = null;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]] = [new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, 300, 150)];
 
-    this[CANVAS] = document.querySelector(canvas);
-    this[CANVAS].setAttribute('tabindex', 0);
-    this[CANVAS].style.outline = 'none';
-    this[CANVAS].width = w;
-    this[CANVAS].height = h;
-    this[VIEWS][0].w = w;
-    this[VIEWS][0].h = h;
-    this[CONTEXT] = this[CANVAS].getContext('2d');
-    this[INPUT] = new __WEBPACK_IMPORTED_MODULE_6__input__["a" /* default */](this[CANVAS]);
-    this[TEXTURE_MANAGER] = new __WEBPACK_IMPORTED_MODULE_7__texture_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["b" /* PAGES */]]);
-    this[SOUND_MANAGER] = new __WEBPACK_IMPORTED_MODULE_8__sound_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["c" /* SOUNDS */]], this.constructor[__WEBPACK_IMPORTED_MODULE_9__const__["d" /* MUSIC */]]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]] = document.querySelector(canvas);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].setAttribute('tabindex', 0);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].style.outline = 'none';
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].width = w;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].height = h;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][0].w = w;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][0].h = h;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["l" /* CONTEXT */]] = this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].getContext('2d');
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* INPUT */]] = new __WEBPACK_IMPORTED_MODULE_4__input__["a" /* default */](this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* TEXTURE_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_5__texture_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["b" /* PAGES */]]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* SOUND_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_6__sound_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["c" /* SOUNDS */]], this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* MUSIC */]]);
   }
   get size() {
-    return new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](this[CANVAS].width, this[CANVAS].height);
+    return new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].width, this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* CANVAS */]].height);
   }
 
   // triggers the event for all objects currently active
-  // HACK: internalize
-  proc(event) {
-    for (let obj of this[OBJECTS][0]) {
+  [__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](event) {
+    for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0]) {
       obj.proc(event);
     }
-    this[ROOMS][0] && this[ROOMS][0].proc(event);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][0] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][0].proc(event);
   }
 
   // specifies how to start a game
   start() {}
   // processes all events for one frame
-  // HACK: internalize
   step() {
-    this.proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepstart'));
-    for (let event of this[INPUT]) {
-      this.proc(event);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepstart'));
+    for (let event of this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* INPUT */]]) {
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](event);
     }
-    this.proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('step'));
-    this.proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepend'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('step'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepend'));
   }
   // refreshes the game screen
-  // HACK: internalize
   draw() {
-    this[CONTEXT].clearRect(0, 0, ...this.size);
-    const drawer = new __WEBPACK_IMPORTED_MODULE_0__draw__["a" /* default */](this[CONTEXT]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["l" /* CONTEXT */]].clearRect(0, 0, ...this.size);
+    const drawer = new __WEBPACK_IMPORTED_MODULE_0__draw__["a" /* default */](this[__WEBPACK_IMPORTED_MODULE_7__const__["l" /* CONTEXT */]]);
     // draw under layers first
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
-    for (let i = this[ROOMS].length - 1; i > 0; --i) {
-      drawer.view(this[VIEWS][i]);
-      for (let obj of this[OBJECTS][i]) {
+    for (let i = this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length - 1; i > 0; --i) {
+      drawer.view(this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][i]);
+      for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
       }
-      this[ROOMS][i] && this[ROOMS][i].draw(drawer);
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i].draw(drawer);
       drawer.render();
     }
-    drawer.view(this[VIEWS][0]);
-    for (let obj of this[OBJECTS][0]) {
+    drawer.view(this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][0]);
+    for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0]) {
       obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
     }
-    this[ROOMS][0] && this[ROOMS][0].draw(drawer);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][0] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][0].draw(drawer);
     drawer.render();
   }
   // run at the end of a game
@@ -1184,19 +1206,19 @@ let Engine = class Engine {
   run() {
     let me = 0;
     const takeStep = () => {
-      me = this[RAF];
+      me = this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]];
       this.step();
       this.draw();
-      if (this[RAF] === me) {
+      if (this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] === me) {
         // guard against the game being re-run by just stopping it.
         // NOTE: behaviour is undefined if there are still rooms/objects in the
         // game when it is re-run
-        this[RAF] = window.requestAnimationFrame(takeStep);
+        this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = window.requestAnimationFrame(takeStep);
       }
     };
     this.start();
-    this.proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gamestart'));
-    this[RAF] = window.requestAnimationFrame(takeStep);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gamestart'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = window.requestAnimationFrame(takeStep);
   }
 
   // spawns a persistent object
@@ -1204,215 +1226,40 @@ let Engine = class Engine {
   spawn(Obj, ...args) {
     const o = new Obj(this);
     o.init(...args);
-    this[OBJECTS][0].push(o);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].push(o);
     return o;
   }
   // destroys a persistent object
   // HACK: internalize
   destroy(obj) {
     if (typeof obj === 'function') {
-      this[OBJECTS][0].filter(o => !(o instanceof obj));
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].filter(o => !(o instanceof obj));
     } else {
-      const i = this[OBJECTS][0].indexOf(obj);
+      const i = this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].indexOf(obj);
       if (i >= 0) {
-        this[OBJECTS][0].splice(i, 1);
+        this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].splice(i, 1);
       }
     }
   }
   // finds a persistent object
   find(Obj) {
-    return this[OBJECTS][0].filter(o => o instanceof Obj);
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].filter(o => o instanceof Obj);
   }
 
   get texture() {
-    return this[TEXTURE_MANAGER];
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* TEXTURE_MANAGER */]];
   }
 
   get sound() {
-    return this[SOUND_MANAGER];
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* SOUND_MANAGER */]];
   }
 
   get layers() {
-    return this[ROOMS].length;
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length;
   }
 
-  // utilities - TODO: this should be put in another module
   get util() {
-    return new GameUtility(this);
-  }
-};
-
-
-const [ENGINE] = [Symbol()];
-
-// TODO: move this into another module once the internal function sharing is set up
-let GameUtility = class GameUtility {
-
-  constructor(engine) {
-    this[ENGINE] = null;
-
-    this[ENGINE] = engine;
-  }
-  // get/set the view port, optionally constrained within the room
-  // boundaries if possible, and with the entire room centred if not
-  view(view, constrain = true) {
-    if (view === undefined) {
-      return this[ENGINE][VIEWS][0];
-    }
-    if (view instanceof __WEBPACK_IMPORTED_MODULE_1__struct__["a" /* Position */]) {
-      view = new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](view.x - this[ENGINE][VIEWS][0].w / 2, view.y - this[ENGINE][VIEWS][0].h / 2, this[ENGINE][VIEWS][0].w, this[ENGINE][VIEWS][0].h);
-    }
-    if (constrain) {
-      const { w, h } = this[ENGINE][ROOMS][0].size;
-      const [r, b] = [view.x + view.w, view.y + view.h];
-      if (view.w > w) {
-        view.x = (w - view.w) / 2;
-      } else if (view.x < 0) {
-        view.x = 0;
-      } else if (r > w) {
-        view.x = w - view.w;
-      }
-      if (view.h > h) {
-        view.y = (h - view.h) / 2;
-      } else if (view.y < 0) {
-        view.y = 0;
-      } else if (b > h) {
-        view.y = h - view.h;
-      }
-    }
-    this[ENGINE][VIEWS][0] = new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](...view);
-  }
-
-  get room() {
-    var _this = this;
-
-    return {
-      // go to the given room
-      goto: Rm => {
-        let old = null;
-        if (this[ENGINE][ROOMS][0]) {
-          old = this[ENGINE][ROOMS][0].constructor;
-          this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', old, Rm));
-          this[ENGINE][ROOMS][0].end();
-        }
-        this[ENGINE][ROOMS].unshift(new Rm(this[ENGINE]));
-        this[ENGINE][OBJECTS].splice(1, 1, []);
-        this[ENGINE][VIEWS].unshift(new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
-        if (!(this[ENGINE][ROOMS][0] instanceof __WEBPACK_IMPORTED_MODULE_5__room__["b" /* default */])) {
-          throw `${ this[ENGINE][ROOMS][0].constructor.name } is not a Room`;
-        }
-        _asyncToGenerator(function* () {
-          _this[ENGINE][ROOMS][0].load();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm));
-          yield _this[ENGINE][ROOMS][0].loaded;
-          // remove the old room, which was temporarily shifted
-          if (_this[ENGINE][ROOMS][1]) {
-            _this[ENGINE][ROOMS].splice(1, 1)[0].destructor();
-            _this[ENGINE][OBJECTS].splice(1, 1);
-            _this[ENGINE][VIEWS].splice(1, 1);
-          }
-          _this[ENGINE][ROOMS][0].start();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm));
-        })();
-      },
-      // freeze the current room and put this[ENGINE] one over top
-      overlay: Rm => {
-        const old = this[ENGINE][ROOMS][0].constructor;
-        this[ENGINE][ROOMS].unshift(new Rm(this[ENGINE]));
-        this[ENGINE][OBJECTS].unshift([]);
-        this[ENGINE][VIEWS].unshift(new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
-        if (!(this[ENGINE][ROOMS][0] instanceof __WEBPACK_IMPORTED_MODULE_5__room__["b" /* default */])) {
-          throw `${ this[ENGINE][ROOMS][0].constructor.name } is not a Room`;
-        }
-        _asyncToGenerator(function* () {
-          _this[ENGINE][ROOMS][0].load();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm));
-          yield _this[ENGINE][ROOMS][0].loaded;
-          _this[ENGINE][ROOMS][0].start();
-          _this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm));
-        })();
-      },
-      // closes the current room overlay
-      close: () => {
-        this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', this[ENGINE][ROOMS][0].constructor, null));
-        this[ENGINE][ROOMS][0].end();
-        this[ENGINE][ROOMS][0].destructor();
-        this[ENGINE][ROOMS].shift();
-        this[ENGINE][OBJECTS].shift();
-        this[ENGINE][VIEWS].shift();
-        if (this[ENGINE][ROOMS].length === 0) {
-          throw `You closed the last room... please don't do that`;
-        }
-      }
-    };
-  }
-
-  mousestate(button) {
-    return this[ENGINE][INPUT].mousestate(button);
-  }
-
-  keystate(key) {
-    return this[ENGINE][INPUT].keystate(key);
-  }
-
-  // end the game
-  // NOTE: for JS version of this[ENGINE] engine, this[ENGINE] function isn't all that
-  // useful since you can't really 'close' a canvas
-  end() {
-    this[ENGINE].proc(new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gameend'));
-    this[ENGINE].end();
-    window.cancelAnimationFrame(this[ENGINE][RAF]);
-    this[ENGINE][RAF] = null;
-    this[ENGINE][ROOMS] = [];
-    this[ENGINE][OBJECTS] = [[]];
-  }
-
-  // end the game and run it again
-  restart() {
-    this[ENGINE].util.end();
-    this[ENGINE].run();
-  }
-
-  sound(name) {
-    return this[ENGINE][SOUND_MANAGER].sound(name);
-  }
-
-  music(name) {
-    this[ENGINE][SOUND_MANAGER].music(name);
-  }
-
-  // spawn an object
-  spawn(...args) {
-    return this[ENGINE][ROOMS][0].spawn(...args);
-  }
-
-  // find an object
-  find(Obj) {
-    return this[ENGINE][ROOMS][0].find(Obj);
-  }
-
-  // destroy an object
-  destroy(obj) {
-    this[ENGINE][ROOMS][0].destroy(obj);
-  }
-
-  // checks if two colliders are colliding
-  collides(where, what) {
-    if (what instanceof __WEBPACK_IMPORTED_MODULE_4__collider__["b" /* default */]) {
-      return what.collides(where);
-    }
-    if (this[ENGINE][ROOMS][0].collides(where, what)) {
-      return true;
-    }
-    if (what !== 'room') {
-      what = what === 'any' ? this[ENGINE][OBJECTS][0].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_4__collider__["b" /* default */]) : this[ENGINE][OBJECTS][0].filter(o => o instanceof what);
-      for (let it of what) {
-        if (it.collides(where)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return new __WEBPACK_IMPORTED_MODULE_8__game_utility__["a" /* default */](this);
   }
 };
 
@@ -2611,6 +2458,203 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collider__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__room__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const__ = __webpack_require__(1);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+
+
+
+
+
+const [ENGINE] = [Symbol()];
+
+let GameUtility = class GameUtility {
+
+  constructor(engine) {
+    this[ENGINE] = null;
+
+    this[ENGINE] = engine;
+  }
+  // get/set the view port, optionally constrained within the room
+  // boundaries if possible, and with the entire room centred if not
+  view(view, constrain = true) {
+    if (view === undefined) {
+      return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0];
+    }
+    if (view instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */]) {
+      view = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](view.x - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].w / 2, view.y - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].h / 2, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].w, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].h);
+    }
+    if (constrain) {
+      const { w, h } = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].size;
+      const [r, b] = [view.x + view.w, view.y + view.h];
+      if (view.w > w) {
+        view.x = (w - view.w) / 2;
+      } else if (view.x < 0) {
+        view.x = 0;
+      } else if (r > w) {
+        view.x = w - view.w;
+      }
+      if (view.h > h) {
+        view.y = (h - view.h) / 2;
+      } else if (view.y < 0) {
+        view.y = 0;
+      } else if (b > h) {
+        view.y = h - view.h;
+      }
+    }
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0] = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](...view);
+  }
+
+  get room() {
+    var _this = this;
+
+    return {
+      // go to the given room
+      goto: Rm => {
+        let old = null;
+        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0]) {
+          old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor;
+          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', old, Rm));
+          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].end();
+        }
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].splice(1, 1, []);
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
+        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
+          throw `${ this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor.name } is not a Room`;
+        }
+        _asyncToGenerator(function* () {
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].load();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm));
+          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].loaded;
+          // remove the old room, which was temporarily shifted
+          if (_this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][1]) {
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].splice(1, 1)[0].destructor();
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].splice(1, 1);
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].splice(1, 1);
+          }
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].start();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm));
+        })();
+      },
+      // freeze the current room and put this[ENGINE] one over top
+      overlay: Rm => {
+        const old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor;
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].unshift([]);
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
+        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
+          throw `${ this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor.name } is not a Room`;
+        }
+        _asyncToGenerator(function* () {
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].load();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm));
+          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].loaded;
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].start();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm));
+        })();
+      },
+      // closes the current room overlay
+      close: () => {
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor, null));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].end();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].destructor();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].shift();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].shift();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].shift();
+        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].length === 0) {
+          throw `You closed the last room... please don't do that`;
+        }
+      }
+    };
+  }
+
+  mousestate(button) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["m" /* INPUT */]].mousestate(button);
+  }
+
+  keystate(key) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["m" /* INPUT */]].keystate(key);
+  }
+
+  // end the game
+  // NOTE: for JS version of this[ENGINE] engine, this[ENGINE] function isn't all that
+  // useful since you can't really 'close' a canvas
+  end() {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["p" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gameend'));
+    this[ENGINE].end();
+    window.cancelAnimationFrame(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* RAF */]]);
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* RAF */]] = null;
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]] = [];
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]] = [[]];
+  }
+
+  // end the game and run it again
+  restart() {
+    this[ENGINE].util.end();
+    this[ENGINE].run();
+  }
+
+  sound(name) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* SOUND_MANAGER */]].sound(name);
+  }
+
+  music(name) {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* SOUND_MANAGER */]].music(name);
+  }
+
+  // spawn an object
+  spawn(...args) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].spawn(...args);
+  }
+
+  // find an object
+  find(Obj) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].find(Obj);
+  }
+
+  // destroy an object
+  destroy(obj) {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].destroy(obj);
+  }
+
+  // checks if two colliders are colliding
+  collides(where, what) {
+    if (what instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) {
+      return what.collides(where);
+    }
+    if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].collides(where, what)) {
+      return true;
+    }
+    if (what !== 'room') {
+      what = what === 'any' ? this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]][0].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]][0].filter(o => o instanceof what);
+      for (let it of what) {
+        if (it.collides(where)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+};
+
+
+/* harmony default export */ exports["a"] = GameUtility;
 
 /***/ }
 /******/ ]);

@@ -1,6 +1,8 @@
 'use strict';
 
-const [SPRITE, PAGES, MUSIC, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED] =
-      [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
-
-export { SPRITE, SOUNDS, MUSIC, FONTS, PAGES, PERSISTENT, TILEMAP, LOADED };
+export const [
+  // decorator properties
+  SPRITE, PAGES, MUSIC, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED,
+  // main engine methods
+  ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, PROC
+] = function*() { for(;;) yield Symbol(); } ()
