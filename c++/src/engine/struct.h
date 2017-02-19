@@ -5,29 +5,48 @@
 #include <climits>
 
 namespace Game {
+    struct Position;
+    struct Rectangle;
+    struct Dimension;
+    struct Circle;
+
     struct Position {
         int x, y;
-        Position(int x, int y) noexcept : x{ x }, y{ y } {}
-        operator SDL_Point() const { return { x, y }; }
-        Position operator + (const Position & r) const { return { x + r.x, y + r.y }; }
-        Position operator - (const Position & r) const { return { x - r.x, y - r.y }; }
-        bool operator == (const Position & r) const { return x == r.x && y == r.y; }
+        Position(int x, int y) noexcept;
+        operator SDL_Point() const;
+        Position operator + (const Position & r) const;
+        Position operator - (const Position & r) const;
+        bool operator == (const Position & r) const;
+        bool operator | (const Rectangle & r) const;
+        bool operator | (const Circle & r) const;
     };
     struct Dimension {
         int w, h;
-        Dimension(int w, int h) noexcept : w{ w }, h{ h } {}
-        static Dimension infinite() { return { INT_MAX, INT_MAX }; }
-        operator SDL_Point() const { return { w, h }; }
-        Dimension operator + (const Dimension & r) const { return { w + r.w, h + r.h }; }
-        bool operator == (const Dimension & r) const { return w == r.w && h == r.h; }
+        Dimension(int w, int h) noexcept;
+        static Dimension infinite();
+        operator SDL_Point() const;
+        Dimension operator + (const Dimension & r) const;
+        bool operator == (const Dimension & r) const;
     };
     struct Rectangle : public Position, public Dimension {
-        Rectangle(int x, int y, int w, int h) noexcept : Position{ x, y }, Dimension{ w, h } {}
-        Rectangle(const Position & p, const Dimension & d) noexcept : Position{ p }, Dimension{ d } {}
-        operator SDL_Rect() const { return { x, y, w, h }; }
-        Rectangle operator + (const Position & r) const { return { x + r.x, y + r.y, w, h }; }
-        Rectangle operator + (const Dimension & r) const { return { x, y, w + r.w, h + r.h }; }
-        bool operator == (const Rectangle & r) const { return x == r.x && y == r.y && w == r.w && h == r.h; }
+        Rectangle(int x, int y, int w, int h) noexcept;
+        Rectangle(const Position & p, const Dimension & d) noexcept;
+        operator SDL_Rect() const;
+        Rectangle operator + (const Position & r) const;
+        Rectangle operator + (const Dimension & r) const;
+        bool operator == (const Rectangle & r) const;
+        bool operator | (const Rectangle & r) const;
+        bool operator | (const Circle & r) const;
+    };
+    struct Circle : public Position {
+        int r;
+        Circle(int x, int y, int r) noexcept;
+        Circle(const Position & p, int r) noexcept;
+
+        Circle operator + (const Position & r) const;
+        bool operator == (const Circle & r) const;
+        bool operator | (const Rectangle & r) const;
+        bool operator | (const Circle & r) const;
     };
 }
 

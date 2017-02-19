@@ -175,7 +175,7 @@
         </dd>
         <dt id="rotation">
           <code data-view="javascript" class="language-javascript">rotation(angle : number, origin : Position) : this</code>
-          <code data-view="c++" class="language-cpp">Draw &amp; rotation(double angle, Position origin)</code><em data-view="c++">Currently unsupported</em>
+          <code data-view="c++" class="language-cpp">Draw &amp; rotation(double angle, Position origin)</code>
         </dt>
         <dd>
           <details>
@@ -323,23 +323,27 @@
         </dd>
         <dt id="image">
           <code data-view="javascript" class="language-javascript">image(image : Image | HTMLCanvasElement, src : Rectangle, dest : Rectangle, depth : number) : this</code>
-          <code data-view="c++" class="language-cpp">Draw &amp; image(Image image, src : Rectangle, dest : Rectangle, int depth)</code><em data-view="c++">Currently unsupported</em>
+          <code data-view="c++" class="language-cpp">Draw &amp; image(SDL_Texture * image, src : Rectangle, dest : Rectangle, int depth)</code>
         </dt>
         <dd>
           <details>
             <summary>
               <p>
-                Draws any platform standard image. This includes
+                Draws any platform standard image.
                 <span data-view="javascript">
-                  <code class="language-jaasacript token class-name">Image</code>
-                  and <code class="language-jaasacript token class-name">HTMLCanvasElement</code>.
+                  This includes
+                  <code class="language-javascript token class-name">Image</code>
+                  and <code class="language-javascript token class-name">HTMLCanvasElement</code>.
+                </span>
+                <span data-view="c++">
+                  Currently only works for <code class="language-cpp token class-name">SDL_Texture</code>s.
                 </span>
               </p>
             </summary>
             <dl class="params">
               <dt>
                 <code data-view="javascript" class="language-javascript">image : Image | HTMLCanvasElement</code>
-                <code data-view="c++" class="language-cpp">Image image</code>
+                <code data-view="c++" class="language-cpp">SDL_Texture * image</code>
               </dt>
               <dd>
                 the image to draw.
@@ -405,8 +409,8 @@
           </details>
         </dd>
         <dt id="textSize">
-          <code data-view="javascript" class="language-javascript">textSize(str : string) : Rectangle</code>
-          <code data-view="c++" class="language-cpp">Rectangle textSize(std::string str)</code><em data-view="c++">Currently unsupported</em>
+          <code data-view="javascript" class="language-javascript">textSize(str : string) : Dimension</code>
+          <code data-view="c++" class="language-cpp">Dimension text_size(std::string str)</code>
         </dt>
         <dd>
           <details>

@@ -42,6 +42,22 @@ namespace Game {
         return *this;
     }
 
+    Draw & Draw::halign(const std::string & halign) {
+        _halign = halign;
+        return *this;
+    }
+
+    Draw & Draw::valign(const std::string & valign) {
+        _valign = valign;
+        return *this;
+    }
+
+    Draw & Draw::rotation(double angle, Position origin) {
+        _angle = angle;
+        _rotate_origin = origin;
+        return *this;
+    }
+
     Draw & Draw::alpha(float alpha) {
         _alpha = 255 * alpha;
         return *this;
@@ -77,6 +93,27 @@ namespace Game {
         return *this;
     }
 
+    // Draw & Draw::circle(Circle circle, int depth) {
+    //     const Uint8
+    //         r = _r,
+    //         g = _g,
+    //         b = _b,
+    //         a = _alpha;
+    //     _layers[depth].emplace_back(
+    //         [this,circle,r,g,b,a] () -> void {
+    //             SDL_Rect box = rect;
+    //             // TODO: Move this calculation somewhere reusable
+    //             box.x = (box.x - _view.x) * static_cast<float>(_size.w) / _view.w;
+    //             box.y = (box.y - _view.y) * static_cast<float>(_size.h) / _view.h;
+    //             box.w *= static_cast<float>(_size.w) / _view.w;
+    //             box.h *= static_cast<float>(_size.h) / _view.h;
+    //             SDL_SetRenderDrawColor(&_ren, r, g, b, a);
+    //             SDL_RenderFillRect(&_ren, &box);
+    //         }
+    //     );
+    //     return *this;
+    // }
+
     Draw & Draw::point(Position p, int depth) {
         const Uint8
             r = _r,
@@ -97,8 +134,10 @@ namespace Game {
 
     Draw & Draw::sprite(const Sprite & s, int depth) {
         const Uint8 a = _alpha;
+        const double rotation = _angle;
+        const Position origin = _rotate_origin;
         _layers[depth].emplace_back(
-            [this,&s,a] () -> void {
+            [this,&s,a, rotation, origin] () -> void {
                 SDL_Rect
                     src = s.src(),
                     dest = s.dest();
@@ -107,7 +146,12 @@ namespace Game {
                 dest.w *= static_cast<float>(_size.w) / _view.w;
                 dest.h *= static_cast<float>(_size.h) / _view.h;
                 s.texture().setAlpha(a);
-                SDL_RenderCopy(&_ren, s.texture(), &src, &dest);
+                if(rotation == 0) {
+                    SDL_RenderCopy(&_ren, s.texture(), &src, &dest);
+                } else {
+                    SDL_Point o = origin; // s.dest() - origin; which is it?
+                    SDL_RenderCopyEx(&_ren, s.texture(), &src, &dest, rotation, &o, SDL_FLIP_NONE);
+                }
                 s.texture().resetAlpha();
             }
         );
@@ -116,7 +160,6 @@ namespace Game {
 
     // TODO: make this more efficient (don't make a new texture for static texts)
     // TODO: add alignment options to make this more sensible
-    // TODO: add ability to check text sizes
     Draw & Draw::text(const std::string & str, Position pos, int depth) {
         const Uint8
             r = _r,
@@ -150,6 +193,14 @@ namespace Game {
             }
         );
         return *this;
+    }
+
+    Dimension Draw::text_size(const std::string & str) {
+        Dimension dim{0,0};
+        if(TTF_SizeText(_font, str.c_str(), &dim.w, &dim.h) != 0) {
+            throw "Draw::text_size - Could not measure size of string '" + str + "'";
+        }
+        return dim;
     }
 
     Draw & Draw::image( SDL_Texture * tex, const Rectangle & src, const Rectangle & dest, int depth) {

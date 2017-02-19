@@ -1,6 +1,6 @@
 'use strict';
 
-import { Position } from './struct';
+import { Position, Dimension } from './struct';
 
 const [STACK, COLOR, ALPHA, FONT, HALIGN, VALIGN, WHO, CONTAINER, VIEWPORT, CONTEXT, ROTATION] =
       [Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
@@ -146,7 +146,7 @@ class Draw {
   textSize(str) {
     this[CONTEXT][0].font = this[FONT];
     const { width, height } = this[CONTEXT][0].measureText(str);
-    return new Rectangle(width, height);
+    return new Dimension(width, height);
   }
   // draw some text
   text(str, where, depth = 0) {

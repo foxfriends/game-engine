@@ -1528,7 +1528,7 @@ let Draw = class Draw {
   textSize(str) {
     this[CONTEXT][0].font = this[FONT];
     const { width, height } = this[CONTEXT][0].measureText(str);
-    return new Rectangle(width, height);
+    return new __WEBPACK_IMPORTED_MODULE_0__struct__["b" /* Dimension */](width, height);
   }
   // draw some text
   text(str, where, depth = 0) {

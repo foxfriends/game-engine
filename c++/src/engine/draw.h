@@ -19,6 +19,9 @@ namespace Game {
     class Draw {
         Uint8 _r = 0xff, _g = 0xff, _b = 0xff;
         Uint8 _alpha = 0xff;
+        std::string _halign = "left", _valign = "top";
+        double _angle = 0;
+        Position _rotate_origin{0, 0};
         std::map<int, std::vector<std::function<void()>>> _layers;
         SDL_Renderer & _ren;
         typedef void (FontDeleter) (TTF_Font *);
@@ -37,13 +40,18 @@ namespace Game {
         Draw & color(Uint8 r, Uint8 g, Uint8 b);
         Draw & alpha(float alpha);
         Draw & font(const std::string & name);
+        Draw & halign(const std::string & halign);
+        Draw & valign(const std::string & valign);
+        Draw & rotation(double angle, Position origin = {0, 0});
         Draw & rect(Rectangle rect, int depth = 0);
+        // Draw & circle(Circle circle, int depth = 0);
         Draw & point(Position pos, int depth = 0);
         Draw & sprite(const Sprite & sprite, int depth = 0);
         Draw & text(const std::string & str, Position pos, int depth = 0);
-
-        // these are internal too
         Draw & image(SDL_Texture * image, const Rectangle & src, const Rectangle & dest, int depth = 0);
+
+        Dimension text_size(const std::string & str);
+        // what about these?
         void clear();
         void render();
         void present();
