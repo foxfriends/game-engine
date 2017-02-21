@@ -3,6 +3,7 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-c.min.js';
 import 'prismjs/components/prism-cpp.min.js';
 import 'prismjs/components/prism-json.min.js';
+import 'prismjs/components/prism-ruby.min.js';
 import 'prismjs/plugins/highlight-keywords/prism-highlight-keywords.min.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.min.js';
 
@@ -24,7 +25,7 @@ Prism.languages.insertBefore('javascript', 'operator', {
     lookbehind: true,
     alias: 'class-name',
     inside: {
-      'keyword': /bool|number|string|object|function|undefined|null|symbol|class/
+      'builtin': /bool|number|string|object|function|undefined|null|symbol|class/
     }
   }
 });
@@ -47,7 +48,6 @@ Prism.languages.insertBefore('json', 'property', {
 });
 
 // C++ Extension
-
 const template = {
   'template': {
     pattern: /<.*>/,
@@ -125,3 +125,24 @@ Prism.languages.cpp.function = [{
     rest: template
   }
 }];
+
+// Ruby extension
+Prism.languages.insertBefore('ruby', 'constant', {
+  'class-name': /\b[A-Z][a-zA-Z_0-9]*(?:[?!]|\b)/
+});
+Prism.languages.ruby.constant = /\b[A-Z]+\b/;
+Prism.languages.ruby.function = [
+  /\b[a-zA-Z_][a-zA-Z0-9_]*[?!=]?(?=\()/,
+  /(\+|-|\*\*?|\/|\||&|%|=)=?(?=\()/
+]
+Prism.languages.insertBefore('ruby', 'class-name', {
+  // identify typescript style type annotations as class names
+  'type-annotation': {
+    pattern: /(:\s*)(\.\.\.\s*)?([_a-zA-Z][_a-zA-Z0-9]*(\s*[|&]\s*)?)*/,
+    lookbehind: true,
+    alias: 'class-name',
+    inside: {
+      'builtin': /\b(Array|Bignum|Binding|Boolean|Class|Continuation|Dir|Exception|FalseClass|File|Stat|File|Fixnum|Float|Hash|Integer|IO|MatchData|Method|Module|NilClass|Numeric|Object|Proc|Range|Regexp|String|Struct|TMS|Symbol|ThreadGroup|Thread|Time|TrueClass)\b/
+    }
+  }
+});

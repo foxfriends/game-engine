@@ -9,6 +9,7 @@
   <nav>
     <div data-tab="javascript">JavaScript</div>
     <div data-tab="c++">C++</div>
+    <div data-tab="ruby">Ruby</div>
   </nav>
   <header>
     <hgroup>
@@ -27,8 +28,9 @@
     <section class="info" id="position">
       <h2>Position</h2>
       <p>
-        A <code class="language-javascript token class-name">Position</code> is simply an <code class="language-javascript">[x, y]</code>
-        pair.
+        A <code class="language-javascript token class-name">Position</code> is
+        an <code class="language-javascript">[x, y]</code> pair, usually used to
+        represent a position in the game.
       </p>
       <section class="interface">
         <h3>Interface</h3>
@@ -36,6 +38,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">constructor(x : number, y : number)</code>
             <code data-view="c++" class="language-cpp">Position(int x, int y)</code>
+            <code data-view="ruby" class="language-ruby">Position.new(x : Numeric, y : Numeric)</code>
           </dt>
           <dd>
             <details>
@@ -48,6 +51,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">x : number</code>
                   <code data-view="c++" class="language-cpp">int x</code>
+                  <code data-view="ruby" class="language-ruby">x : Numeric</code>
                 </dt>
                 <dd>
                   the x coordinate.
@@ -55,6 +59,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">y : number</code>
                   <code data-view="c++" class="language-cpp">int y</code>
+                  <code data-view="ruby" class="language-ruby">y : Numeric</code>
                 </dt>
                 <dd>
                   the y coordinate.
@@ -65,6 +70,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">x : number</code>
             <code data-view="c++" class="language-cpp">int x</code>
+            <code data-view="ruby" class="language-ruby">x : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -74,6 +80,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">y : number</code>
             <code data-view="c++" class="language-cpp">int y</code>
+            <code data-view="ruby" class="language-ruby">y : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -83,6 +90,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static add(l : Position, r : Position) : Position</code>
             <code data-view="c++" class="language-cpp">Position operator + (Position r)</code>
+            <code data-view="ruby" class="language-ruby">+(r : Position) : Position</code>
           </dt>
           <dd>
             <p>
@@ -92,6 +100,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static sub(l : Position, r : Position) : Position</code>
             <code data-view="c++" class="language-cpp">Position operator - (Position r)</code>
+            <code data-view="ruby" class="language-ruby">-(r : Position) : Position</code>
           </dt>
           <dd>
             <p>
@@ -101,6 +110,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static equal(l : Position, r : Position) : bool</code>
             <code data-view="c++" class="language-cpp">bool operator == (Position r)</code>
+            <code data-view="ruby" class="language-ruby">==(Position r) : Boolean</code>
           </dt>
           <dd>
             <p>
@@ -112,6 +122,10 @@
             <ol data-view="c++">
               <li><code class="language-cpp">bool operator | (Rectangle r)</code>
               <li><code class="language-cpp">bool operator | (Circle r)</code>
+            </ol>
+            <ol data-view="ruby">
+              <li><code class="language-ruby">|(r : Rectangle | Circle) : Boolean</code>
+              <li><code class="language-ruby">alias inside?(r : Rectangle | Circle) : Boolean</code>
             </ol>
           </dt>
           <dd>
@@ -128,7 +142,8 @@
       <h2>Dimension</h2>
       <p>
         A <code class="language-javascript token class-name">Dimension</code> is
-        simply a <code class="language-javascript">[w, h]</code> pair.
+        a <code class="language-javascript">[w, h]</code> pair, usually used to
+        represent a 2D vector.
       </p>
       <section class="interface">
         <h3>Interface</h3>
@@ -136,6 +151,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">constructor(w : number, h : number)</code>
             <code data-view="c++" class="language-cpp">Dimension(int w, int h)</code>
+            <code data-view="ruby" class="language-ruby">Dimension.new(w : Numeric, h : Numeric)</code>
           </dt>
           <dd>
             <details>
@@ -148,6 +164,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">w : number</code>
                   <code data-view="c++" class="language-cpp">int w</code>
+                  <code data-view="ruby" class="language-ruby">w : Numeric</code>
                 </dt>
                 <dd>
                   the width.
@@ -155,6 +172,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">h : number</code>
                   <code data-view="c++" class="language-cpp">int h</code>
+                  <code data-view="ruby" class="language-ruby">h : Numeric</code>
                 </dt>
                 <dd>
                   the height.
@@ -165,6 +183,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static infinite() : Dimension</code>
             <code data-view="c++" class="language-cpp">static Dimension infinite()</code>
+            <code data-view="ruby" class="language-ruby">Dimension.infinite() : Dimension</code>
           </dt>
           <dd>
             <p>
@@ -175,6 +194,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">w : number</code>
             <code data-view="c++" class="language-cpp">int w</code>
+            <code data-view="ruby" class="language-ruby">w : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -184,6 +204,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">h : number</code>
             <code data-view="c++" class="language-cpp">int h</code>
+            <code data-view="ruby" class="language-ruby">h : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -193,6 +214,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static extend(l : Dimension, r : Dimension) : Dimension</code>
             <code data-view="c++" class="language-cpp">Dimension operator + (Dimension r)</code>
+            <code data-view="ruby" class="language-ruby">+(r : Dimension) : Dimension</code>
           </dt>
           <dd>
             <p>
@@ -200,8 +222,19 @@
             </p>
           </dd>
           <dt>
+            <code data-view="javascript" class="language-javascript">static contract(l : Dimension, r : Dimension) : Dimension</code><em data-view="javascript">Currently unsupported</em>
+            <code data-view="c++" class="language-cpp">Dimension operator - (Dimension r)</code><em data-view="c++">Currently unsupported</em>
+            <code data-view="ruby" class="language-ruby">-(r : Dimension) : Dimension</code>
+          </dt>
+          <dd>
+            <p>
+              Subtracts two <code class="language-javascript token class-name">Dimension</code>s.
+            </p>
+          </dd>
+          <dt>
             <code data-view="javascript" class="language-javascript">static equal(l : Dimension, r : Dimension) : bool</code>
             <code data-view="c++" class="language-cpp">bool operator == (Dimension r)</code>
+            <code data-view="ruby" class="language-ruby">==(r : Dimension) : Boolean</code>
           </dt>
           <dd>
             <p>
@@ -231,6 +264,7 @@
               <li><code class="language-cpp">Rectangle(int x, int y, int w, int h)</code></li>
               <li><code class="language-cpp">Rectangle(Position p, Dimension d)</code></li>
             </ol>
+            <code data-view="ruby" class="language-ruby">Rectangle.new(x : Numeric, y : Numeric, w : Numeric, h : Numeric)</code>
           </dt>
           <dd>
             <details>
@@ -243,6 +277,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">x : number</code>
                   <code data-view="c++" class="language-cpp">int x</code>
+                  <code data-view="ruby" class="language-ruby">x : Numeric</code>
                 </dt>
                 <dd>
                   the x coordinate.
@@ -250,6 +285,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">y : number</code>
                   <code data-view="c++" class="language-cpp">int y</code>
+                  <code data-view="ruby" class="language-ruby">y : Numeric</code>
                 </dt>
                 <dd>
                   the y coordinate.
@@ -257,6 +293,7 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">w : number</code>
                   <code data-view="c++" class="language-cpp">int w</code>
+                  <code data-view="ruby" class="language-ruby">w : Numeric</code>
                 </dt>
                 <dd>
                   the width.
@@ -264,22 +301,23 @@
                 <dt>
                   <code data-view="javascript" class="language-javascript">h : number</code>
                   <code data-view="c++" class="language-cpp">int h</code>
+                  <code data-view="ruby" class="language-ruby">h : Numeric</code>
                 </dt>
                 <dd>
                   the height.
                 </dd>
-                <dt>
+                <dt data-hide="ruby">
                   <code data-view="javascript" class="language-javascript">p : Position</code>
                   <code data-view="c++" class="language-cpp">Position p</code>
                 </dt>
-                <dd>
+                <dd data-hide="ruby">
                   the x and y coordinates.
                 </dd>
-                <dt>
+                <dt data-hide="ruby">
                   <code data-view="javascript" class="language-javascript">d : Dimension</code>
                   <code data-view="c++" class="language-cpp">Dimension d</code>
                 </dt>
-                <dd>
+                <dd data-hide="ruby">
                   the width and height.
                 </dd>
               </dl>
@@ -288,6 +326,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">x : number</code>
             <code data-view="c++" class="language-cpp">int x</code>
+            <code data-view="ruby" class="language-ruby">x : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -297,6 +336,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">y : number</code>
             <code data-view="c++" class="language-cpp">int y</code>
+            <code data-view="ruby" class="language-ruby">y : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -306,6 +346,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">w : number</code>
             <code data-view="c++" class="language-cpp">int w</code>
+            <code data-view="ruby" class="language-ruby">w : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -315,6 +356,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">h : number</code>
             <code data-view="c++" class="language-cpp">int h</code>
+            <code data-view="ruby" class="language-ruby">h : Numeric</code>
           </dt>
           <dd>
             <p>
@@ -324,6 +366,10 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static shift(rect : Rectangle, amt : Position) : Rectangle</code>
             <code data-view="c++" class="language-cpp">Rectangle operator + (Position r)</code>
+            <ol data-view="ruby">
+              <li><code class="language-ruby">+(pos : Position) : Rectangle</code>
+              <li><code class="language-ruby">alias shift(pos : Position) : Rectangle</code>
+            </ol>
           </dt>
           <dd>
             <p>
@@ -335,6 +381,10 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static extend(rect : Rectangle, amt : Dimension) : Rectangle</code>
             <code data-view="c++" class="language-cpp">Rectangle operator + (Dimension r)</code>
+            <ol data-view="ruby">
+              <li><code class="language-ruby">+(dim : Dimension) : Rectangle</code>
+              <li><code class="language-ruby">alias extend(dim : Dimension) : Rectangle</code>
+            </ol>
           </dt>
           <dd>
             <p>
@@ -346,6 +396,7 @@
           <dt>
             <code data-view="javascript" class="language-javascript">static equal(l : Rectangle, r : Rectangle) : bool</code>
             <code data-view="c++" class="language-cpp">bool operator == (Rectangle r)</code>
+            <code data-view="ruby" class="language-ruby">==(r : Rectangle) : Boolean</code>
           </dt>
           <dd>
             <p>
@@ -357,6 +408,10 @@
             <ol data-view="c++">
               <li><code class="language-cpp">bool operator | (Rectangle r)</code>
               <li><code class="language-cpp">bool operator | (Circle r)</code>
+            </ol>
+            <ol data-view="ruby">
+              <li><code class="language-ruby">|(pos : Rectangle | Circle) : Boolean</code>
+              <li><code class="language-ruby">alias intersects(pos : Rectangle | Circle) : Boolean</code>
             </ol>
           </dt>
           <dd>
@@ -387,6 +442,7 @@
                 <li><code class="language-cpp">Circle(int x, int y, int radius)</code></li>
                 <li><code class="language-cpp">Circle(Position p, int radius)</code></li>
               </ol>
+              <code data-view="ruby" class="language-ruby">Circle.new(x : Numeric, y : Numeric, r : Numeric)</code>
             </dt>
             <dd>
               <details>
@@ -399,6 +455,7 @@
                   <dt>
                     <code data-view="javascript" class="language-javascript">x : number</code>
                     <code data-view="c++" class="language-cpp">int x</code>
+                    <code data-view="ruby" class="language-ruby">x : Numeric</code>
                   </dt>
                   <dd>
                     the x coordinate.
@@ -406,6 +463,7 @@
                   <dt>
                     <code data-view="javascript" class="language-javascript">y : number</code>
                     <code data-view="c++" class="language-cpp">int y</code>
+                    <code data-view="ruby" class="language-ruby">y : Numeric</code>
                   </dt>
                   <dd>
                     the y coordinate.
@@ -413,15 +471,16 @@
                   <dt>
                     <code data-view="javascript" class="language-javascript">r : number</code>
                     <code data-view="c++" class="language-cpp">int r</code>
+                    <code data-view="ruby" class="language-ruby">r : Numeric</code>
                   </dt>
                   <dd>
                     the radius
                   </dd>
-                  <dt>
+                  <dt data-hide="ruby">
                     <code data-view="javascript" class="language-javascript">p : Position</code>
                     <code data-view="c++" class="language-cpp">Position p</code>
                   </dt>
-                  <dd>
+                  <dd data-hide="ruby">
                     the x and y coordinates.
                   </dd>
                 </dl>
@@ -430,6 +489,7 @@
             <dt>
               <code data-view="javascript" class="language-javascript">x : number</code>
               <code data-view="c++" class="language-cpp">int x</code>
+              <code data-view="ruby" class="language-ruby">x : Numeric</code>
             </dt>
             <dd>
               <p>
@@ -439,6 +499,7 @@
             <dt>
               <code data-view="javascript" class="language-javascript">y : number</code>
               <code data-view="c++" class="language-cpp">int y</code>
+              <code data-view="ruby" class="language-ruby">y : Numeric</code>
             </dt>
             <dd>
               <p>
@@ -448,6 +509,7 @@
             <dt>
               <code data-view="javascript" class="language-javascript">r : number</code>
               <code data-view="c++" class="language-cpp">int r</code>
+              <code data-view="ruby" class="language-ruby">r : Numeric</code>
             </dt>
             <dd>
               <p>
@@ -456,7 +518,11 @@
             </dd>
             <dt>
               <code data-view="javascript" class="language-javascript">static shift(circle : Circle, amt : Position) : Rectangle</code>
-              <code data-view="c++" class="language-cpp">Circle operator + (Position r)</code>
+              <code data-view="c++" class="language-cpp">Circle operator + (Position amt)</code>
+              <ol data-view="ruby">
+                <li><code class="language-ruby">+(pos : Position) : Circle</code>
+                <li><code class="language-ruby">alias shift(pos : Position) : Circle</code>
+              </ol>
             </dt>
             <dd>
               <p>
@@ -468,6 +534,7 @@
             <dt>
               <code data-view="javascript" class="language-javascript">static equal(l : Circle, r : Circle) : bool</code>
               <code data-view="c++" class="language-cpp">bool operator == (Circle r)</code>
+              <code data-view="ruby" class="language-ruby">==(Circle r) : Boolean</code>
             </dt>
             <dd>
               <p>
@@ -479,6 +546,10 @@
               <ol data-view="c++">
                 <li><code class="language-cpp">bool operator | (Circle r)</code></li>
                 <li><code class="language-cpp">bool operator | (Rectangle r)</code></li>
+              </ol>
+              <ol data-view="ruby">
+                <li><code class="language-ruby">|(pos : Rectangle | Circle) : Boolean</code>
+                <li><code class="language-ruby">alias intersects(pos : Rectangle | Circle) : Boolean</code>
               </ol>
             </dt>
             <dd>

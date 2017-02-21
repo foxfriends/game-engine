@@ -10,17 +10,23 @@ document.body.innerHTML = document.body.innerHTML.replace(/\{\{GameObject\}\}/g,
 document.body.innerHTML = document.body.innerHTML.replace(/\{\{GameEvent\}\}/g, '<code data-view="c++" class="language-cpp token class-name">Event</code><code data-view="javascript" class="language-javascript token class-name">GameEvent</code>');
 Prism.highlightAll();
 
-const tochange = document.querySelectorAll('[data-view]');
+const tochange = document.querySelectorAll('[data-view],[data-hide]');
 const tabs = document.querySelectorAll('[data-tab]');
 function changeView(which) {
   view = which;
   sessionStorage.setItem('language-preference', view);
   Array.prototype.forEach.call(tochange, (el) => {
     const v = el.getAttribute('data-view');
+    const h = el.getAttribute('data-hide');
     if(v === view) {
       el.style.display = '';
-    } else {
+    } else if(v) {
       el.style.display = 'none';
+    }
+    if(h && h === view) {
+      el.style.display = 'none';
+    } else if(h) {
+      el.style.display = '';
     }
   });
   Array.prototype.forEach.call(tabs, (tab) => {
