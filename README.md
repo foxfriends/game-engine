@@ -1,4 +1,8 @@
+[docs]: https://oinkiguana.github.io/game-engine/docs/public_html/
+
 # game-engine
+
+Looking for the [docs]?
 
 A simple game engine, available in C++ and HTML5 (JS).
 
