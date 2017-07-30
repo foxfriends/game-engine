@@ -2,41 +2,38 @@ module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -47,7 +44,7 @@ module.exports =
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -56,26 +53,26 @@ module.exports =
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 47);
+/******/ 	return __webpack_require__(__webpack_require__.s = 18);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Position; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return Dimension; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return Rectangle; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return Circle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Position; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Dimension; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Rectangle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Circle; });
 
 
 let Position = class Position {
@@ -220,9 +217,9 @@ let Circle = class Circle {
 
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
@@ -234,92 +231,126 @@ SPRITE, PAGES, MUSIC, SOUNDS, FONTS, PERSISTENT, TILEMAP, LOADED,
 ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT, TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, PROC] = function* () {
   for (;;) yield Symbol();
 }();
-/* harmony export (immutable) */ exports["f"] = SPRITE;
+/* harmony export (immutable) */ __webpack_exports__["l"] = SPRITE;
 
-/* harmony export (immutable) */ exports["n"] = PROC;
+/* harmony export (immutable) */ __webpack_exports__["e"] = PAGES;
 
-/* harmony export (immutable) */ exports["j"] = VIEWS;
+/* harmony export (immutable) */ __webpack_exports__["c"] = MUSIC;
 
-/* harmony export (immutable) */ exports["m"] = SOUND_MANAGER;
+/* harmony export (immutable) */ __webpack_exports__["j"] = SOUNDS;
 
-/* harmony export (immutable) */ exports["l"] = TEXTURE_MANAGER;
+/* harmony export (immutable) */ __webpack_exports__["a"] = FONTS;
 
-/* harmony export (immutable) */ exports["k"] = INPUT;
+/* harmony export (immutable) */ __webpack_exports__["f"] = PERSISTENT;
 
-/* unused harmony export CONTEXT */
-
-/* unused harmony export CANVAS */
-
-/* harmony export (immutable) */ exports["h"] = OBJECTS;
-
-/* harmony export (immutable) */ exports["g"] = ROOMS;
+/* harmony export (immutable) */ __webpack_exports__["n"] = TILEMAP;
 
 /* unused harmony export LOADED */
 
-/* harmony export (immutable) */ exports["a"] = TILEMAP;
+/* harmony export (immutable) */ __webpack_exports__["i"] = ROOMS;
 
-/* harmony export (immutable) */ exports["e"] = PERSISTENT;
+/* harmony export (immutable) */ __webpack_exports__["d"] = OBJECTS;
 
-/* harmony export (immutable) */ exports["o"] = FONTS;
+/* harmony export (immutable) */ __webpack_exports__["h"] = RAF;
 
-/* harmony export (immutable) */ exports["c"] = SOUNDS;
+/* unused harmony export CANVAS */
 
-/* harmony export (immutable) */ exports["d"] = MUSIC;
+/* unused harmony export CONTEXT */
 
-/* harmony export (immutable) */ exports["b"] = PAGES;
+/* harmony export (immutable) */ __webpack_exports__["b"] = INPUT;
 
-/* harmony export (immutable) */ exports["i"] = RAF;
+/* harmony export (immutable) */ __webpack_exports__["m"] = TEXTURE_MANAGER;
+
+/* harmony export (immutable) */ __webpack_exports__["k"] = SOUND_MANAGER;
+
+/* harmony export (immutable) */ __webpack_exports__["o"] = VIEWS;
+
+/* harmony export (immutable) */ __webpack_exports__["g"] = PROC;
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Collider; });
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
 
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
 
-function Collider(bbox) {
-  return function (Base = class {}) {
-    return class extends Base {
-      get position() {
-        if (this.sprite) {
-          return new __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */](this.sprite.x, this.sprite.y);
-        } else {
-          throw `${ this.constructor.name }'s position value cannot be inferred. Please implement '@override get position(): Position'`;
-        }
-      }
-      // get the collision box for this object
-      get bbox() {
-        return bbox;
-      }
-      // actually for check a collision
-      collides(where) {
-        return this.bbox.constructor.intersects(this.bbox.constructor.shift(this.bbox, this.position), where);
-      }
-    };
-  };
-}
+module.exports = function(it){
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
 
-Object.defineProperty(Collider, Symbol.hasInstance, {
-  value(instance) {
-    return typeof instance.collides === 'function' && instance.position instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */] && (instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */] || instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Circle */]);
-  }
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(11)(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
 
-
-/* harmony default export */ exports["b"] = Collider;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+
+
+function loadJSON(url) {
+  return new Promise((resolve, reject) => {
+    const req = new XMLHttpRequest();
+    req.open('GET', url, true);
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.addEventListener('load', () => {
+      try {
+        const data = JSON.parse(req.responseText);
+        resolve(data);
+      } catch (error) {
+        reject(`Invalid JSON received from ${url}`);
+      }
+    });
+    req.send();
+  });
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (loadJSON);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+let GameEvent = class GameEvent {
+  constructor(type, ...data) {
+    this.type = type;
+    this.data = data;
+  }
+};
+
+
+/* harmony default export */ __webpack_exports__["a"] = (GameEvent);
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Drawable; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__const__ = __webpack_require__(1);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Drawable; });
 
 
 
@@ -332,8 +363,8 @@ function Drawable(Base = class {}) {
       this[SPRITE] = null;
       this[ENGINE] = null;
       this[ENGINE] = engine;
-      if (this.constructor[__WEBPACK_IMPORTED_MODULE_0__const__["f" /* SPRITE */]]) {
-        this.sprite = this.constructor[__WEBPACK_IMPORTED_MODULE_0__const__["f" /* SPRITE */]];
+      if (this.constructor[__WEBPACK_IMPORTED_MODULE_0__const__["l" /* SPRITE */]]) {
+        this.sprite = this.constructor[__WEBPACK_IMPORTED_MODULE_0__const__["l" /* SPRITE */]];
       }
     }
     // draw this thing using a Draw (./draw.js)
@@ -370,402 +401,66 @@ Object.defineProperty(Drawable, Symbol.hasInstance, {
 });
 
 
-/* harmony default export */ exports["b"] = Drawable;
+/* harmony default export */ __webpack_exports__["b"] = (Drawable);
 
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Collider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
 
 
-function loadJSON(url) {
-  return new Promise((resolve, reject) => {
-    const req = new XMLHttpRequest();
-    req.open('GET', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.addEventListener('load', () => {
-      try {
-        const data = JSON.parse(req.responseText);
-        resolve(data);
-      } catch (error) {
-        reject(`Invalid JSON received from ${ url }`);
+
+
+function Collider(bbox) {
+  return function (Base = class {}) {
+    return class extends Base {
+      get position() {
+        if (this.sprite) {
+          return new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Position */](this.sprite.x, this.sprite.y);
+        } else {
+          throw `${this.constructor.name}'s position value cannot be inferred. Please implement '@override get position(): Position'`;
+        }
       }
-    });
-    req.send();
-  });
+      // get the collision box for this object
+      get bbox() {
+        return bbox;
+      }
+      // actually for check a collision
+      collides(where) {
+        return this.bbox.constructor.intersects(this.bbox.constructor.shift(this.bbox, this.position), where);
+      }
+    };
+  };
 }
 
-/* harmony default export */ exports["a"] = loadJSON;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(14)(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+Object.defineProperty(Collider, Symbol.hasInstance, {
+  value(instance) {
+    return typeof instance.collides === 'function' && instance.position instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Position */] && (instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */] || instance.bbox instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Circle */]);
+  }
 });
 
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
 
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+/* harmony default export */ __webpack_exports__["b"] = (Collider);
 
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-module.exports = function(it){
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__drawable__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collider__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tile_map__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__load_json__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__struct__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__const__ = __webpack_require__(1);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Room; });
-
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-
-
-
-
-
-
-
-const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
-
-let Room = class Room {
-
-  constructor(engine) {
-    var _this = this;
-
-    this[OBJECTS] = [];
-    this[LOADED] = new Promise(() => {});
-    this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] = null;
-
-    this[ENGINE] = engine;
-    this[LOADED] = _asyncToGenerator(function* () {
-      let tm = null;
-      const pages = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["b" /* PAGES */]] || [];
-      const sounds = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["c" /* SOUNDS */]] || [];
-      const music = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["d" /* MUSIC */]] || [];
-      if (_this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]]) {
-        const url = _this[ENGINE].constructor[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]][_this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]]];
-        if (!url) {
-          throw `TileMap ${ _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] } does not exist`;
-        }
-        tm = yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__load_json__["a" /* default */])(url);
-        pages.push(...tm.meta.pages.map(function ({ name }) {
-          return name;
-        }));
-      }
-      const txload = _this[ENGINE].texture.load(pages);
-      const sndload = _this[ENGINE].sound.loadSound(sounds);
-      const musload = _this[ENGINE].sound.loadMusic(music);
-      yield Promise.all([txload, sndload, musload]);
-      if (tm) {
-        _this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] = new __WEBPACK_IMPORTED_MODULE_2__tile_map__["a" /* default */](_this[ENGINE].texture, tm);
-      }
-    })();
-  }
-
-  destructor() {
-    let tm = null;
-    const pages = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["b" /* PAGES */]] || [];
-    const sounds = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["c" /* SOUNDS */]] || [];
-    const music = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["d" /* MUSIC */]] || [];
-    if (this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]]) {
-      pages.push(...this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].pages);
-    }
-    this[ENGINE].texture.purge(pages);
-    this[ENGINE].sound.purgeSound(sounds);
-    this[ENGINE].sound.purgeMusic(music);
-  }
-
-  // utilities
-  // TODO: reduce duplication of GameObject#game
-  // TODO: remember what ^ meant
-  get game() {
-    return new Proxy(this[ENGINE], {
-      get(target, prop) {
-        return target.util[prop];
-      }
-    });
-  }
-
-  get size() {
-    if (this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]]) {
-      return this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].size;
-    } else {
-      return new __WEBPACK_IMPORTED_MODULE_4__struct__["b" /* Dimension */](Infinity, Infinity);
-    }
-  }
-
-  // resolves when all required resources for the room have loaded
-  // HACK: internalize
-  get loaded() {
-    return this[LOADED];
-  }
-
-  // run when the room starts loading
-  load() {}
-  // run at the start of the room (after loading)
-  start() {}
-  // trigger an event for each object in the room
-  proc(event) {
-    for (let obj of this[OBJECTS]) {
-      obj.proc(event);
-    }
-  }
-  // run at the end of the room
-  end() {}
-
-  // create an object in this room
-  spawn(Obj, ...args) {
-    if (Obj[__WEBPACK_IMPORTED_MODULE_5__const__["e" /* PERSISTENT */]]) {
-      return this[ENGINE].spawn(Obj, ...args);
-    }
-    const o = new Obj(this[ENGINE]);
-    o.init(...args);
-    this[OBJECTS].push(o);
-    return o;
-  }
-
-  // destroy an object in this room
-  destroy(obj) {
-    if (typeof obj === 'function') {
-      this[OBJECTS].filter(o => !(o instanceof obj));
-      this[ENGINE].destroy(obj);
-    } else {
-      const i = this[OBJECTS].indexOf(obj);
-      if (i >= 0) {
-        this[OBJECTS].splice(i, 1);
-      } else {
-        this[ENGINE].destroy(obj);
-      }
-    }
-  }
-
-  // finds all objects of a type in this room
-  find(Obj) {
-    return [].concat(this[OBJECTS].filter(o => o instanceof Obj), this[ENGINE].find(Obj));
-  }
-
-  // draw this room
-  draw(draw) {
-    for (let obj of this[OBJECTS]) {
-      obj instanceof __WEBPACK_IMPORTED_MODULE_0__drawable__["b" /* default */] && obj.draw(draw);
-    }
-    draw.alpha(1);
-    this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].draw(draw);
-  }
-
-  drawGUI(draw) {
-    for (let obj of this[OBJECTS]) {
-      obj instanceof __WEBPACK_IMPORTED_MODULE_0__drawable__["b" /* default */] && obj.drawGUI(draw);
-    }
-  }
-
-  // check if there is a collision in this room
-  collides(where, what = 'any') {
-    if (what === 'room' || what === 'any') {
-      if (this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["a" /* TILEMAP */]].collides(where)) {
-        return this;
-      }
-    }
-    if (what !== 'room') {
-      what = what === 'any' ? this[OBJECTS].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[OBJECTS].filter(o => o instanceof what);
-      for (let it of what) {
-        if (it.collides(where)) {
-          return it;
-        }
-      }
-    }
-    return null;
-  }
-};
-
-
-
-/* harmony default export */ exports["b"] = Room;
-
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Sprite; });
-
-
-
-
-const [PAGE, FRAMES, FRAME] = [Symbol(), Symbol(), Symbol()];
-
-let Sprite = class Sprite extends __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */] {
-  constructor(page, frames, name) {
-    super(...page.frame(frames[0]));
-    this.name = name;
-    this[PAGE] = page;
-    this[FRAMES] = frames;
-    this[FRAME] = 0;
-  }
-
-  // the current frame that this sprite is showing
-  set frame(frame) {
-    this[FRAME] = frame;
-    if (this[FRAME] >= this[FRAMES].length) {
-      this[FRAME] -= this[FRAMES].length;
-    } else if (this[FRAME] < 0) {
-      this[FRAME] += this[FRAMES].length;
-    }
-  }
-  get frame() {
-    return this[FRAME];
-  }
-
-  // accessors for the drawing methods and for custom surface drawing
-  get texture() {
-    return this[PAGE];
-  }
-  get src() {
-    return this[PAGE].frame(this[FRAMES][Math.floor(this[FRAME])]);
-  }
-  get dest() {
-    return [...this];
-  }
-
-  get position() {
-    return new __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */](this.x, this.y);
-  }
-  set position(pos) {
-    this.x = pos.x;
-    this.y = pos.y;
-  }
+var dP         = __webpack_require__(22)
+  , createDesc = __webpack_require__(27);
+module.exports = __webpack_require__(5) ? function(object, key, value){
+  return dP.f(object, key, createDesc(1, value));
+} : function(object, key, value){
+  object[key] = value;
+  return object;
 };
 
-
-
-/* harmony default export */ exports["b"] = Sprite;
-
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__load_json__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sprite__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_path__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_path__);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return TexturePage; });
-
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-
-
-
-
-
-const [FRAMES, SPRITES, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol()];
-
-let TexturePage = class TexturePage extends Image {
-
-  constructor(url) {
-    var _this;
-
-    _this = super();
-    this[FRAMES] = null;
-    this[SPRITES] = null;
-    this[LOADED] = new Promise(() => {});
-    this[LOADED] = _asyncToGenerator(function* () {
-      // make a texture page from the json
-      const json = yield __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__load_json__["a" /* default */])(url);
-      _this.src = __WEBPACK_IMPORTED_MODULE_3_path___default.a.resolve(__WEBPACK_IMPORTED_MODULE_3_path___default.a.dirname(url), json.image);
-      _this.width = json.width;
-      _this.height = json.height;
-      _this[FRAMES] = json.frames;
-      _this[SPRITES] = json.sprites;
-      yield new Promise(function (resolve) {
-        return _this.addEventListener('load', resolve);
-      });
-    })();
-  }
-
-  get loaded() {
-    return this[LOADED];
-  }
-
-  frame(i) {
-    return new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](...this[FRAMES][i]);
-  }
-
-  make(sprite) {
-    if (this[SPRITES].hasOwnProperty(sprite)) {
-      return new __WEBPACK_IMPORTED_MODULE_2__sprite__["b" /* default */](this, this[SPRITES][sprite], sprite);
-    } else {
-      return null;
-    }
-  }
-};
-;
-
-
-/* harmony default export */ exports["b"] = TexturePage;
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-let GameEvent = class GameEvent {
-  constructor(type, ...data) {
-    this.type = type;
-    this.data = data;
-  }
-};
-
-
-/* harmony default export */ exports["a"] = GameEvent;
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-/***/ },
-/* 14 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 module.exports = function(exec){
   try {
@@ -775,22 +470,9 @@ module.exports = function(exec){
   }
 };
 
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-var dP         = __webpack_require__(37)
-  , createDesc = __webpack_require__(38);
-module.exports = __webpack_require__(6) ? function(object, key, value){
-  return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
-  object[key] = value;
-  return object;
-};
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
 var ceil  = Math.ceil
@@ -799,9 +481,19 @@ module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1028,25 +720,689 @@ var substr = 'ab'.substr(-1) === 'b'
     }
 ;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(46)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_path__ = __webpack_require__(17);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TexturePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__load_json__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sprite__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_path__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_path__);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+
+
+const [FRAMES, SPRITES, LOADED] = [Symbol(), Symbol(), Symbol(), Symbol()];
+
+let TexturePage = class TexturePage extends Image {
+
+  constructor(url) {
+    var _this;
+
+    _this = super();
+    this[FRAMES] = null;
+    this[SPRITES] = null;
+    this[LOADED] = new Promise(() => {});
+    this[LOADED] = _asyncToGenerator(function* () {
+      // make a texture page from the json
+      const json = yield Object(__WEBPACK_IMPORTED_MODULE_1__load_json__["a" /* default */])(url);
+      _this.src = __WEBPACK_IMPORTED_MODULE_3_path___default.a.resolve(__WEBPACK_IMPORTED_MODULE_3_path___default.a.dirname(url), json.image);
+      _this.width = json.width;
+      _this.height = json.height;
+      _this[FRAMES] = json.frames;
+      _this[SPRITES] = json.sprites;
+      yield new Promise(function (resolve) {
+        return _this.addEventListener('load', resolve);
+      });
+    })();
+  }
+
+  get loaded() {
+    return this[LOADED];
+  }
+
+  frame(i) {
+    return new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](...this[FRAMES][i]);
+  }
+
+  make(sprite) {
+    if (this[SPRITES].hasOwnProperty(sprite)) {
+      return new __WEBPACK_IMPORTED_MODULE_2__sprite__["b" /* default */](this, this[SPRITES][sprite], sprite);
+    } else {
+      return null;
+    }
+  }
+};
+;
+
+
+/* harmony default export */ __webpack_exports__["b"] = (TexturePage);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Sprite; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
+
+
+
+
+const [PAGE, FRAMES, FRAME] = [Symbol(), Symbol(), Symbol()];
+
+let Sprite = class Sprite extends __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */] {
+  constructor(page, frames, name) {
+    super(...page.frame(frames[0]));
+    this.name = name;
+    this[PAGE] = page;
+    this[FRAMES] = frames;
+    this[FRAME] = 0;
+  }
+
+  // the current frame that this sprite is showing
+  set frame(frame) {
+    this[FRAME] = frame;
+    if (this[FRAME] >= this[FRAMES].length) {
+      this[FRAME] -= this[FRAMES].length;
+    } else if (this[FRAME] < 0) {
+      this[FRAME] += this[FRAMES].length;
+    }
+  }
+  get frame() {
+    return this[FRAME];
+  }
+
+  // accessors for the drawing methods and for custom surface drawing
+  get texture() {
+    return this[PAGE];
+  }
+  get src() {
+    return this[PAGE].frame(this[FRAMES][Math.floor(this[FRAME])]);
+  }
+  get dest() {
+    return [...this];
+  }
+
+  get position() {
+    return new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Position */](this.x, this.y);
+  }
+  set position(pos) {
+    this.x = pos.x;
+    this.y = pos.y;
+  }
+};
+
+
+
+/* harmony default export */ __webpack_exports__["b"] = (Sprite);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Room; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__drawable__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collider__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tile_map__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__load_json__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__struct__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__const__ = __webpack_require__(1);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+
+
+
+
+const [OBJECTS, ENGINE, LOADED] = [Symbol(), Symbol(), Symbol()];
+
+let Room = class Room {
+
+  constructor(engine) {
+    var _this = this;
+
+    this[OBJECTS] = [];
+    this[LOADED] = new Promise(() => {});
+    this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]] = null;
+
+    this[ENGINE] = engine;
+    this[LOADED] = _asyncToGenerator(function* () {
+      let tm = null;
+      const pages = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["e" /* PAGES */]] || [];
+      const sounds = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["j" /* SOUNDS */]] || [];
+      const music = _this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["c" /* MUSIC */]] || [];
+      if (_this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]]) {
+        const url = _this[ENGINE].constructor[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]][_this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]]];
+        if (!url) {
+          throw `TileMap ${_this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]]} does not exist`;
+        }
+        tm = yield Object(__WEBPACK_IMPORTED_MODULE_3__load_json__["a" /* default */])(url);
+        pages.push(...tm.meta.pages.map(function ({ name }) {
+          return name;
+        }));
+      }
+      const txload = _this[ENGINE].texture.load(pages);
+      const sndload = _this[ENGINE].sound.loadSound(sounds);
+      const musload = _this[ENGINE].sound.loadMusic(music);
+      yield Promise.all([txload, sndload, musload]);
+      if (tm) {
+        _this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]] = new __WEBPACK_IMPORTED_MODULE_2__tile_map__["a" /* default */](_this[ENGINE].texture, tm);
+      }
+    })();
+  }
+
+  destructor() {
+    let tm = null;
+    const pages = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["e" /* PAGES */]] || [];
+    const sounds = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["j" /* SOUNDS */]] || [];
+    const music = this.constructor[__WEBPACK_IMPORTED_MODULE_5__const__["c" /* MUSIC */]] || [];
+    if (this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]]) {
+      pages.push(...this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]].pages);
+    }
+    this[ENGINE].texture.purge(pages);
+    this[ENGINE].sound.purgeSound(sounds);
+    this[ENGINE].sound.purgeMusic(music);
+  }
+
+  // utilities
+  // TODO: reduce duplication of GameObject#game
+  // TODO: remember what ^ meant
+  get game() {
+    return new Proxy(this[ENGINE], {
+      get(target, prop) {
+        return target.util[prop];
+      }
+    });
+  }
+
+  get size() {
+    if (this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]]) {
+      return this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]].size;
+    } else {
+      return new __WEBPACK_IMPORTED_MODULE_4__struct__["b" /* Dimension */](Infinity, Infinity);
+    }
+  }
+
+  // resolves when all required resources for the room have loaded
+  // HACK: internalize
+  get loaded() {
+    return this[LOADED];
+  }
+
+  // run when the room starts loading
+  load() {}
+  // run at the start of the room (after loading)
+  start() {}
+  // trigger an event for each object in the room
+  proc(event) {
+    for (let obj of this[OBJECTS]) {
+      obj.proc(event);
+    }
+  }
+  // run at the end of the room
+  end() {}
+
+  // create an object in this room
+  spawn(Obj, ...args) {
+    if (Obj[__WEBPACK_IMPORTED_MODULE_5__const__["f" /* PERSISTENT */]]) {
+      return this[ENGINE].spawn(Obj, ...args);
+    }
+    const o = new Obj(this[ENGINE]);
+    o.init(...args);
+    this[OBJECTS].push(o);
+    return o;
+  }
+
+  // destroy an object in this room
+  destroy(obj) {
+    if (typeof obj === 'function') {
+      this[OBJECTS].filter(o => !(o instanceof obj));
+      this[ENGINE].destroy(obj);
+    } else {
+      const i = this[OBJECTS].indexOf(obj);
+      if (i >= 0) {
+        this[OBJECTS].splice(i, 1);
+      } else {
+        this[ENGINE].destroy(obj);
+      }
+    }
+  }
+
+  // finds all objects of a type in this room
+  find(Obj) {
+    return [].concat(this[OBJECTS].filter(o => o instanceof Obj), this[ENGINE].find(Obj));
+  }
+
+  // draw this room
+  draw(draw) {
+    for (let obj of this[OBJECTS]) {
+      obj instanceof __WEBPACK_IMPORTED_MODULE_0__drawable__["b" /* default */] && obj.draw(draw);
+    }
+    draw.alpha(1);
+    this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]].draw(draw);
+  }
+
+  drawGUI(draw) {
+    for (let obj of this[OBJECTS]) {
+      obj instanceof __WEBPACK_IMPORTED_MODULE_0__drawable__["b" /* default */] && obj.drawGUI(draw);
+    }
+  }
+
+  // check if there is a collision in this room
+  collides(where, what = 'any') {
+    if (what === 'room' || what === 'any') {
+      if (this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]] && this[__WEBPACK_IMPORTED_MODULE_5__const__["n" /* TILEMAP */]].collides(where)) {
+        return this;
+      }
+    }
+    if (what !== 'room') {
+      what = what === 'any' ? this[OBJECTS].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[OBJECTS].filter(o => o instanceof what);
+      for (let it of what) {
+        if (it.collides(where)) {
+          return it;
+        }
+      }
+    }
+    return null;
+  }
+};
+
+
+
+/* harmony default export */ __webpack_exports__["b"] = (Room);
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__engine_struct__ = __webpack_require__(0);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Position", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Dimension", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Rectangle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__engine_timing__ = __webpack_require__(36);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SECOND", function() { return __WEBPACK_IMPORTED_MODULE_2__engine_timing__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__engine_decorator__ = __webpack_require__(37);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "override", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["c"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "persistent", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["d"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "texturepage", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["g"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sprite", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["f"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "tilemap", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["h"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "config", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "music", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["b"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "sound", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["e"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__engine__ = __webpack_require__(39);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Engine", function() { return __WEBPACK_IMPORTED_MODULE_4__engine__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__engine_drawable__ = __webpack_require__(8);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Drawable", function() { return __WEBPACK_IMPORTED_MODULE_5__engine_drawable__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__engine_collider__ = __webpack_require__(9);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Collider", function() { return __WEBPACK_IMPORTED_MODULE_6__engine_collider__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__engine_texture_page__ = __webpack_require__(15);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TexturePage", function() { return __WEBPACK_IMPORTED_MODULE_7__engine_texture_page__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__engine_sprite__ = __webpack_require__(16);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Sprite", function() { return __WEBPACK_IMPORTED_MODULE_8__engine_sprite__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__engine_game_object__ = __webpack_require__(48);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "GameObject", function() { return __WEBPACK_IMPORTED_MODULE_9__engine_game_object__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__engine_room__ = __webpack_require__(17);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Room", function() { return __WEBPACK_IMPORTED_MODULE_10__engine_room__["a"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(20);
+module.exports = __webpack_require__(3).String.padStart;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var $export = __webpack_require__(21)
+  , $pad    = __webpack_require__(33);
+
+$export($export.P, 'String', {
+  padStart: function padStart(maxLength /*, fillString = ' ' */){
+    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, true);
+  }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global    = __webpack_require__(2)
+  , core      = __webpack_require__(3)
+  , hide      = __webpack_require__(10)
+  , redefine  = __webpack_require__(28)
+  , ctx       = __webpack_require__(31)
+  , PROTOTYPE = 'prototype';
+
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE]
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE] || (exports[PROTOTYPE] = {})
+    , key, own, out, exp;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
+    // contains in native
+    own = !IS_FORCED && target && target[key] !== undefined;
+    // export native or passed
+    out = (own ? target : source)[key];
+    // bind timers to global for call from export context
+    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+    // extend global
+    if(target)redefine(target, key, out, type & $export.U);
+    // export
+    if(exports[key] != out)hide(exports, key, exp);
+    if(IS_PROTO && expProto[key] != out)expProto[key] = out;
+  }
+};
+global.core = core;
+// type bitmap
+$export.F = 1;   // forced
+$export.G = 2;   // global
+$export.S = 4;   // static
+$export.P = 8;   // proto
+$export.B = 16;  // bind
+$export.W = 32;  // wrap
+$export.U = 64;  // safe
+$export.R = 128; // real proto method for `library` 
+module.exports = $export;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject       = __webpack_require__(23)
+  , IE8_DOM_DEFINE = __webpack_require__(24)
+  , toPrimitive    = __webpack_require__(26)
+  , dP             = Object.defineProperty;
+
+exports.f = __webpack_require__(5) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if(IE8_DOM_DEFINE)try {
+    return dP(O, P, Attributes);
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
+  return O;
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(4);
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = !__webpack_require__(5) && !__webpack_require__(11)(function(){
+  return Object.defineProperty(__webpack_require__(25)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+});
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(4)
+  , document = __webpack_require__(2).document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
+  return is ? document.createElement(it) : {};
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.1 ToPrimitive(input [, PreferredType])
+var isObject = __webpack_require__(4);
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+module.exports = function(it, S){
+  if(!isObject(it))return it;
+  var fn, val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = function(bitmap, value){
+  return {
+    enumerable  : !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable    : !(bitmap & 4),
+    value       : value
+  };
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global    = __webpack_require__(2)
+  , hide      = __webpack_require__(10)
+  , has       = __webpack_require__(29)
+  , SRC       = __webpack_require__(30)('src')
+  , TO_STRING = 'toString'
+  , $toString = Function[TO_STRING]
+  , TPL       = ('' + $toString).split(TO_STRING);
+
+__webpack_require__(3).inspectSource = function(it){
+  return $toString.call(it);
+};
+
+(module.exports = function(O, key, val, safe){
+  var isFunction = typeof val == 'function';
+  if(isFunction)has(val, 'name') || hide(val, 'name', key);
+  if(O[key] === val)return;
+  if(isFunction)has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
+  if(O === global){
+    O[key] = val;
+  } else {
+    if(!safe){
+      delete O[key];
+      hide(O, key, val);
+    } else {
+      if(O[key])O[key] = val;
+      else hide(O, key, val);
+    }
+  }
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+})(Function.prototype, TO_STRING, function toString(){
+  return typeof this == 'function' && this[SRC] || $toString.call(this);
+});
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function(it, key){
+  return hasOwnProperty.call(it, key);
+};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// optional / simple context binding
+var aFunction = __webpack_require__(32);
+module.exports = function(fn, that, length){
+  aFunction(fn);
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
+      return fn.call(that, a);
+    };
+    case 2: return function(a, b){
+      return fn.call(that, a, b);
+    };
+    case 3: return function(a, b, c){
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function(/* ...args */){
+    return fn.apply(that, arguments);
+  };
+};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var toLength = __webpack_require__(34)
+  , repeat   = __webpack_require__(35)
+  , defined  = __webpack_require__(13);
+
+module.exports = function(that, maxLength, fillString, left){
+  var S            = String(defined(that))
+    , stringLength = S.length
+    , fillStr      = fillString === undefined ? ' ' : String(fillString)
+    , intMaxLength = toLength(maxLength);
+  if(intMaxLength <= stringLength || fillStr == '')return S;
+  var fillLen = intMaxLength - stringLength
+    , stringFiller = repeat.call(fillStr, Math.ceil(fillLen / fillStr.length));
+  if(stringFiller.length > fillLen)stringFiller = stringFiller.slice(0, fillLen);
+  return left ? stringFiller + S : S + stringFiller;
+};
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.15 ToLength
+var toInteger = __webpack_require__(12)
+  , min       = Math.min;
+module.exports = function(it){
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var toInteger = __webpack_require__(12)
+  , defined   = __webpack_require__(13);
+
+module.exports = function repeat(count){
+  var str = String(defined(this))
+    , res = ''
+    , n   = toInteger(count);
+  if(n < 0 || n == Infinity)throw RangeError("Count can't be negative");
+  for(;n > 0; (n >>>= 1) && (str += str))if(n & 1)res += str;
+  return res;
+};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SECOND; });
+
+
+const SECOND = 60;
+
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return override; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return persistent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return texturepage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return sprite; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return tilemap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return music; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return sound; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_path__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_path__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__load_json__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__load_json__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__const__ = __webpack_require__(1);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return override; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return sound; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return texturepage; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "d", function() { return sprite; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "e", function() { return tilemap; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "f", function() { return config; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "g", function() { return music; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "h", function() { return persistent; });
 
 
 
@@ -1057,47 +1413,47 @@ var substr = 'ab'.substr(-1) === 'b'
 function override(target, prop, descriptor) {
   const pr = Object.getPrototypeOf(target);
   if (!(prop in pr)) {
-    throw `${ target.constructor.name }.${ prop } marked override but does not override anything`;
+    throw `${target.constructor.name}.${prop} marked override but does not override anything`;
   }
 }
 
 // @persistent GameObjects are contained by the game and exist outside of rooms
 function persistent(target) {
-  Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["e" /* PERSISTENT */], { value: true });
+  Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["f" /* PERSISTENT */], { value: true });
 }
 
 // @texturepage lists texture pages required by a room
 function texturepage(...names) {
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["b" /* PAGES */], { value: names });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["e" /* PAGES */], { value: names });
   };
 }
 
 // @sprite names the initial sprite for this Object
 function sprite(name) {
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["f" /* SPRITE */], { value: name });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["l" /* SPRITE */], { value: name });
   };
 }
 
 // @tilemap defines the layout of the static background and collision tiles in a room
 function tilemap(name) {
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["a" /* TILEMAP */], { value: name });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["n" /* TILEMAP */], { value: name });
   };
 }
 
 // @music names the music resources that are needed for this room
 function music(...names) {
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["d" /* MUSIC */], { value: names });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["c" /* MUSIC */], { value: names });
   };
 }
 
 // @sound names the sound resources that should be preloaded for this room
 function sound(...names) {
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["c" /* SOUNDS */], { value: names });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["j" /* SOUNDS */], { value: names });
   };
 }
 
@@ -1113,95 +1469,221 @@ function config(dir, cfg) {
     }
   }
   return function (target) {
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["b" /* PAGES */], { value: cfg['texture-pages'] });
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["a" /* TILEMAP */], { value: cfg['tile-maps'] });
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["o" /* FONTS */], { value: cfg['fonts'] });
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["c" /* SOUNDS */], { value: cfg['sounds'] });
-    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["d" /* MUSIC */], { value: cfg['music'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["e" /* PAGES */], { value: cfg['texture-pages'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["n" /* TILEMAP */], { value: cfg['tile-maps'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["a" /* FONTS */], { value: cfg['fonts'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["j" /* SOUNDS */], { value: cfg['sounds'] });
+    Object.defineProperty(target, __WEBPACK_IMPORTED_MODULE_2__const__["c" /* MUSIC */], { value: cfg['music'] });
   };
 }
 
 
 
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return GameObject; });
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
 
 
-const [ENGINE] = [Symbol()];
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
 
-let GameObject = class GameObject {
-  constructor(engine) {
-    this[ENGINE] = engine;
-  }
-  // initialize things on being created (use instead of constructor)
-  init() {}
 
-  // run before each room starts
-  roomload(prev, next) {}
-  // run at the beginning of each room
-  roomstart(prev, next) {}
-  // run at the beginning of the game
-  gamestart() {}
 
-  // run at the beginning of each frame
-  stepstart() {}
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
 
-  // react to various user inputs
-  keydown(which) {}
-  keyup(which) {}
-  mousedown(which) {}
-  mouseup(which) {}
-  mousemove(where) {}
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
 
-  // run once all inputs have been received
-  step() {}
-  // run after everything else
-  stepend() {}
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
 
-  // run at the end of each room
-  roomend(prev, next) {}
-  // run at the end of the game
-  gameend() {}
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
 
-  // trigger an event
-  proc(event) {
-    this[event.type] && this[event.type](...event.data);
-  }
-
-  // utilities
-  // TODO: reduce duplication of Room#game
-  get game() {
-    return new Proxy(this[ENGINE], {
-      get(target, prop) {
-        return target.util[prop];
-      }
-    });
-  }
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
 };
 
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = GameObject;
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__draw__ = __webpack_require__(23);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Engine; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__draw__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__struct__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__drawable__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__input__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__texture_manager__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__sound_manager__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__drawable__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__input__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__texture_manager__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__sound_manager__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__const__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__game_utility__ = __webpack_require__(48);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Engine; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__game_utility__ = __webpack_require__(46);
 
 
 
@@ -1220,10 +1702,10 @@ let GameObject = class GameObject {
 let Engine = class Engine {
 
   constructor(container, { w, h }) {
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]] = [];
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]] = [[]];
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = null;
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]] = [new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, 300, 150)];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]] = [];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]] = [[]];
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* RAF */]] = null;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* VIEWS */]] = [new __WEBPACK_IMPORTED_MODULE_1__struct__["d" /* Rectangle */](0, 0, 300, 150)];
     this[DRAWER] = null;
 
     this[SIZE] = new __WEBPACK_IMPORTED_MODULE_1__struct__["b" /* Dimension */](w, h);
@@ -1233,34 +1715,34 @@ let Engine = class Engine {
     this[CONTAINER].style.width = w + 'px';
     this[CONTAINER].style.height = h + 'px';
     this[CONTAINER].style.outline = 'none';
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][0].w = w;
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][0].h = h;
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* INPUT */]] = new __WEBPACK_IMPORTED_MODULE_4__input__["a" /* default */](this[CONTAINER]);
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["l" /* TEXTURE_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_5__texture_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["b" /* PAGES */]]);
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* SOUND_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_6__sound_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["c" /* SOUNDS */]], this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* MUSIC */]]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* VIEWS */]][0].w = w;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* VIEWS */]][0].h = h;
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["b" /* INPUT */]] = new __WEBPACK_IMPORTED_MODULE_4__input__["a" /* default */](this[CONTAINER]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* TEXTURE_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_5__texture_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["e" /* PAGES */]]);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* SOUND_MANAGER */]] = new __WEBPACK_IMPORTED_MODULE_6__sound_manager__["a" /* default */](this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* SOUNDS */]], this.constructor[__WEBPACK_IMPORTED_MODULE_7__const__["c" /* MUSIC */]]);
   }
   get size() {
     return this[SIZE];
   }
 
   // triggers the event for all objects currently active
-  [__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](event) {
-    for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0]) {
+  [__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](event) {
+    for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0]) {
       obj.proc(event);
     }
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i].proc(event);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i].proc(event);
   }
 
   // specifies how to start a game
   start() {}
   // processes all events for one frame
   step() {
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepstart'));
-    for (let event of this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* INPUT */]]) {
-      this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](event);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepstart'));
+    for (let event of this[__WEBPACK_IMPORTED_MODULE_7__const__["b" /* INPUT */]]) {
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](event);
     }
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('step'));
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepend'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('step'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('stepend'));
   }
   // refreshes the game screen
   draw() {
@@ -1269,21 +1751,21 @@ let Engine = class Engine {
     // IDEA: add some optimization options here for purely static layers
     //       we shouldn't need to re-draw every item individually if they
     //       haven't changed at all
-    drawer.removeCanvases(this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length * 2);
-    for (let i = this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length - 1; i >= 0; --i) {
-      drawer.view(this[__WEBPACK_IMPORTED_MODULE_7__const__["j" /* VIEWS */]][i]);
-      for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][i]) {
+    drawer.removeCanvases(this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]].length * 2);
+    for (let i = this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]].length - 1; i >= 0; --i) {
+      drawer.view(this[__WEBPACK_IMPORTED_MODULE_7__const__["o" /* VIEWS */]][i]);
+      for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.draw(drawer.object(obj));
       }
-      this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i].draw(drawer);
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i].draw(drawer);
       drawer.render(i);
       // draw GUI
-      drawer.view(new __WEBPACK_IMPORTED_MODULE_1__struct__["c" /* Rectangle */](0, 0, ...this.size));
-      for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][i]) {
+      drawer.view(new __WEBPACK_IMPORTED_MODULE_1__struct__["d" /* Rectangle */](0, 0, ...this.size));
+      for (let obj of this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][i]) {
         obj instanceof __WEBPACK_IMPORTED_MODULE_3__drawable__["b" /* default */] && obj.drawGUI(drawer.object(obj));
       }
-      this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]][i].drawGUI(drawer);
-      drawer.render(this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length + i);
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i] && this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]][i].drawGUI(drawer);
+      drawer.render(this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]].length + i);
     }
   }
   // run at the end of a game
@@ -1293,19 +1775,19 @@ let Engine = class Engine {
   run() {
     let me = 0;
     const takeStep = () => {
-      me = this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]];
+      me = this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* RAF */]];
       this.step();
       this.draw();
-      if (this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] === me) {
+      if (this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* RAF */]] === me) {
         // guard against the game being re-run by just stopping it.
         // NOTE: behaviour is undefined if there are still rooms/objects in the
         // game when it is re-run
-        this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = window.requestAnimationFrame(takeStep);
+        this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* RAF */]] = window.requestAnimationFrame(takeStep);
       }
     };
     this.start();
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gamestart'));
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* RAF */]] = window.requestAnimationFrame(takeStep);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gamestart'));
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* RAF */]] = window.requestAnimationFrame(takeStep);
   }
 
   // spawns a persistent object
@@ -1313,36 +1795,36 @@ let Engine = class Engine {
   spawn(Obj, ...args) {
     const o = new Obj(this);
     o.init(...args);
-    this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].push(o);
+    this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0].push(o);
     return o;
   }
   // destroys a persistent object
   // HACK: internalize
   destroy(obj) {
     if (typeof obj === 'function') {
-      this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].filter(o => !(o instanceof obj));
+      this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0].filter(o => !(o instanceof obj));
     } else {
-      const i = this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].indexOf(obj);
+      const i = this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0].indexOf(obj);
       if (i >= 0) {
-        this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].splice(i, 1);
+        this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0].splice(i, 1);
       }
     }
   }
   // finds a persistent object
   find(Obj) {
-    return this[__WEBPACK_IMPORTED_MODULE_7__const__["h" /* OBJECTS */]][0].filter(o => o instanceof Obj);
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["d" /* OBJECTS */]][0].filter(o => o instanceof Obj);
   }
 
   get texture() {
-    return this[__WEBPACK_IMPORTED_MODULE_7__const__["l" /* TEXTURE_MANAGER */]];
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* TEXTURE_MANAGER */]];
   }
 
   get sound() {
-    return this[__WEBPACK_IMPORTED_MODULE_7__const__["m" /* SOUND_MANAGER */]];
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["k" /* SOUND_MANAGER */]];
   }
 
   get layers() {
-    return this[__WEBPACK_IMPORTED_MODULE_7__const__["g" /* ROOMS */]].length;
+    return this[__WEBPACK_IMPORTED_MODULE_7__const__["i" /* ROOMS */]].length;
   }
 
   get util() {
@@ -1352,31 +1834,11 @@ let Engine = class Engine {
 
 
 
-/* unused harmony default export */ var _unused_webpack_default_export = Engine;
+/* unused harmony default export */ var _unused_webpack_default_export = (Engine);
 
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return SECOND; });
-
-
-const SECOND = 60;
-
-
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-__webpack_require__(45);
-module.exports = __webpack_require__(5).String.padStart;
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
@@ -1560,11 +2022,11 @@ let Draw = class Draw {
     const context = this[CONTEXT][i];
     if (this[VIEWPORT][2] !== context.canvas.width) {
       context.canvas.width = this[VIEWPORT][2];
-      this[CONTEXT][i].canvas.style.transform = `scale(${ width / this[VIEWPORT][2] }, ${ height / this[VIEWPORT][3] })`;
+      this[CONTEXT][i].canvas.style.transform = `scale(${width / this[VIEWPORT][2]}, ${height / this[VIEWPORT][3]})`;
     }
     if (this[VIEWPORT][3] !== context.canvas.height) {
       context.canvas.height = this[VIEWPORT][3];
-      this[CONTEXT][i].canvas.style.transform = `scale(${ width / this[VIEWPORT][2] }, ${ height / this[VIEWPORT][3] })`;
+      this[CONTEXT][i].canvas.style.transform = `scale(${width / this[VIEWPORT][2]}, ${height / this[VIEWPORT][3]})`;
     }
     context.save();
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
@@ -1590,14 +2052,14 @@ let Draw = class Draw {
 };
 
 
-/* harmony default export */ exports["a"] = Draw;
+/* harmony default export */ __webpack_exports__["a"] = (Draw);
 
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_event__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_event__ = __webpack_require__(7);
 
 
 var _class, _temp;
@@ -1675,78 +2137,84 @@ let Input = (_temp = _class = class Input {
 }, _class.preventDefault = false, _temp);
 
 
-/* harmony default export */ exports["a"] = Input;
+/* harmony default export */ __webpack_exports__["a"] = (Input);
 
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 42 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__texture_page__ = __webpack_require__(15);
 
 
-const [CONTEXT, RESOLVE, REJECT, NODES, NAME] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
-let PlayingSound = class PlayingSound extends Promise {
-  constructor(context, nodes, name) {
-    if (typeof context === 'function') {
-      super(context);
-      return;
-    }
-    let res, rej;
-    super((resolve, reject) => {
-      res = resolve;
-      rej = reject;
-      if (nodes.source) {
-        nodes.source.addEventListener('ended', () => {
-          this[RESOLVE]();
-        });
+
+const [REFERENCES, PAGES, SOURCES] = [Symbol(), Symbol(), Symbol()];
+
+let TextureManager = class TextureManager {
+
+  constructor(sources = []) {
+    this[REFERENCES] = new WeakMap();
+    this[PAGES] = {};
+    this[SOURCES] = null;
+
+    this[SOURCES] = sources;
+  }
+
+  // load a set of texture pages
+  load(textures) {
+    textures = new Set(textures);
+    const loaded = [];
+    for (let texture of textures) {
+      if (!this[PAGES][texture]) {
+        this[PAGES][texture] = new __WEBPACK_IMPORTED_MODULE_0__texture_page__["b" /* default */](this[SOURCES][texture]);
+        loaded.push(this[PAGES][texture].loaded);
       }
-    });
-    const cancel = () => {
-      nodes.source.removeEventListener('ended', this[RESOLVE]);
-      this[RESOLVE] = this[REJECT] = () => {};
-    };
-    this.then(cancel, cancel);
-    this[RESOLVE] = res;
-    this[REJECT] = rej;
-    this[CONTEXT] = context;
-    this[NODES] = nodes;
-    this[NAME] = name;
+      this[REFERENCES].set(this[PAGES][texture], (this[REFERENCES].get(this[PAGES][texture]) || 0) + 1);
+    }
+    return Promise.all(loaded);
   }
 
-  get name() {
-    return this[NAME];
-  }
-
-  stop() {
-    this[REJECT]();
-    this[NODES].source && this[NODES].source.stop();
-  }
-
-  // the volume that a new instance of this sound will play at
-  get volume() {
-    if (this[NODES].gain) {
-      return this[NODES].gain.gain.value;
-    } else {
-      return NaN;
+  // remove all texture pages in the list given
+  purge(textures) {
+    for (let texture of textures) {
+      if (this[PAGES][texture]) {
+        this[REFERENCES].set(this[PAGES][texture], this[REFERENCES].get(this[PAGES][texture]) - 1);
+        if (!this[REFERENCES].get(this[PAGES][texture])) {
+          delete this[PAGES][texture];
+        }
+      }
     }
   }
-  set volume(amt) {
-    if (this[NODES].gain) {
-      this[NODES].gain.gain.value = amt;
+
+  get pages() {
+    return this[PAGES];
+  }
+
+  // instantiate the sprite from the pages
+  sprite(sprite) {
+    let spr;
+    for (let page of Object.keys(this[PAGES])) {
+      if (spr = this[PAGES][page].make(sprite)) {
+        break;
+      }
     }
+    if (!spr) {
+      throw `Sprite ${sprite} does not exist in the current set of texture pages`;
+    }
+    return spr;
   }
 };
 
 
-/* harmony default export */ exports["a"] = PlayingSound;
+/* harmony default export */ __webpack_exports__["a"] = (TextureManager);
 
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound__ = __webpack_require__(44);
 
 
 
@@ -1769,7 +2237,7 @@ let SoundManager = class SoundManager {
     if (t instanceof __WEBPACK_IMPORTED_MODULE_0__sound__["a" /* default */]) {
       return t;
     }
-    throw `Sound ${ name } was not loaded in this room`;
+    throw `Sound ${name} was not loaded in this room`;
   }
 
   // TODO: Music volume adjustment
@@ -1782,7 +2250,7 @@ let SoundManager = class SoundManager {
       this[CURRENT_MUSIC].stop();
     }
     if (!(this[SOURCES].music[name] instanceof __WEBPACK_IMPORTED_MODULE_0__sound__["a" /* default */])) {
-      throw `Music ${ name } was not loaded in this room`;
+      throw `Music ${name} was not loaded in this room`;
     }
     this[CURRENT_MUSIC] = this[SOURCES].music[name].play();
     this[CURRENT_MUSIC].then(() => {
@@ -1799,7 +2267,7 @@ let SoundManager = class SoundManager {
   [LOAD](type, name) {
     let sound = this[SOURCES][type][name];
     if (!sound) {
-      throw `No ${ type } called ${ name } exists`;
+      throw `No ${type} called ${name} exists`;
     }
     if (typeof sound === 'string') {
       this[SOURCES][type][name] = new __WEBPACK_IMPORTED_MODULE_0__sound__["a" /* default */](this[AUDIOCONTEXT], sound, name);
@@ -1852,14 +2320,14 @@ let SoundManager = class SoundManager {
 };
 
 
-/* harmony default export */ exports["a"] = SoundManager;
+/* harmony default export */ __webpack_exports__["a"] = (SoundManager);
 
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_sound__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_sound__ = __webpack_require__(45);
 
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -1929,81 +2397,272 @@ let Sound = class Sound {
 };
 
 
-/* harmony default export */ exports["a"] = Sound;
+/* harmony default export */ __webpack_exports__["a"] = (Sound);
 
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__texture_page__ = __webpack_require__(11);
 
 
+const [CONTEXT, RESOLVE, REJECT, NODES, NAME] = [Symbol(), Symbol(), Symbol(), Symbol(), Symbol()];
 
-
-const [REFERENCES, PAGES, SOURCES] = [Symbol(), Symbol(), Symbol()];
-
-let TextureManager = class TextureManager {
-
-  constructor(sources = []) {
-    this[REFERENCES] = new WeakMap();
-    this[PAGES] = {};
-    this[SOURCES] = null;
-
-    this[SOURCES] = sources;
-  }
-
-  // load a set of texture pages
-  load(textures) {
-    textures = new Set(textures);
-    const loaded = [];
-    for (let texture of textures) {
-      if (!this[PAGES][texture]) {
-        this[PAGES][texture] = new __WEBPACK_IMPORTED_MODULE_0__texture_page__["b" /* default */](this[SOURCES][texture]);
-        loaded.push(this[PAGES][texture].loaded);
+let PlayingSound = class PlayingSound extends Promise {
+  constructor(context, nodes, name) {
+    if (typeof context === 'function') {
+      super(context);
+      return;
+    }
+    let res, rej;
+    super((resolve, reject) => {
+      res = resolve;
+      rej = reject;
+      if (nodes.source) {
+        nodes.source.addEventListener('ended', () => {
+          this[RESOLVE]();
+        });
       }
-      this[REFERENCES].set(this[PAGES][texture], (this[REFERENCES].get(this[PAGES][texture]) || 0) + 1);
-    }
-    return Promise.all(loaded);
+    });
+    const cancel = () => {
+      nodes.source.removeEventListener('ended', this[RESOLVE]);
+      this[RESOLVE] = this[REJECT] = () => {};
+    };
+    this.then(cancel, cancel);
+    this[RESOLVE] = res;
+    this[REJECT] = rej;
+    this[CONTEXT] = context;
+    this[NODES] = nodes;
+    this[NAME] = name;
   }
 
-  // remove all texture pages in the list given
-  purge(textures) {
-    for (let texture of textures) {
-      if (this[PAGES][texture]) {
-        this[REFERENCES].set(this[PAGES][texture], this[REFERENCES].get(this[PAGES][texture]) - 1);
-        if (!this[REFERENCES].get(this[PAGES][texture])) {
-          delete this[PAGES][texture];
-        }
-      }
-    }
+  get name() {
+    return this[NAME];
   }
 
-  get pages() {
-    return this[PAGES];
+  stop() {
+    this[REJECT]();
+    this[NODES].source && this[NODES].source.stop();
   }
 
-  // instantiate the sprite from the pages
-  sprite(sprite) {
-    let spr;
-    for (let page of Object.keys(this[PAGES])) {
-      if (spr = this[PAGES][page].make(sprite)) {
-        break;
-      }
+  // the volume that a new instance of this sound will play at
+  get volume() {
+    if (this[NODES].gain) {
+      return this[NODES].gain.gain.value;
+    } else {
+      return NaN;
     }
-    if (!spr) {
-      throw `Sprite ${ sprite } does not exist in the current set of texture pages`;
+  }
+  set volume(amt) {
+    if (this[NODES].gain) {
+      this[NODES].gain.gain.value = amt;
     }
-    return spr;
   }
 };
 
 
-/* harmony default export */ exports["a"] = TextureManager;
+/* harmony default export */ __webpack_exports__["a"] = (PlayingSound);
 
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 46 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collider__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__room__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const__ = __webpack_require__(1);
+
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+
+
+
+
+
+
+
+
+const [ENGINE] = [Symbol()];
+
+let GameUtility = class GameUtility {
+
+  constructor(engine) {
+    this[ENGINE] = null;
+
+    this[ENGINE] = engine;
+  }
+  // get/set the view port, optionally constrained within the room
+  // boundaries if possible, and with the entire room centred if not
+  view(view, constrain = true) {
+    if (view === undefined) {
+      return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0];
+    }
+    if (view instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Position */]) {
+      view = new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](view.x - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0].w / 2, view.y - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0].h / 2, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0].w, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0].h);
+    }
+    if (constrain) {
+      const { w, h } = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].size;
+      const [r, b] = [view.x + view.w, view.y + view.h];
+      if (view.w > w) {
+        view.x = (w - view.w) / 2;
+      } else if (view.x < 0) {
+        view.x = 0;
+      } else if (r > w) {
+        view.x = w - view.w;
+      }
+      if (view.h > h) {
+        view.y = (h - view.h) / 2;
+      } else if (view.y < 0) {
+        view.y = 0;
+      } else if (b > h) {
+        view.y = h - view.h;
+      }
+    }
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]][0] = new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](...view);
+  }
+
+  get room() {
+    var _this = this;
+
+    return {
+      // go to the given room
+      goto: Rm => {
+        let old = null;
+        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0]) {
+          old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].constructor;
+          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', old, Rm));
+          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].end();
+        }
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]].splice(1, 1, []);
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](0, 0, ...this[ENGINE].size));
+        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
+          throw `${this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].constructor.name} is not a Room`;
+        }
+        _asyncToGenerator(function* () {
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].load();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm));
+          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].loaded;
+          // remove the old room, which was temporarily shifted
+          if (_this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][1]) {
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]].splice(1, 1)[0].destructor();
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]].splice(1, 1);
+            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]].splice(1, 1);
+          }
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].start();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm));
+        })();
+      },
+      // freeze the current room and put this[ENGINE] one over top
+      overlay: Rm => {
+        const old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].constructor;
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]].unshift([]);
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](0, 0, ...this[ENGINE].size));
+        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
+          throw `${this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].constructor.name} is not a Room`;
+        }
+        _asyncToGenerator(function* () {
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].load();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm));
+          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].loaded;
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].start();
+          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm));
+        })();
+      },
+      // closes the current room overlay
+      close: () => {
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].constructor, null));
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].end();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].destructor();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]].shift();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]].shift();
+        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["o" /* VIEWS */]].shift();
+        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]].length === 0) {
+          throw `You closed the last room... please don't do that`;
+        }
+      }
+    };
+  }
+
+  mousestate(button) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["b" /* INPUT */]].mousestate(button);
+  }
+
+  keystate(key) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["b" /* INPUT */]].keystate(key);
+  }
+
+  // end the game
+  // NOTE: for JS version of this[ENGINE] engine, this[ENGINE] function isn't all that
+  // useful since you can't really 'close' a canvas
+  end() {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gameend'));
+    this[ENGINE].end();
+    window.cancelAnimationFrame(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* RAF */]]);
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* RAF */]] = null;
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]] = [];
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]] = [[]];
+  }
+
+  // end the game and run it again
+  restart() {
+    this[ENGINE].util.end();
+    this[ENGINE].run();
+  }
+
+  sound(name) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["k" /* SOUND_MANAGER */]].sound(name);
+  }
+
+  music(name) {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["k" /* SOUND_MANAGER */]].music(name);
+  }
+
+  // spawn an object
+  spawn(...args) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].spawn(...args);
+  }
+
+  // find an object
+  find(Obj) {
+    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].find(Obj);
+  }
+
+  // destroy an object
+  destroy(obj) {
+    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].destroy(obj);
+  }
+
+  // checks if two colliders are colliding
+  collides(where, what) {
+    if (what instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) {
+      return what.collides(where);
+    }
+    if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* ROOMS */]][0].collides(where, what)) {
+      return true;
+    }
+    if (what !== 'room') {
+      what = what === 'any' ? this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]][0].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["d" /* OBJECTS */]][0].filter(o => o instanceof what);
+      for (let it of what) {
+        if (it.collides(where)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+};
+
+
+/* harmony default export */ __webpack_exports__["a"] = (GameUtility);
+
+/***/ }),
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
@@ -2032,13 +2691,13 @@ let TileMap = class TileMap {
           if (!tp) {
             return null;
           }
-          const src = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](this.tw * (n % (tp.width / this.tw)), this.th * Math.floor(n / (tp.width / this.tw)), this.tw, this.th);
+          const src = new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](this.tw * (n % (tp.width / this.tw)), this.th * Math.floor(n / (tp.width / this.tw)), this.tw, this.th);
           return [tp, src];
         }
       }
     };
     for (let depth of Object.keys(images)) {
-      const dest = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](0, 0, this.tw, this.th);
+      const dest = new __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */](0, 0, this.tw, this.th);
       const layer = document.createElement('CANVAS');
       layer.width = images[depth][0].length * this.tw;
       layer.height = images[depth].length * this.th;
@@ -2077,13 +2736,13 @@ let TileMap = class TileMap {
 
   // check if a given Rectangle collides with the collision map
   collides(box) {
-    if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */]) {
+    if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Rectangle */]) {
       box = [...box];
       box[2] = Math.ceil((box[0] + box[2]) / this.tw);
       box[3] = Math.ceil((box[1] + box[3]) / this.th);
       box[0] = Math.floor(box[0] / this.tw);
       box[1] = Math.floor(box[1] / this.th);
-    } else if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["d" /* Circle */]) {
+    } else if (box instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Circle */]) {
       const { x, y, r } = box;
       box[0] = Math.floor(x - r);
       box[1] = Math.floor(y - r);
@@ -2102,729 +2761,71 @@ let TileMap = class TileMap {
 };
 
 
-/* harmony default export */ exports["a"] = TileMap;
+/* harmony default export */ __webpack_exports__["a"] = (TileMap);
 
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-module.exports = function(it){
-  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(8);
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__(30);
-module.exports = function(fn, that, length){
-  aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
-      return fn.call(that, a);
-    };
-    case 2: return function(a, b){
-      return fn.call(that, a, b);
-    };
-    case 3: return function(a, b, c){
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function(/* ...args */){
-    return fn.apply(that, arguments);
-  };
-};
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(8)
-  , document = __webpack_require__(7).document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
-  return is ? document.createElement(it) : {};
-};
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-var global    = __webpack_require__(7)
-  , core      = __webpack_require__(5)
-  , hide      = __webpack_require__(15)
-  , redefine  = __webpack_require__(39)
-  , ctx       = __webpack_require__(32)
-  , PROTOTYPE = 'prototype';
-
-var $export = function(type, name, source){
-  var IS_FORCED = type & $export.F
-    , IS_GLOBAL = type & $export.G
-    , IS_STATIC = type & $export.S
-    , IS_PROTO  = type & $export.P
-    , IS_BIND   = type & $export.B
-    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE]
-    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-    , expProto  = exports[PROTOTYPE] || (exports[PROTOTYPE] = {})
-    , key, own, out, exp;
-  if(IS_GLOBAL)source = name;
-  for(key in source){
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    // export native or passed
-    out = (own ? target : source)[key];
-    // bind timers to global for call from export context
-    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // extend global
-    if(target)redefine(target, key, out, type & $export.U);
-    // export
-    if(exports[key] != out)hide(exports, key, exp);
-    if(IS_PROTO && expProto[key] != out)expProto[key] = out;
-  }
-};
-global.core = core;
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
-module.exports = $export;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function(it, key){
-  return hasOwnProperty.call(it, key);
-};
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = !__webpack_require__(6) && !__webpack_require__(14)(function(){
-  return Object.defineProperty(__webpack_require__(33)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-});
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-var anObject       = __webpack_require__(31)
-  , IE8_DOM_DEFINE = __webpack_require__(36)
-  , toPrimitive    = __webpack_require__(43)
-  , dP             = Object.defineProperty;
-
-exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProperty(O, P, Attributes){
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if(IE8_DOM_DEFINE)try {
-    return dP(O, P, Attributes);
-  } catch(e){ /* empty */ }
-  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-  if('value' in Attributes)O[P] = Attributes.value;
-  return O;
-};
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-module.exports = function(bitmap, value){
-  return {
-    enumerable  : !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
-  };
-};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-var global    = __webpack_require__(7)
-  , hide      = __webpack_require__(15)
-  , has       = __webpack_require__(35)
-  , SRC       = __webpack_require__(44)('src')
-  , TO_STRING = 'toString'
-  , $toString = Function[TO_STRING]
-  , TPL       = ('' + $toString).split(TO_STRING);
-
-__webpack_require__(5).inspectSource = function(it){
-  return $toString.call(it);
-};
-
-(module.exports = function(O, key, val, safe){
-  var isFunction = typeof val == 'function';
-  if(isFunction)has(val, 'name') || hide(val, 'name', key);
-  if(O[key] === val)return;
-  if(isFunction)has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if(O === global){
-    O[key] = val;
-  } else {
-    if(!safe){
-      delete O[key];
-      hide(O, key, val);
-    } else {
-      if(O[key])O[key] = val;
-      else hide(O, key, val);
-    }
-  }
-// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-})(Function.prototype, TO_STRING, function toString(){
-  return typeof this == 'function' && this[SRC] || $toString.call(this);
-});
-
-/***/ },
-/* 40 */
-/***/ function(module, exports, __webpack_require__) {
-
-// https://github.com/tc39/proposal-string-pad-start-end
-var toLength = __webpack_require__(42)
-  , repeat   = __webpack_require__(41)
-  , defined  = __webpack_require__(13);
-
-module.exports = function(that, maxLength, fillString, left){
-  var S            = String(defined(that))
-    , stringLength = S.length
-    , fillStr      = fillString === undefined ? ' ' : String(fillString)
-    , intMaxLength = toLength(maxLength);
-  if(intMaxLength <= stringLength || fillStr == '')return S;
-  var fillLen = intMaxLength - stringLength
-    , stringFiller = repeat.call(fillStr, Math.ceil(fillLen / fillStr.length));
-  if(stringFiller.length > fillLen)stringFiller = stringFiller.slice(0, fillLen);
-  return left ? stringFiller + S : S + stringFiller;
-};
-
-
-/***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var toInteger = __webpack_require__(16)
-  , defined   = __webpack_require__(13);
-
-module.exports = function repeat(count){
-  var str = String(defined(this))
-    , res = ''
-    , n   = toInteger(count);
-  if(n < 0 || n == Infinity)throw RangeError("Count can't be negative");
-  for(;n > 0; (n >>>= 1) && (str += str))if(n & 1)res += str;
-  return res;
-};
-
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-// 7.1.15 ToLength
-var toInteger = __webpack_require__(16)
-  , min       = Math.min;
-module.exports = function(it){
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(8);
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function(it, S){
-  if(!isObject(it))return it;
-  var fn, val;
-  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-/***/ },
-/* 44 */
-/***/ function(module, exports) {
-
-var id = 0
-  , px = Math.random();
-module.exports = function(key){
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/proposal-string-pad-start-end
-var $export = __webpack_require__(34)
-  , $pad    = __webpack_require__(40);
-
-$export($export.P, 'String', {
-  padStart: function padStart(maxLength /*, fillString = ' ' */){
-    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, true);
-  }
-});
-
-/***/ },
-/* 46 */
-/***/ function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_core_js_fn_string_pad_start__);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Position", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Dimension", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Rectangle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Circle", function() { return __WEBPACK_IMPORTED_MODULE_1__engine_struct__["d"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__engine_struct__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__engine_timing__ = __webpack_require__(21);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "SECOND", function() { return __WEBPACK_IMPORTED_MODULE_2__engine_timing__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__engine_decorator__ = __webpack_require__(18);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "override", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "sound", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "texturepage", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["c"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "sprite", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["d"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "tilemap", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["e"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "config", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["f"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "music", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["g"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "persistent", function() { return __WEBPACK_IMPORTED_MODULE_3__engine_decorator__["h"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__engine__ = __webpack_require__(20);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Engine", function() { return __WEBPACK_IMPORTED_MODULE_4__engine__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__engine_drawable__ = __webpack_require__(3);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Drawable", function() { return __WEBPACK_IMPORTED_MODULE_5__engine_drawable__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__engine_collider__ = __webpack_require__(2);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Collider", function() { return __WEBPACK_IMPORTED_MODULE_6__engine_collider__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__engine_texture_page__ = __webpack_require__(11);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "TexturePage", function() { return __WEBPACK_IMPORTED_MODULE_7__engine_texture_page__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__engine_sprite__ = __webpack_require__(10);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Sprite", function() { return __WEBPACK_IMPORTED_MODULE_8__engine_sprite__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__engine_game_object__ = __webpack_require__(19);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "GameObject", function() { return __WEBPACK_IMPORTED_MODULE_9__engine_game_object__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__engine_room__ = __webpack_require__(9);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(exports, "Room", function() { return __WEBPACK_IMPORTED_MODULE_10__engine_room__["a"]; });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***/ },
+/***/ }),
 /* 48 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__struct__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collider__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__game_event__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__room__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__const__ = __webpack_require__(1);
-
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-
-
-
-
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GameObject; });
 
 
 const [ENGINE] = [Symbol()];
 
-let GameUtility = class GameUtility {
-
+let GameObject = class GameObject {
   constructor(engine) {
-    this[ENGINE] = null;
-
     this[ENGINE] = engine;
   }
-  // get/set the view port, optionally constrained within the room
-  // boundaries if possible, and with the entire room centred if not
-  view(view, constrain = true) {
-    if (view === undefined) {
-      return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0];
-    }
-    if (view instanceof __WEBPACK_IMPORTED_MODULE_0__struct__["a" /* Position */]) {
-      view = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](view.x - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].w / 2, view.y - this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].h / 2, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].w, this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0].h);
-    }
-    if (constrain) {
-      const { w, h } = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].size;
-      const [r, b] = [view.x + view.w, view.y + view.h];
-      if (view.w > w) {
-        view.x = (w - view.w) / 2;
-      } else if (view.x < 0) {
-        view.x = 0;
-      } else if (r > w) {
-        view.x = w - view.w;
+  // initialize things on being created (use instead of constructor)
+  init() {}
+
+  // run before each room starts
+  roomload(prev, next) {}
+  // run at the beginning of each room
+  roomstart(prev, next) {}
+  // run at the beginning of the game
+  gamestart() {}
+
+  // run at the beginning of each frame
+  stepstart() {}
+
+  // react to various user inputs
+  keydown(which) {}
+  keyup(which) {}
+  mousedown(which) {}
+  mouseup(which) {}
+  mousemove(where) {}
+
+  // run once all inputs have been received
+  step() {}
+  // run after everything else
+  stepend() {}
+
+  // run at the end of each room
+  roomend(prev, next) {}
+  // run at the end of the game
+  gameend() {}
+
+  // trigger an event
+  proc(event) {
+    this[event.type] && this[event.type](...event.data);
+  }
+
+  // utilities
+  // TODO: reduce duplication of Room#game
+  get game() {
+    return new Proxy(this[ENGINE], {
+      get(target, prop) {
+        return target.util[prop];
       }
-      if (view.h > h) {
-        view.y = (h - view.h) / 2;
-      } else if (view.y < 0) {
-        view.y = 0;
-      } else if (b > h) {
-        view.y = h - view.h;
-      }
-    }
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]][0] = new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](...view);
-  }
-
-  get room() {
-    var _this = this;
-
-    return {
-      // go to the given room
-      goto: Rm => {
-        let old = null;
-        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0]) {
-          old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor;
-          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', old, Rm));
-          this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].end();
-        }
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].splice(1, 1, []);
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
-        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
-          throw `${ this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor.name } is not a Room`;
-        }
-        _asyncToGenerator(function* () {
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].load();
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', old, Rm));
-          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].loaded;
-          // remove the old room, which was temporarily shifted
-          if (_this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][1]) {
-            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].splice(1, 1)[0].destructor();
-            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].splice(1, 1);
-            _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].splice(1, 1);
-          }
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].start();
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', old, Rm));
-        })();
-      },
-      // freeze the current room and put this[ENGINE] one over top
-      overlay: Rm => {
-        const old = this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor;
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].unshift(new Rm(this[ENGINE]));
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].unshift([]);
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].unshift(new __WEBPACK_IMPORTED_MODULE_0__struct__["c" /* Rectangle */](0, 0, ...this[ENGINE].size));
-        if (!(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0] instanceof __WEBPACK_IMPORTED_MODULE_3__room__["b" /* default */])) {
-          throw `${ this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor.name } is not a Room`;
-        }
-        _asyncToGenerator(function* () {
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].load();
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomload', null, Rm));
-          yield _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].loaded;
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].start();
-          _this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomstart', null, Rm));
-        })();
-      },
-      // closes the current room overlay
-      close: () => {
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('roomend', this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].constructor, null));
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].end();
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].destructor();
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].shift();
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]].shift();
-        this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["j" /* VIEWS */]].shift();
-        if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]].length === 0) {
-          throw `You closed the last room... please don't do that`;
-        }
-      }
-    };
-  }
-
-  mousestate(button) {
-    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["k" /* INPUT */]].mousestate(button);
-  }
-
-  keystate(key) {
-    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["k" /* INPUT */]].keystate(key);
-  }
-
-  // end the game
-  // NOTE: for JS version of this[ENGINE] engine, this[ENGINE] function isn't all that
-  // useful since you can't really 'close' a canvas
-  end() {
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["n" /* PROC */]](new __WEBPACK_IMPORTED_MODULE_2__game_event__["a" /* default */]('gameend'));
-    this[ENGINE].end();
-    window.cancelAnimationFrame(this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* RAF */]]);
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["i" /* RAF */]] = null;
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]] = [];
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]] = [[]];
-  }
-
-  // end the game and run it again
-  restart() {
-    this[ENGINE].util.end();
-    this[ENGINE].run();
-  }
-
-  sound(name) {
-    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["m" /* SOUND_MANAGER */]].sound(name);
-  }
-
-  music(name) {
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["m" /* SOUND_MANAGER */]].music(name);
-  }
-
-  // spawn an object
-  spawn(...args) {
-    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].spawn(...args);
-  }
-
-  // find an object
-  find(Obj) {
-    return this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].find(Obj);
-  }
-
-  // destroy an object
-  destroy(obj) {
-    this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].destroy(obj);
-  }
-
-  // checks if two colliders are colliding
-  collides(where, what) {
-    if (what instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) {
-      return what.collides(where);
-    }
-    if (this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["g" /* ROOMS */]][0].collides(where, what)) {
-      return true;
-    }
-    if (what !== 'room') {
-      what = what === 'any' ? this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]][0].filter(o => o instanceof __WEBPACK_IMPORTED_MODULE_1__collider__["b" /* default */]) : this[ENGINE][__WEBPACK_IMPORTED_MODULE_4__const__["h" /* OBJECTS */]][0].filter(o => o instanceof what);
-      for (let it of what) {
-        if (it.collides(where)) {
-          return true;
-        }
-      }
-    }
-    return false;
+    });
   }
 };
 
 
-/* harmony default export */ exports["a"] = GameUtility;
 
-/***/ }
+/* unused harmony default export */ var _unused_webpack_default_export = (GameObject);
+
+/***/ })
 /******/ ]);

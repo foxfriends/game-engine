@@ -1,9 +1,10 @@
 'use strict';
+const path = require('path');
 
 module.exports = [{
     entry: './src/index.js',
     output: {
-      path: './',
+      path: path.resolve('./'),
       filename: 'engine.js',
       library: 'engine',
       libraryTarget: 'commonjs2'
@@ -17,7 +18,7 @@ module.exports = [{
   }, {
     entry: './demo/index.js',
     output: {
-      path: './public_html',
+      path: path.resolve('./public_html'),
       filename: 'demo.js'
     },
     module: {

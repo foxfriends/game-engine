@@ -15,11 +15,11 @@
   "author": "Cameron Eldridge",
   "license": "ISC",
   "devDependencies": {
-    "css-loader": "^0.26.1",
-    "node-sass": "^4.2.0",
+    "css-loader": "^0.26.4",
+    "node-sass": "^4.5.3",
     "sass-loader": "^4.1.1",
-    "style-loader": "^0.13.1",
-    "webpack": "^2.2.0-rc.3"
+    "style-loader": "^0.13.2",
+    "webpack": "^3.4.1"
   },
   "dependencies": {
     "http-server": "^0.9.0",
