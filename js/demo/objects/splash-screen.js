@@ -25,6 +25,7 @@ class SplashScreen extends Drawable(GameObject) {
   draw(draw) {
     draw
       .alpha(this.alpha)
+      .color(0x000000)
       .rect(new Rectangle(25, 25, 50, 50));
   }
 

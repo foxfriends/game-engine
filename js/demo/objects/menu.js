@@ -21,15 +21,13 @@ class Menu extends Drawable(GameObject) {
   }
 
   @override
-  draw(draw) {
-    let i = 0;
-    for(let opt of Object.keys(this.opts)) {
+  drawGUI(draw) {
+    Object.keys(this.opts).forEach((opt, i) => {
       draw
         .alpha(1)
         .color(i === this.cur ? 0xFF0000 : 0)
         .text(opt, [64, 128 + 32 * i]);
-      ++i;
-    }
+    });
   }
 }
 

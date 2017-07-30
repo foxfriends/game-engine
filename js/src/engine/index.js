@@ -9,7 +9,7 @@ import TextureManager from './texture-manager';
 import SoundManager from './sound-manager';
 import {
   PAGES, SOUNDS, MUSIC, ROOMS, OBJECTS, RAF, CANVAS, CONTEXT, INPUT,
-  TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, PROC
+  TEXTURE_MANAGER, SOUND_MANAGER, VIEWS, PROC, DRAWER, SIZE, CONTAINER,
 } from './const';
 import GameUtility from './game-utility';
 
@@ -44,7 +44,7 @@ class Engine {
     for(let obj of this[OBJECTS][0]) {
       obj.proc(event);
     }
-    this[ROOMS][i] && this[ROOMS][i].proc(event);
+    this[ROOMS][0] && this[ROOMS][0].proc(event);
   }
 
   // specifies how to start a game

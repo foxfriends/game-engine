@@ -86,6 +86,11 @@ class Player extends Drawable(Collider(new Rectangle(16, 32, 32, 32))(GameObject
     }
     super.game.view(new Position(this.sprite.x + 32, this.sprite.y + 32));
   }
+
+  @override
+  draw(draw) {
+    super.draw(draw);
+  }
 }
 
 export default Player;

@@ -23,4 +23,4 @@ class Outside extends Room {
 };
 
 export { Outside as v };
-export default Home;
+export default Outside;

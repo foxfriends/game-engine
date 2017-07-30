@@ -16,6 +16,7 @@ class GameUtility {
   constructor(engine) {
     this[ENGINE] = engine
   }
+
   // get/set the view port, optionally constrained within the room
   // boundaries if possible, and with the entire room centred if not
   view(view, constrain = true) {
@@ -180,6 +181,8 @@ class GameUtility {
     }
     return false;
   }
+
+  get size() { return this[ENGINE].size; }
 }
 
 export default GameUtility;
