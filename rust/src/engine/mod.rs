@@ -1,5 +1,7 @@
 macro_rules! util { ($me:ident) => ( GameUtil::new(&mut $me) ) }
 
+use std::cell::RefCell;
+use std::rc::Rc;
 use piston_window::*;
 
 pub mod actor;
@@ -7,13 +9,14 @@ pub mod types;
 pub mod util;
 
 use self::types::Point;
-use self::actor::Actor;
-use self::util::*;
+pub use self::actor::*;
+pub use self::util::*;
 
+#[derive(Clone)]
 pub struct Game {
     title: String,
     dimensions: Point,
-    actors: Vec<Box<Actor>>,
+    actors: Vec<Rc<RefCell<Box<Actor>>>>,
 }
 
 impl Game {
@@ -31,7 +34,10 @@ impl Game {
             .build().unwrap();
         engine.start(util!(self));
         while let Some(event) = window.next() {
-            self.actors = self.actors.into_iter().map(|actor| actor).collect();
+            engine.update(util!(self));
+            for i in 0..self.actors.len() {
+                Actor::update(&event, self.actors[i].clone(), util!(self));
+            }
             window.draw_2d(&event, |context, graphics| { self.draw(context, graphics) });
         }
         engine.end(util!(self));
