@@ -1,4 +1,4 @@
-[docs]: https://oinkiguana.github.io/game-engine/docs/public_html/
+[docs]: https://oinkiguana.github.io/game-engine/
 
 # game-engine
 
