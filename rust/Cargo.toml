@@ -1,0 +1,9 @@
+[package]
+name = "game_engine"
+version = "0.1.0"
+authors = ["Cameron Eldridge <cameldridge+git@gmail.com>"]
+
+[dependencies]
+piston2d-graphics = "*"
+piston2d-gfx_graphics = "*"
+piston_window = "*"
