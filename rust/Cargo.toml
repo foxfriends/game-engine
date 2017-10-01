@@ -3,7 +3,7 @@ name = "game_engine"
 version = "0.1.0"
 authors = ["Cameron Eldridge <cameldridge+git@gmail.com>"]
 
-[dependencies]
-piston2d-graphics = "*"
-piston2d-gfx_graphics = "*"
-piston_window = "*"
+[dependencies.sdl2]
+version = "0.30"
+default-features = false
+features = ["image", "mixer"]

@@ -1,5 +1,4 @@
-extern crate piston_window;
-extern crate graphics;
+extern crate sdl2;
 
 mod engine;
 pub use engine::*;
