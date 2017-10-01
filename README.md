@@ -6,7 +6,7 @@ Looking for the [docs]?
 
 A simple game engine, available in C++ and HTML5 (JS).
 
-## Current features
+### Current features
 
 *   Basic game loop
 *   Event based interactions
@@ -19,3 +19,9 @@ A simple game engine, available in C++ and HTML5 (JS).
         editor format to the JSON format used by this engine for easy tile map
         editing abilities
 *   Sounds and music
+
+## Rust
+
+There is a Rust version as well, but it follows a completely different
+architecture, and provides much less out of the box while being much more
+flexible. I plan to add a standard library type of thing to this in the future.
