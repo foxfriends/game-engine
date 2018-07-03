@@ -1,9 +1,23 @@
 [package]
-name = "game_engine"
+name = "game-engine"
 version = "0.1.0"
 authors = ["Cameron Eldridge <cameldridge+git@gmail.com>"]
+publish = false
+build = "build.rs"
+
+[lib]
+name = "engine"
+path = "src/lib.rs"
+
+[dependencies]
+specs = "0.11"
+shred = { version = "0.7", features = ["nightly"] }
+shred-derive = "0.5"
+specs-derive = "0.2"
+serde = "1.0"
+serde_derive = "1.0"
 
 [dependencies.sdl2]
-version = "0.30"
+version = "0.31"
 default-features = false
-features = ["image", "mixer"]
+features = ["bundled", "image", "mixer", "ttf", "unsafe_textures"]

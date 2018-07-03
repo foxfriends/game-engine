@@ -1,0 +1,87 @@
+#! /bin/bash
+
+# This script downloads SDL libraries for windows
+
+# Clean up from previous running of this script
+
+rm -r gnu-mingw
+rm -r msvc
+
+# Make the file structure
+
+mkdir gnu-mingw
+mkdir gnu-mingw\\dll
+mkdir gnu-mingw\\lib
+mkdir gnu-mingw\\dll\\32
+mkdir gnu-mingw\\dll\\64
+mkdir gnu-mingw\\lib\\32
+mkdir gnu-mingw\\lib\\64
+mkdir msvc
+mkdir msvc\\dll
+mkdir msvc\\lib
+mkdir msvc\\dll\\32
+mkdir msvc\\dll\\64
+mkdir msvc\\lib\\32
+mkdir msvc\\lib\\64
+
+# Download dependencies and copy dlls/libs
+
+# SDL TTF
+
+curl -L -o SDL2_ttf-devel-2.0.14-mingw.tar.gz https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.0.14-mingw.tar.gz
+tar xzf SDL2_ttf-devel-2.0.14-mingw.tar.gz
+cp -a SDL2_ttf-2.0.14\\i686-w64-mingw32\\bin\\.            gnu-mingw\\dll\\32
+cp -a SDL2_ttf-2.0.14\\x86_64-w64-mingw32\\bin\\.          gnu-mingw\\dll\\64
+cp -a SDL2_ttf-2.0.14\\i686-w64-mingw32\\lib\\.            gnu-mingw\\lib\\32
+cp -a SDL2_ttf-2.0.14\\x86_64-w64-mingw32\\lib\\.          gnu-mingw\\lib\\64
+rm -r SDL2_ttf-2.0.14
+rm SDL2_ttf-devel-2.0.14-mingw.tar.gz
+
+curl -L -o SDL2_ttf-devel-2.0.14-VC.zip https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-2.0.14-VC.zip
+unzip SDL2_ttf-devel-2.0.14-VC.zip
+cp -a SDL2_ttf-2.0.14\\lib\\x86\\.                         msvc\\dll\\32
+cp -a SDL2_ttf-2.0.14\\lib\\x64\\.                         msvc\\dll\\64
+cp -a SDL2_ttf-2.0.14\\lib\\x86\\.                         msvc\\lib\\32
+cp -a SDL2_ttf-2.0.14\\lib\\x64\\.                         msvc\\lib\\64
+rm -r SDL2_ttf-2.0.14
+rm SDL2_ttf-devel-2.0.14-VC.zip
+
+# SDL Image
+
+curl -L -o SDL2_image-devel-2.0.3-mingw.tar.gz https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.3-mingw.tar.gz
+tar xzf SDL2_image-devel-2.0.3-mingw.tar.gz
+cp -a SDL2_image-2.0.3\\i686-w64-mingw32\\bin\\.           gnu-mingw\\dll\\32
+cp -a SDL2_image-2.0.3\\x86_64-w64-mingw32\\bin\\.         gnu-mingw\\dll\\64
+cp -a SDL2_image-2.0.3\\i686-w64-mingw32\\lib\\.           gnu-mingw\\lib\\32
+cp -a SDL2_image-2.0.3\\x86_64-w64-mingw32\\lib\\.         gnu-mingw\\lib\\64
+rm -r SDL2_image-2.0.3
+rm SDL2_image-devel-2.0.3-mingw.tar.gz
+
+curl -L -o SDL2_image-devel-2.0.3-VC.zip https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.0.3-VC.zip
+unzip SDL2_image-devel-2.0.3-VC.zip
+cp -a SDL2_image-2.0.3\\lib\\x86\\.                        msvc\\dll\\32
+cp -a SDL2_image-2.0.3\\lib\\x64\\.                        msvc\\dll\\64
+cp -a SDL2_image-2.0.3\\lib\\x86\\.                        msvc\\lib\\32
+cp -a SDL2_image-2.0.3\\lib\\x64\\.                        msvc\\lib\\64
+rm -r SDL2_image-2.0.3
+rm SDL2_image-devel-2.0.3-VC.zip
+
+# SDL Mixer
+
+curl -L -o SDL2_mixer-devel-2.0.2-mingw.tar.gz https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.2-mingw.tar.gz
+tar xzf SDL2_mixer-devel-2.0.2-mingw.tar.gz
+cp -a SDL2_mixer-2.0.2\\i686-w64-mingw32\\bin\\.           gnu-mingw\\dll\\32
+cp -a SDL2_mixer-2.0.2\\x86_64-w64-mingw32\\bin\\.         gnu-mingw\\dll\\64
+cp -a SDL2_mixer-2.0.2\\i686-w64-mingw32\\lib\\.           gnu-mingw\\lib\\32
+cp -a SDL2_mixer-2.0.2\\x86_64-w64-mingw32\\lib\\.         gnu-mingw\\lib\\64
+rm -r SDL2_mixer-2.0.2
+rm SDL2_mixer-devel-2.0.2-mingw.tar.gz
+
+curl -L -o SDL2_mixer-devel-2.0.2-VC.zip https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.2-VC.zip
+unzip SDL2_mixer-devel-2.0.2-VC.zip
+cp -a SDL2_mixer-2.0.2\\lib\\x86\\.                        msvc\\dll\\32
+cp -a SDL2_mixer-2.0.2\\lib\\x64\\.                        msvc\\dll\\64
+cp -a SDL2_mixer-2.0.2\\lib\\x86\\.                        msvc\\lib\\32
+cp -a SDL2_mixer-2.0.2\\lib\\x64\\.                        msvc\\lib\\64
+rm -r SDL2_mixer-2.0.2
+rm SDL2_mixer-devel-2.0.2-VC.zip
