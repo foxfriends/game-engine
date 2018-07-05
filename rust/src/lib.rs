@@ -1,6 +1,7 @@
 //! A game engine!
 
-#![warn(missing_docs, bare_trait_objects)]
+#![warn(missing_docs)]
+#![deny(bare_trait_objects)]
 #![feature(const_fn, macro_at_most_once_rep)]
 
 extern crate sdl2;
@@ -47,6 +48,7 @@ use scene::{CurrentScene, Scene, SceneBuilder};
 pub struct Game {
     world: World,
     title: &'static str,
+    plugins: Vec<Box<dyn Fn(&mut World)>>,
 }
 
 impl Game {
@@ -62,6 +64,7 @@ impl Game {
         Game {
             world,
             title: "",
+            plugins: vec![],
         }
     }
 
@@ -82,6 +85,13 @@ impl Game {
     /// Registers a component with this `Game`. See [`specs::World::register`] for documentation.
     pub fn register_component<C>(mut self) -> Self where C: Component, C::Storage: Default {
         self.world.register::<C>();
+        self
+    }
+
+    /// Adds a plugin to the system. Plugins are run once before each step, and can do anything
+    /// they need to do to the world
+    pub fn plugin(mut self, plugin: impl Fn(&mut World) + 'static) -> Self {
+        self.plugins.push(Box::new(plugin));
         self
     }
 
@@ -230,6 +240,9 @@ impl Game {
             }
 
             // Do the things
+            for plugin in &self.plugins {
+                plugin(&mut self.world)
+            }
             dispatcher.dispatch(&mut self.world.res);
             if **self.world.read_resource::<Quit>() {
                 break;
