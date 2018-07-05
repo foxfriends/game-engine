@@ -88,6 +88,12 @@ impl Game {
         self
     }
 
+    /// Pipes this game through another function. Helps when setting up a complex game while
+    /// keeping a purely functional looking interface.
+    pub fn pipe(self, op: impl Fn(Self) -> Self) -> Self {
+        op(self)
+    }
+
     /// Adds a plugin to the system. Plugins are run once before each step, and can do anything
     /// they need to do to the world
     pub fn plugin(mut self, plugin: impl Fn(&mut World) + 'static) -> Self {
