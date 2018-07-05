@@ -6,7 +6,7 @@ publish = false
 build = "build.rs"
 
 [lib]
-name = "engine"
+name = "game_engine"
 path = "src/lib.rs"
 
 [dependencies]
