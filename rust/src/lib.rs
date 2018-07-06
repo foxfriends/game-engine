@@ -17,7 +17,7 @@ use sdl2::event::Event;
 use shred::Resource;
 
 mod error;
-mod model;
+pub mod model;
 #[macro_use] pub mod util;
 pub mod common;
 pub mod visuals;
@@ -286,4 +286,40 @@ impl Game {
             .with(EntityLifecycle::default(), "entity_lifecycle", &[])
             .build()
     }
+}
+
+pub mod prelude {
+    //! All the useful things you might probably need!
+
+    pub use super::common::{Create, Delete};
+    pub use super::visuals::{
+        Drawable,
+        Image,
+        Font,
+        Sprite,
+        Color,
+        DrawableBuilder,
+        Attributer,
+    };
+    pub use super::quit::Quit;
+    pub use super::input::mouse::{
+        MouseState,
+        MouseEvents,
+        MouseEvent,
+        MouseButton,
+    };
+    pub use super::input::keyboard::{
+        KeyboardState,
+        KeyboardEvents,
+        KeyboardEvent,
+        Key,
+    };
+    pub use super::input::text::{
+        TextInput,
+        TextInputEvents,
+        TextInputEvent,
+    };
+    pub use super::model::shape::{Rect, Dimen, Point};
+    pub use super::timing::{FrameCount, RunTime};
+    pub use super::scene::{CurrentScene, Scene, SceneManager};
 }

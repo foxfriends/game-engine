@@ -10,7 +10,7 @@ name = "game_engine"
 path = "src/lib.rs"
 
 [dependencies]
-specs = "0.11"
+specs = "0.12"
 shred = { version = "0.7", features = ["nightly"] }
 shred-derive = "0.5"
 specs-derive = "0.2"

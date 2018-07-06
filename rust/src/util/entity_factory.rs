@@ -1,15 +1,12 @@
 //! Takes an EntityBuilder and builds the entity.
 
-use specs::world::LazyBuilder;
-use specs::prelude::EntityBuilder;
+
+use specs::world::Builder;
 
 /// Defines a type that can be used to build an entity
 pub trait EntityFactory {
     /// Builds the entity using the [`EntityBuilder`]
-    fn build(self, builder: EntityBuilder) -> EntityBuilder;
-
-    /// Builds the entity using the [`LazyBuilder`]
-    fn lazy_build(self, builder: LazyBuilder);
+    fn build<B: Builder>(self, builder: B) -> B;
 }
 
 /// Creates an [`EntityFactory`](self::EntityFactory) function, which builds an entity with the listed components.
@@ -68,17 +65,10 @@ macro_rules! entity {
         $(#[$attr])*
         pub struct $name($(pub $type),*);
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build(self, builder: ::specs::prelude::EntityBuilder) -> ::specs::prelude::EntityBuilder {
+            fn build<B: Builder>(self, builder: B) -> B {
                 let $name($($param),+) = self;
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
-            }
-
-            fn lazy_build(self, builder: ::specs::world::LazyBuilder) {
-                let $name($($param),+) = self;
-                entity!(@build builder, $body)
-                    .with($crate::common::Create::default())
-                    .build();
             }
         }
     };
@@ -87,17 +77,10 @@ macro_rules! entity {
         $(#[$attr])*
         struct $name($(pub $type),*);
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build(self, builder: ::specs::prelude::EntityBuilder) -> ::specs::prelude::EntityBuilder {
+            fn build<B: Builder>(self, builder: B) -> B {
                 let $name($($param),+) = self;
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
-            }
-
-            fn lazy_build(self, builder: ::specs::world::LazyBuilder) {
-                let $name($($param),+) = self;
-                entity!(@build builder, $body)
-                    .with($crate::common::Create::default())
-                    .build();
             }
         }
     };
@@ -106,15 +89,9 @@ macro_rules! entity {
         $(#[$attr])*
         pub struct $name;
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build(self, builder: ::specs::prelude::EntityBuilder) -> ::specs::prelude::EntityBuilder {
+            fn build<B: Builder>(self, builder: B) -> B {
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
-            }
-
-            fn lazy_build(self, builder: ::specs::world::LazyBuilder) {
-                entity!(@build builder, $body)
-                    .with($crate::common::Create::default())
-                    .build();
             }
         }
     };
@@ -123,15 +100,9 @@ macro_rules! entity {
         $(#[$attr])*
         struct $name;
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build(self, builder: ::specs::prelude::EntityBuilder) -> ::specs::prelude::EntityBuilder {
+            fn build<B: Builder>(self, builder: B) -> B {
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
-            }
-
-            fn lazy_build(self, builder: ::specs::world::LazyBuilder) {
-                entity!(@build builder, $body)
-                    .with($crate::common::Create::default())
-                    .build();
             }
         }
     };
