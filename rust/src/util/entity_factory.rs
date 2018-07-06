@@ -65,7 +65,7 @@ macro_rules! entity {
         $(#[$attr])*
         pub struct $name($(pub $type),*);
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build<B: Builder>(self, builder: B) -> B {
+            fn build<B: ::specs::world::Builder>(self, builder: B) -> B {
                 let $name($($param),+) = self;
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
@@ -77,7 +77,7 @@ macro_rules! entity {
         $(#[$attr])*
         struct $name($(pub $type),*);
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build<B: Builder>(self, builder: B) -> B {
+            fn build<B: ::specs::world::Builder>(self, builder: B) -> B {
                 let $name($($param),+) = self;
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
@@ -89,7 +89,7 @@ macro_rules! entity {
         $(#[$attr])*
         pub struct $name;
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build<B: Builder>(self, builder: B) -> B {
+            fn build<B: ::specs::world::Builder>(self, builder: B) -> B {
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
             }
@@ -100,7 +100,7 @@ macro_rules! entity {
         $(#[$attr])*
         struct $name;
         impl $crate::util::entity_factory::EntityFactory for $name {
-            fn build<B: Builder>(self, builder: B) -> B {
+            fn build<B: ::specs::world::Builder>(self, builder: B) -> B {
                 entity!(@build builder, $body)
                     .with($crate::common::Create::default())
             }

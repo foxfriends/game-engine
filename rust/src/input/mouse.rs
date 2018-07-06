@@ -12,7 +12,7 @@ pub struct MouseState {
 }
 
 /// The buttons of the mouse
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[allow(missing_docs)]
 pub enum MouseButton {
     Left,

@@ -47,6 +47,7 @@ impl<'ttf> Visuals<'ttf, Window, WindowContext> {
 
 impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
     fn draw(&mut self, drawable: &Drawable) -> ::Result<()> {
+        let position = drawable.position();
         for (item, effects) in drawable.iter() {
             self.canvas.set_draw_color(Color::WHITE.into());
             let mut draw_color: Color = Color::WHITE;
@@ -62,7 +63,7 @@ impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
                 }
             }
 
-            match item.clone() {
+            match item.translated(position) {
                 DrawItem::Rect(rect) => self.canvas.draw_rect(rect.into())?,
                 DrawItem::Point(point) => self.canvas.draw_point(point)?,
                 DrawItem::Image(image, origin) => {

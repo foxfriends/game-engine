@@ -21,3 +21,18 @@ pub enum DrawItem {
     /// A single pixel
     Point(Point),
 }
+
+impl DrawItem {
+    /// Changes the offset of the Drawable by some amount
+    pub fn translated<I: Into<Point>>(&self, position: I) -> DrawItem {
+        let pos = position.into();
+        match self {
+            &DrawItem::Image(image, point) => DrawItem::Image(image, pos - point),
+            &DrawItem::Sprite(ref sprite, frame, point) => DrawItem::Sprite(sprite.clone(), frame, pos - point),
+            &DrawItem::Text(font, ref text, point, caret_pos) => DrawItem::Text(font, text.clone(), point + pos, caret_pos),
+            &DrawItem::Rect(rect) => DrawItem::Rect(rect.translate(pos)),
+            &DrawItem::Point(point) => DrawItem::Point(point + pos),
+        }
+    }
+}
+

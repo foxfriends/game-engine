@@ -4,7 +4,7 @@ use sdl2::rect as sdl;
 use std::ops;
 
 /// A point in a 2D coordinate system
-#[derive(Copy, Clone, PartialEq, Eq, Debug, Serialize, Deserialize, Default)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize, Debug)]
 pub struct Point<T = i32> {
     /// The x position (left = 0)
     pub x: T,

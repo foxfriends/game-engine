@@ -322,4 +322,7 @@ pub mod prelude {
     pub use super::model::shape::{Rect, Dimen, Point};
     pub use super::timing::{FrameCount, RunTime};
     pub use super::scene::{CurrentScene, Scene, SceneManager};
+    pub use super::Game;
+
+    pub use specs::prelude::*;
 }
