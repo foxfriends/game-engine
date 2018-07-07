@@ -53,8 +53,8 @@ impl Rect {
 
     /// Determines whether two rectangles overlap
     pub fn overlaps(&self, other: &Rect) -> bool {
-        (i32::abs(self.x - other.x) as u32) < (self.width + other.width) / 2 &&
-        (i32::abs(self.y - other.y) as u32) < (self.height + other.height) / 2
+        (i32::abs((self.x + self.width as i32 / 2) - (other.x + other.width as i32 / 2)) as u32) < (self.width + other.width) / 2 &&
+        (i32::abs((self.y + self.height as i32 / 2) - (other.y + other.height as i32 / 2)) as u32) < (self.height + other.height) / 2
     }
 }
 
