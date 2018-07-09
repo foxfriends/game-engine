@@ -17,6 +17,7 @@ pub(crate) use self::effect::DrawEffect;
 #[storage(VecStorage)]
 pub struct Drawable {
     position: Point,
+    depth: i32,
     items: Vec<(DrawItem, Option<Vec<DrawEffect>>)>
 }
 
@@ -31,13 +32,24 @@ impl Drawable {
     }
 
 
-    /// The position to draw this `Drawable` relative to
+    /// The position to draw this [`Drawable`] relative to
     pub fn position(&self) -> Point {
         self.position
     }
 
-    /// Sets the position to draw this `Drawable` relative to
+    /// Sets the position to draw this [`Drawable`] relative to
     pub fn set_position<I: Into<Point>>(&mut self, position: I) {
         self.position = position.into();
+    }
+
+    /// The depth at which to draw this [`Drawable`], relative to others
+    pub fn depth(&self) -> i32 {
+        self.depth
+    }
+
+    /// Sets the depth at which to draw this [`Drawable`], relative to others. A smaller depth is
+    /// drawn behind higher depths
+    pub fn set_depth(&mut self, depth: i32) {
+        self.depth = depth;
     }
 }

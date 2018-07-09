@@ -45,10 +45,11 @@ pub trait DrawableBuilder: Sized {
     fn build(self) -> Drawable {
         Drawable {
             position: Point::default(),
+            depth: 0,
             items: self.commit().0,
         }
     }
-
+    
     /// Adds a sprite to the drawable
     fn sprite(self, sprite: Sprite) -> SpriteBuilder {
         SpriteBuilder::new(sprite, self)

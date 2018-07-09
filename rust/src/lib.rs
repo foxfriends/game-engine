@@ -19,6 +19,7 @@ use shred::Resource;
 mod error;
 pub mod model;
 #[macro_use] pub mod util;
+pub mod camera;
 pub mod common;
 pub mod visuals;
 pub mod input;
@@ -32,14 +33,16 @@ pub use error::Error;
 pub type Result<T> = ::std::result::Result<T, Error>;
 
 use quit::Quit;
+use camera::Camera;
 use input::text::{TextInput, TextInputEvents, TextInputEvent};
 use input::keyboard::{KeyboardEvents, KeyboardEvent, KeyboardState};
 use input::mouse::{MouseEvents, MouseEvent, MouseButton, MouseState};
-use visuals::{Visuals, Drawable};
+use visuals::{Visuals, Drawable, TileLayers};
 use common::{Create, Delete, SceneMember};
 use timing::{FrameCount, RunTime};
 use lifecycle::EntityLifecycle;
 use scene::{CurrentScene, Scene, SceneBuilder};
+use model::shape::*;
 
 /// A game builder, which can be [`start`](Game::start)ed once everything is set up.
 ///
@@ -47,6 +50,7 @@ use scene::{CurrentScene, Scene, SceneBuilder};
 /// entire ECS system again, but this is probably ok...
 pub struct Game {
     world: World,
+    size: Dimen,
     title: &'static str,
     plugins: Vec<Box<dyn Fn(&mut World)>>,
 }
@@ -63,6 +67,7 @@ impl Game {
 
         Game {
             world,
+            size: Dimen::new(1024, 768),
             title: "",
             plugins: vec![],
         }
@@ -109,7 +114,7 @@ impl Game {
         let ttf_context = sdl2::ttf::init()?;
         let video = sdl_context.video()?;
 
-        let window = video.window(self.title, 1024, 768)
+        let window = video.window(self.title, self.size.width, self.size.height)
             .position_centered()
             .build()?;
 
@@ -129,6 +134,11 @@ impl Game {
         self.world.add_resource(CurrentScene::starting_with(scene));
         self.world.add_resource(FrameCount::default());
         self.world.add_resource(RunTime::default());
+        self.world.add_resource(TileLayers::default());
+        self.world.add_resource(Camera::new(
+            Rect::from(Point::new(0, 0), self.size),
+            Rect::from(Point::new(0, 0), self.size),
+        ));
 
         // Finalize the systems
         let mut render = Visuals::new(canvas, &ttf_context);
@@ -291,38 +301,46 @@ impl Game {
 pub mod prelude {
     //! All the useful things you might probably need!
 
-    pub use super::common::{Create, Delete};
-    pub use super::visuals::{
-        Drawable,
-        Image,
-        Font,
-        Sprite,
-        Color,
-        DrawableBuilder,
-        Attributer,
+    pub use super::{
+        camera::Camera,
+        common::{Create, Delete},
+        visuals::{
+            Drawable,
+            Image,
+            Tile,
+            TileSet,
+            TileLayers,
+            TileGrid,
+            Sprite,
+            Font,
+            Color,
+            DrawableBuilder,
+            Attributer,
+        },
+        quit::Quit,
+        input::{
+            mouse::{
+                MouseState,
+                MouseEvents,
+                MouseEvent,
+                MouseButton,
+            },
+            keyboard::{
+                KeyboardState,
+                KeyboardEvents,
+                KeyboardEvent,
+                Key,
+            },
+            text::{
+                TextInput,
+                TextInputEvents,
+                TextInputEvent,
+            },
+        },
+        model::shape::{Rect, Dimen, Point},
+        timing::{FrameCount, RunTime},
+        scene::{CurrentScene, Scene, SceneManager},
+        Game,
     };
-    pub use super::quit::Quit;
-    pub use super::input::mouse::{
-        MouseState,
-        MouseEvents,
-        MouseEvent,
-        MouseButton,
-    };
-    pub use super::input::keyboard::{
-        KeyboardState,
-        KeyboardEvents,
-        KeyboardEvent,
-        Key,
-    };
-    pub use super::input::text::{
-        TextInput,
-        TextInputEvents,
-        TextInputEvent,
-    };
-    pub use super::model::shape::{Rect, Dimen, Point};
-    pub use super::timing::{FrameCount, RunTime};
-    pub use super::scene::{CurrentScene, Scene, SceneManager};
-    pub use super::Game;
-
     pub use specs::prelude::*;
 }

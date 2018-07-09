@@ -56,6 +56,19 @@ impl Rect {
         (i32::abs((self.x + self.width as i32 / 2) - (other.x + other.width as i32 / 2)) as u32) < (self.width + other.width) / 2 &&
         (i32::abs((self.y + self.height as i32 / 2) - (other.y + other.height as i32 / 2)) as u32) < (self.height + other.height) / 2
     }
+
+    /// Transforms this [`Rect`] as if it were in some other coordinate system
+    pub fn transform(&self, from: Rect, to: Rect) -> Rect {
+        let xscale = to.width as f64 / from.width as f64;
+        let yscale = to.height as f64 / from.height as f64;
+        let x = self.x as f64 - from.x as f64 + (to.x as f64 * xscale);
+        let y = self.y as f64 - from.y as f64 + (to.y as f64 * yscale);
+
+        let width = self.width as f64 * xscale;
+        let height = self.height as f64 * yscale;
+
+        Self::new(x as i32, y as i32, width as u32, height as u32)
+    }
 }
 
 impl Into<sdl::Rect> for Rect {
