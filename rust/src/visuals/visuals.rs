@@ -128,11 +128,18 @@ impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
     fn render_tile_grid(&mut self, tile_grid: &mut TileGrid) -> ::Result<Option<Texture>> {
         if let Some(tile_size) = tile_grid.tile_size() {
             let size = tile_grid.size();
-            let surface = Surface::new(size.width * tile_size.width, size.height * tile_size.height, self.texture_creator.default_pixel_format())?;
+            let surface = Surface::new(
+                size.width * tile_size.width, 
+                size.height * tile_size.height, 
+                self.texture_creator.default_pixel_format(),
+            )?;
             let mut canvas = Canvas::from_surface(surface)?;
+            let mut textures: HashMap<Image, Texture> = HashMap::default();
             for (index, tile) in tile_grid.tiles().enumerate() {
                 if let Some(tile) = tile {
-                    let texture = self.textures.entry(*tile.tile_set.image()).or_insert(self.texture_creator.load_texture(tile.tile_set.image())?);
+                    let texture = textures
+                        .entry(*tile.tile_set.image())
+                        .or_insert(canvas.texture_creator().load_texture(tile.tile_set.image())?);
                     let frame = tile.tile_set.cell(tile.index);
                     let point = Point::new(
                         (index as u32 % size.width * tile_size.width) as i32, 
@@ -184,15 +191,16 @@ impl<'a, 'ttf, T: RenderTarget, C> System<'a> for Visuals<'ttf, T, C> {
                             }
                         }
                     }
-                    let texture = self.rendered_tiles.get(&depth).unwrap();
-                    let TextureQuery { width, height, .. } = texture.query();
-                    let result = self.canvas.copy(
-                        &texture, 
-                        None, 
-                        Some(Rect::from(tile_grid.offset(), Dimen::new(width, height)).transform(camera.input, camera.output).into())
-                    );
-                    if let Err(error) = result {
-                        eprintln!("Failed to draw tiles: {:?}", error);
+                    if let Some(texture) = self.rendered_tiles.get(&depth) {
+                        let TextureQuery { width, height, .. } = texture.query();
+                        let result = self.canvas.copy(
+                            &texture, 
+                            None, 
+                            Some(Rect::from(tile_grid.offset(), Dimen::new(width, height)).transform(camera.input, camera.output).into())
+                            );
+                        if let Err(error) = result {
+                            eprintln!("Failed to draw tiles: {:?}", error);
+                        }
                     }
                 }
             }
