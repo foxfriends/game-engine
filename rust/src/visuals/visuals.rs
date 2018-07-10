@@ -7,7 +7,7 @@ use sdl2::video::{Window, WindowContext};
 use sdl2::surface::Surface;
 use sdl2::image::LoadTexture;
 use sdl2::ttf::{Font as SDLFont, Sdl2TtfContext};
-use sdl2::pixels::Color as SDLColor;
+use sdl2::pixels::{Color as SDLColor, PixelFormatEnum};
 
 use model::shape::*;
 
@@ -132,7 +132,7 @@ impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
             let surface = Surface::new(
                 size.width * tile_size.width, 
                 size.height * tile_size.height, 
-                self.texture_creator.default_pixel_format(),
+                PixelFormatEnum::RGBA8888,
             )?;
             let mut canvas = Canvas::from_surface(surface)?;
             let mut textures: HashMap<Image, Texture> = HashMap::default();
