@@ -7,6 +7,7 @@ use sdl2::video::{Window, WindowContext};
 use sdl2::surface::Surface;
 use sdl2::image::LoadTexture;
 use sdl2::ttf::{Font as SDLFont, Sdl2TtfContext};
+use sdl2::pixels::Color as SDLColor;
 
 use model::shape::*;
 
@@ -135,6 +136,8 @@ impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
             )?;
             let mut canvas = Canvas::from_surface(surface)?;
             let mut textures: HashMap<Image, Texture> = HashMap::default();
+            self.canvas.set_draw_color(SDLColor::RGBA(0, 0, 0, 0));
+            self.canvas.clear();
             for (index, tile) in tile_grid.tiles().enumerate() {
                 if let Some(tile) = tile {
                     let texture = textures
@@ -143,7 +146,7 @@ impl<'ttf, T: RenderTarget, C> Visuals<'ttf, T, C> {
                     let frame = tile.tile_set.cell(tile.index);
                     let point = Point::new(
                         (index as u32 % size.width * tile_size.width) as i32, 
-                        (index as u32 / size.height * tile_size.height) as i32,
+                        (index as u32 / size.width * tile_size.height) as i32,
                     );
                     canvas.copy(
                         &texture, 

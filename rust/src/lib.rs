@@ -81,6 +81,14 @@ impl Game {
         }
     }
 
+    /// Sets the initial size of the window
+    pub fn set_size(self, width: u32, height: u32) -> Self {
+        Self {
+            size: Dimen::new(width, height),
+            ..self
+        }
+    }
+
     /// Adds a resource to the `Game`. See [`specs::World::add_resource`] for documentation.
     pub fn add_resource<T: Resource>(mut self, resource: T) -> Self {
         self.world.add_resource(resource);

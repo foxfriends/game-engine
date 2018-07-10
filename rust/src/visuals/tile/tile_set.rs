@@ -35,7 +35,7 @@ impl TileSet {
 
     /// Gets the bounds of a particular tile at a given index.
     pub fn cell(&self, index: usize) -> Rect {
-        assert!(index < self.count);
+        assert!(index < self.count, "Index: {}, self: {:?}", index, self);
         let (i, j) = (index % self.per_row, index / self.per_row);
         let point = Point { 
             x: self.origin.x + ((self.size.width + self.spacing.width) * i as u32) as i32,

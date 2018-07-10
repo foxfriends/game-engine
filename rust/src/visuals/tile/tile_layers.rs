@@ -27,6 +27,11 @@ impl TileLayers {
         self.0.get_mut(&layer)
     }
 
+    /// Clears all the layers
+    pub fn clear(&mut self) {
+        self.0.clear();
+    }
+
     pub(crate) fn iter_mut(&mut self) -> impl Iterator<Item = (&i32, &mut TileGrid)> {
         self.0.iter_mut()
     }
