@@ -9,6 +9,9 @@ build = "build.rs"
 name = "game_engine"
 path = "src/lib.rs"
 
+[features]
+perf = []
+
 [dependencies]
 specs = "0.12"
 shred = { version = "0.7", features = ["nightly"] }

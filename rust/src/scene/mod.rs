@@ -117,6 +117,11 @@ impl<'a, 'b, 'c> SceneBuilder<'a, 'b, 'c> {
         self.world.write_resource()
     }
 
+    /// Pipes the builder through a function
+    pub fn pipe(self, f: impl Fn(Self) -> Self) -> Self {
+        f(self)
+    }
+
     /// Consumes this [`SceneBuilder`] to retrieve the [`DispatcherBuilder`] inside
     pub(crate) fn dispatcher(self) -> DispatcherBuilder<'b, 'c> {
         self.dispatcher

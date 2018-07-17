@@ -20,7 +20,7 @@ impl Camera {
     }
 
     /// Moves this [`Camera`] so its center is over a given Point.
-    pub fn centered_on(&mut self, center: Point) {
+    pub fn center_on(&mut self, center: Point) {
         let point = Point::new(
             center.x - (self.input.width / 2) as i32,
             center.y - (self.input.height / 2) as i32,

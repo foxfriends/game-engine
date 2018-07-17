@@ -16,6 +16,9 @@ use specs::prelude::*;
 use sdl2::event::Event;
 use shred::Resource;
 
+#[cfg(feature = "perf")]
+use std::time::Instant;
+
 mod error;
 pub mod model;
 #[macro_use] pub mod util;
@@ -163,6 +166,8 @@ impl Game {
         };
 
         loop {
+            #[cfg(feature = "perf")]
+            let frame_start = Instant::now();
             // Reset previous state
             self.world.write_resource::<MouseEvents>().clear();
             self.world.write_resource::<KeyboardEvents>().clear();
@@ -263,14 +268,30 @@ impl Game {
                 }
             }
 
+            #[cfg(feature = "perf")]
+            let before_plugins = Instant::now();
+            #[cfg(feature = "perf")]
+            eprintln!("[ENGINE] Time to process events {:?}", frame_start.elapsed());
+
             // Do the things
             for plugin in &self.plugins {
                 plugin(&mut self.world)
             }
+
+            #[cfg(feature = "perf")]
+            let before_dispatch = Instant::now();
+            #[cfg(feature = "perf")]
+            eprintln!("[ENGINE] Time to handle plugins {:?}", before_dispatch.duration_since(before_plugins));
+
             dispatcher.dispatch(&mut self.world.res);
             if **self.world.read_resource::<Quit>() {
                 break;
             }
+
+            #[cfg(feature = "perf")]
+            let after_dispatch = Instant::now();
+            #[cfg(feature = "perf")]
+            eprintln!("[ENGINE] Time to handle main dispatch {:?}", after_dispatch.duration_since(before_dispatch));
 
             self.world.read_resource::<TextInput>()
                 .sync_to(&text_input);
@@ -289,7 +310,15 @@ impl Game {
 
             self.world.maintain();
 
+            #[cfg(feature = "perf")]
+            let before_render = Instant::now();
+
             render.run_now(&mut self.world.res);
+
+            #[cfg(feature = "perf")]
+            let after_render = Instant::now();
+            #[cfg(feature = "perf")]
+            eprintln!("[ENGINE] Time to render {:?}", after_render.duration_since(before_render));
 
             self.world.write_resource::<FrameCount>().next();
             // TODO: a real delay??
@@ -347,7 +376,7 @@ pub mod prelude {
         },
         model::shape::{Rect, Dimen, Point},
         timing::{FrameCount, RunTime},
-        scene::{CurrentScene, Scene, SceneManager},
+        scene::{CurrentScene, Scene, SceneManager, SceneBuilder},
         Game,
     };
     pub use specs::prelude::*;
