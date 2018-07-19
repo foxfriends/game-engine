@@ -10,6 +10,12 @@ pub trait Drawable: Any + Sync + Send {
 
     /// Actually draw this [`Drawable`] to the [`Canvas`]
     fn render(&self, canvas: &mut dyn Canvas) -> ::Result<()>;
+
+    /// Gets this [`Drawable`] as an [`Any`]
+    fn as_any(&self) -> &dyn Any;
+
+    /// Gets this [`Drawable`] as a mutable [`Any`]
+    fn as_any_mut(&mut self) -> &mut dyn Any;
 }
 
 impl Component for Box<dyn Drawable> {
