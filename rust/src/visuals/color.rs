@@ -18,6 +18,12 @@ pub struct Color {
     pub alpha: u8,
 }
 
+impl Default for Color {
+    fn default() -> Color {
+        Color::WHITE
+    }
+}
+
 impl PartialEq for Color {
     fn eq(&self, other: &Self) -> bool {
         if self.alpha == 0 && other.alpha == 0 {

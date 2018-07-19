@@ -63,7 +63,7 @@ impl Game {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.register::<Drawable>();
+        world.register::<Box<dyn Drawable>>();
         world.register::<Create>();
         world.register::<Delete>();
         world.register::<SceneMember>();
@@ -343,6 +343,7 @@ pub mod prelude {
         common::{Create, Delete},
         visuals::{
             Drawable,
+            Canvas,
             Image,
             Tile,
             TileSet,
@@ -351,8 +352,6 @@ pub mod prelude {
             Sprite,
             Font,
             Color,
-            DrawableBuilder,
-            Attributer,
         },
         quit::Quit,
         input::{
