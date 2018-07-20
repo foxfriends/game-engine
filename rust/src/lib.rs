@@ -152,7 +152,7 @@ impl Game {
         ));
 
         // Finalize the systems
-        let mut render = Visuals::new(canvas, &ttf_context);
+        let mut render = Visuals::new(self.size, canvas, &ttf_context);
 
         // Play the game!
         let scene = self.world.read_resource::<CurrentScene>().current();

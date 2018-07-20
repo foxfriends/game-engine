@@ -7,6 +7,9 @@ use super::color::Color;
 
 /// Provides an interface for drawing to the user code
 pub trait Canvas {
+    /// Gets the dimensions of the [`Canvas`]
+    fn size(&self) -> Dimen;
+
     /// Sets the current drawing color. Defaults to white
     fn set_color(&mut self, Color);
     /// Sets the current font. A font must be set before any text will be rendered
