@@ -9,8 +9,8 @@ use sdl2::image::LoadTexture;
 use sdl2::ttf::{Font as SDLFont, Sdl2TtfContext};
 use sdl2::pixels::{Color as SDLColor, PixelFormatEnum};
 
+use camera::Camera;
 use model::shape::*;
-
 use super::{
     tile::*,
     image::Image,
@@ -18,10 +18,8 @@ use super::{
     color::Color,
     drawable::Drawable,
 };
-use camera::Camera;
 
 mod main_canvas;
-
 use self::main_canvas::MainCanvas;
 
 // helper type to wrap up these two other options
