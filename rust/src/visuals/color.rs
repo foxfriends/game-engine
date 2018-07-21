@@ -53,12 +53,7 @@ impl Color {
 
     /// Creates a new opaque color
     pub const fn rgb(red: u8, green: u8, blue: u8) -> Self {
-        Self {
-            red,
-            green,
-            blue,
-            alpha: 255,
-        }
+        Self::rgba(red, green, blue, 255)
     }
 
     /// Creates a new color with some alpha value
@@ -164,9 +159,9 @@ impl Div for Color {
 impl Into<sdl::Color> for Color {
     fn into(self) -> sdl::Color {
         if self.alpha == 255 {
-            sdl::Color::RGB(self.red, self.blue, self.green)
+            sdl::Color::RGB(self.red, self.green, self.blue)
         } else {
-            sdl::Color::RGBA(self.red, self.blue, self.green, self.alpha)
+            sdl::Color::RGBA(self.red, self.green, self.blue, self.alpha)
         }
     }
 }

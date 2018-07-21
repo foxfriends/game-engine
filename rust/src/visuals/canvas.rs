@@ -14,6 +14,8 @@ pub trait Canvas {
     fn set_color(&mut self, Color);
     /// Sets the current font. A font must be set before any text will be rendered
     fn set_font(&mut self, Font);
+    /// Sets the transformation of coordinates on this canvas
+    fn set_transform(&mut self, input: Rect, output: Rect);
 
     /// Draws an entire image at a location
     fn draw_image(&mut self, Point, Image) -> ::Result<()>;

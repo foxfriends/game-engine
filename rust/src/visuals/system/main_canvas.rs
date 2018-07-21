@@ -25,6 +25,7 @@ pub(super) struct MainCanvas<'a, 'ttf: 'a> {
 
 impl<'a, 'ttf: 'a> MainCanvas<'a, 'ttf> {
     pub fn new(visuals: &'a mut Visuals<'ttf>, camera: Camera) -> Self {
+        visuals.canvas.set_draw_color(Color::default().into());
         MainCanvas { 
             visuals, 
             color: Color::default(),
@@ -41,10 +42,15 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
 
     fn set_color(&mut self, color: Color) {
         self.color = color;
+        self.visuals.canvas.set_draw_color(color.into());
     }
 
     fn set_font(&mut self, font: Font) {
         self.font = Some(font);
+    }
+
+    fn set_transform(&mut self, input: Rect, output: Rect) {
+        self.camera = Camera::new(input, output);
     }
 
     fn draw_rect(&mut self, rect: Rect) -> ::Result<()> {
