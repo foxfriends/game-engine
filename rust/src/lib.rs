@@ -166,8 +166,7 @@ impl Game {
         };
 
         loop {
-            #[cfg(feature = "perf")]
-            let frame_start = Instant::now();
+            #[cfg(feature = "perf")] let frame_start = Instant::now();
             // Reset previous state
             self.world.write_resource::<MouseEvents>().clear();
             self.world.write_resource::<KeyboardEvents>().clear();
@@ -268,30 +267,24 @@ impl Game {
                 }
             }
 
-            #[cfg(feature = "perf")]
-            let before_plugins = Instant::now();
-            #[cfg(feature = "perf")]
-            eprintln!("[ENGINE] Time to process events {:?}", frame_start.elapsed());
+            #[cfg(feature = "perf")] let before_plugins = Instant::now();
+            #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to process events {:?}", frame_start.elapsed());
 
             // Do the things
             for plugin in &self.plugins {
                 plugin(&mut self.world)
             }
 
-            #[cfg(feature = "perf")]
-            let before_dispatch = Instant::now();
-            #[cfg(feature = "perf")]
-            eprintln!("[ENGINE] Time to handle plugins {:?}", before_dispatch.duration_since(before_plugins));
+            #[cfg(feature = "perf")] let before_dispatch = Instant::now();
+            #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to handle plugins {:?}", before_dispatch.duration_since(before_plugins));
 
             dispatcher.dispatch(&mut self.world.res);
             if **self.world.read_resource::<Quit>() {
                 break;
             }
 
-            #[cfg(feature = "perf")]
-            let after_dispatch = Instant::now();
-            #[cfg(feature = "perf")]
-            eprintln!("[ENGINE] Time to handle main dispatch {:?}", after_dispatch.duration_since(before_dispatch));
+            #[cfg(feature = "perf")] let after_dispatch = Instant::now();
+            #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to handle main dispatch {:?}", after_dispatch.duration_since(before_dispatch));
 
             self.world.read_resource::<TextInput>()
                 .sync_to(&text_input);
@@ -299,6 +292,7 @@ impl Game {
             let transition = self.world.write_resource::<CurrentScene>().transition();
             if let Some((old, new)) = transition {
                 old.end(SceneBuilder::new(&mut self.world));
+                self.world.maintain();
                 dispatcher = {
                     let scene_builder = SceneBuilder::new(&mut self.world);
                     Game::finish_dispatcher(
@@ -310,15 +304,12 @@ impl Game {
 
             self.world.maintain();
 
-            #[cfg(feature = "perf")]
-            let before_render = Instant::now();
+            #[cfg(feature = "perf")] let before_render = Instant::now();
 
             render.run_now(&mut self.world.res);
 
-            #[cfg(feature = "perf")]
-            let after_render = Instant::now();
-            #[cfg(feature = "perf")]
-            eprintln!("[ENGINE] Time to render {:?}", after_render.duration_since(before_render));
+            #[cfg(feature = "perf")] let after_render = Instant::now();
+            #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to render {:?}", after_render.duration_since(before_render));
 
             self.world.write_resource::<FrameCount>().next();
             // TODO: a real delay??
@@ -340,7 +331,7 @@ pub mod prelude {
 
     pub use super::{
         camera::Camera,
-        common::{Create, Delete},
+        common::{Create, Delete, SceneMember},
         visuals::{
             Drawable,
             Canvas,
@@ -376,6 +367,7 @@ pub mod prelude {
         model::shape::{Rect, Dimen, Point},
         timing::{FrameCount, RunTime},
         scene::{CurrentScene, Scene, SceneManager, SceneBuilder},
+        util::entity_factory::EntityFactory,
         Game,
         sdl2::ttf::GlyphMetrics,
     };

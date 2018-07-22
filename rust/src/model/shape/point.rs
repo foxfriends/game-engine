@@ -19,6 +19,13 @@ impl<T> Point<T> {
     }
 }
 
+impl Point<f32> {
+    /// The magnitude of this point, as if it were a vector sqrt(x * x + y * y)
+    pub fn magnitude(&self) -> f32 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
+}
+
 impl Into<sdl::Point> for Point {
     fn into(self) -> sdl::Point {
         sdl::Point::new(self.x, self.y)

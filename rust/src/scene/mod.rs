@@ -89,6 +89,14 @@ impl<'a, 'b, 'c> SceneBuilder<'a, 'b, 'c> {
         self
     }
 
+    /// Runs a system immediately as part of the setup process. This system will not be used as
+    /// part of the main dispatch
+    pub fn run_now<S>(self, mut system: S) -> Self
+    where S: for<'d> System<'d> + Send + 'b {
+        system.run_now(&mut self.world.res);
+        self
+    }
+
     /// Builds an entity, adding it to the scene.
     pub fn add_entity<E: EntityFactory>(self, factory: E) -> Self {
         factory
