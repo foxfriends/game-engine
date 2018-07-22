@@ -377,6 +377,7 @@ pub mod prelude {
         timing::{FrameCount, RunTime},
         scene::{CurrentScene, Scene, SceneManager, SceneBuilder},
         Game,
+        sdl2::ttf::GlyphMetrics,
     };
     pub use specs::prelude::*;
 }

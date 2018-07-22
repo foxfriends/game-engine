@@ -1,6 +1,7 @@
 use sdl2::{
     render::TextureQuery,
     image::LoadTexture,
+    ttf::GlyphMetrics,
 };
 
 use camera::Camera;
@@ -100,6 +101,42 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
             Ok(Dimen::new(width, height))
         } else {
             Ok(Dimen::new(0, 0))
+        }
+    }
+
+    fn line_spacing(&mut self) -> ::Result<i32> {
+        if let Some(font) = self.font {
+            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
+            Ok(font.recommended_line_spacing())
+        } else {
+            Ok(0)
+        }
+    }
+
+    fn glyph_metrics(&mut self, ch: char) -> ::Result<Option<GlyphMetrics>> {
+        if let Some(font) = self.font {
+            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
+            Ok(font.find_glyph_metrics(ch))
+        } else {
+            Ok(None)
+        }
+    }
+
+    fn font_ascent(&mut self) -> ::Result<i32> {
+        if let Some(font) = self.font {
+            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
+            Ok(font.ascent())
+        } else {
+            Ok(0)
+        }
+    }
+
+    fn font_descent(&mut self) -> ::Result<i32> {
+        if let Some(font) = self.font {
+            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
+            Ok(font.descent())
+        } else {
+            Ok(0)
         }
     }
 }
