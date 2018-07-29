@@ -67,38 +67,64 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
     }
 
     fn draw_image(&mut self, point: Point, image: Image) -> ::Result<()> {
-        let texture = self.visuals.textures.entry(image).or_insert(self.visuals.texture_creator.load_texture(image)?);
-        let TextureQuery { width, height, .. } = texture.query();
-        self.visuals.canvas.copy(&texture, None, Some(Rect::from(point, Dimen::new(width, height)).transform(self.camera.input, self.camera.output).into()))?;
-        Ok(())
+        let texture_creator = &mut self.visuals.texture_creator;
+        let texture = self.visuals.textures.entry(image.path_buf()).or_insert_with(|| texture_creator.load_texture(image));
+        match texture {
+            Ok(texture) => {
+                let TextureQuery { width, height, .. } = texture.query();
+                self.visuals.canvas.copy(&texture, None, Some(Rect::from(point, Dimen::new(width, height)).transform(self.camera.input, self.camera.output).into()))?;
+                Ok(())
+            }
+            Err(error) => Err(error.clone().into()),
+        }
     }
 
     fn draw_sprite(&mut self, point: Point, frame: usize, sprite: Sprite) -> ::Result<()> {
-        let texture = self.visuals.textures.entry(sprite.image()).or_insert(self.visuals.texture_creator.load_texture(sprite.image())?);
-        let frame = sprite
-            .frame(frame)
-            .expect("A sprite must have some frames to be used");
-        self.visuals.canvas.copy(&texture, Some((*frame).into()), Some(Rect::from(point, frame.dimen()).transform(self.camera.input, self.camera.output).into()))?;
-        Ok(())
+        let texture_creator = &mut self.visuals.texture_creator;
+        let texture = self.visuals.textures.entry(sprite.image().path_buf()).or_insert_with(|| texture_creator.load_texture(sprite.image()));
+        match texture {
+            Ok(texture) => {
+                let frame = sprite
+                    .frame(frame)
+                    .expect("A sprite must have some frames to be used");
+                self.visuals.canvas.copy(&texture, Some((*frame).into()), Some(Rect::from(point, frame.dimen()).transform(self.camera.input, self.camera.output).into()))?;
+                Ok(())
+            }
+            Err(error) => Err(error.clone().into()),
+        }
     }
 
     fn draw_text(&mut self, point: Point, ref text: String) -> ::Result<()> {
         if let Some(font) = self.font {
             // TODO: not the most efficient... try and optimize for static vs dynamic text
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            let surface = font.render(text).blended(self.color)?;
-            let texture = self.visuals.texture_creator.create_texture_from_surface(surface)?;
-            let TextureQuery { width, height, .. } = texture.query();
-            self.visuals.canvas.copy(&texture, None, Some(Rect::from(point, Dimen::new(width, height)).transform(self.camera.input, self.camera.output).into()))?;
+            let ttf_context = self.visuals.ttf_context;
+            let font = self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size()));
+            match font {
+                Ok(font) => {
+                    let surface = font.render(text).blended(self.color)?;
+                    let texture = self.visuals.texture_creator.create_texture_from_surface(surface)?;
+                    let TextureQuery { width, height, .. } = texture.query();
+                    self.visuals.canvas.copy(&texture, None, Some(Rect::from(point, Dimen::new(width, height)).transform(self.camera.input, self.camera.output).into()))?;
+                    Ok(())
+                }
+                Err(error) => Err(error.clone().into())
+            }
+        } else {
+            Ok(())
         }
-        Ok(())
     }
 
     fn measure_text(&mut self, ref text: String) -> ::Result<Dimen> {
         if let Some(font) = self.font {
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            let (width, height) = font.size_of(text)?;
-            Ok(Dimen::new(width, height))
+            let ttf_context = self.visuals.ttf_context;
+            let font = self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size()));
+            match font {
+                Ok(font) => {
+                    let (width, height) = font.size_of(text)?;
+                    Ok(Dimen::new(width, height))
+                }
+                Err(error) => Err(error.clone().into()),
+            }
         } else {
             Ok(Dimen::new(0, 0))
         }
@@ -106,8 +132,11 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
 
     fn line_spacing(&mut self) -> ::Result<i32> {
         if let Some(font) = self.font {
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            Ok(font.recommended_line_spacing())
+            let ttf_context = self.visuals.ttf_context;
+            match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
+                Ok(font) => Ok(font.recommended_line_spacing()),
+                Err(error) => Err(error.clone().into()),
+            }
         } else {
             Ok(0)
         }
@@ -115,8 +144,11 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
 
     fn glyph_metrics(&mut self, ch: char) -> ::Result<Option<GlyphMetrics>> {
         if let Some(font) = self.font {
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            Ok(font.find_glyph_metrics(ch))
+            let ttf_context = self.visuals.ttf_context;
+            match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
+                Ok(font) => Ok(font.find_glyph_metrics(ch)),
+                Err(error) => Err(error.clone().into()),
+            }
         } else {
             Ok(None)
         }
@@ -124,8 +156,11 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
 
     fn font_ascent(&mut self) -> ::Result<i32> {
         if let Some(font) = self.font {
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            Ok(font.ascent())
+            let ttf_context = self.visuals.ttf_context;
+            match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
+                Ok(font) => Ok(font.ascent()),
+                Err(error) => Err(error.clone().into()),
+            }
         } else {
             Ok(0)
         }
@@ -133,8 +168,11 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
 
     fn font_descent(&mut self) -> ::Result<i32> {
         if let Some(font) = self.font {
-            let font = self.visuals.fonts.entry(font).or_insert(self.visuals.ttf_context.load_font(font.path(), font.size())?);
-            Ok(font.descent())
+            let ttf_context = self.visuals.ttf_context;
+            match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
+                Ok(font) => Ok(font.descent()),
+                Err(error) => Err(error.clone().into()),
+            }
         } else {
             Ok(0)
         }

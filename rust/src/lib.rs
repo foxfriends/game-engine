@@ -12,6 +12,8 @@ extern crate serde;
 #[macro_use] extern crate specs_derive;
 #[macro_use] extern crate shred_derive;
 
+use std::fs::{create_dir_all, remove_dir_all};
+
 use specs::prelude::*;
 use sdl2::event::Event;
 use shred::Resource;
@@ -19,11 +21,21 @@ use shred::Resource;
 #[cfg(feature = "perf")]
 use std::time::Instant;
 
+macro_rules! tiles_dir {
+    () => ({
+        let mut path = ::std::env::current_exe().unwrap();
+        path.pop();
+        path.push("tmp/tiles");
+        path
+    })
+}
+
 mod error;
 pub mod model;
 #[macro_use] pub mod util;
 pub mod camera;
 pub mod common;
+pub mod loading;
 pub mod visuals;
 pub mod input;
 pub mod lifecycle;
@@ -40,6 +52,7 @@ use camera::Camera;
 use input::text::{TextInput, TextInputEvents, TextInputEvent};
 use input::keyboard::{KeyboardEvents, KeyboardEvent, KeyboardState};
 use input::mouse::{MouseEvents, MouseEvent, MouseButton, MouseState};
+use loading::IsLoading;
 use visuals::{Visuals, Drawable, TileLayers};
 use common::{Create, Delete, SceneMember};
 use timing::{FrameCount, RunTime};
@@ -119,6 +132,9 @@ impl Game {
 
     /// Starts the game
     pub fn start<'a, 'b>(mut self, scene: &'static dyn Scene) -> ::Result<()> {
+        // Set up the environment
+        create_dir_all(tiles_dir!())?;
+
         // Set up SDL
         let sdl_context = sdl2::init()?;
         let _image_context = sdl2::image::init(sdl2::image::INIT_PNG)?;
@@ -150,6 +166,7 @@ impl Game {
             Rect::from(Point::new(0, 0), self.size),
             Rect::from(Point::new(0, 0), self.size),
         ));
+        self.world.add_resource(IsLoading::default());
 
         // Finalize the systems
         let mut render = Visuals::new(self.size, canvas, &ttf_context);
@@ -315,6 +332,7 @@ impl Game {
             // TODO: a real delay??
             std::thread::sleep(std::time::Duration::from_millis(1000/60));
         }
+        remove_dir_all(tiles_dir!())?;
         Ok(())
     }
 
@@ -368,6 +386,7 @@ pub mod prelude {
         timing::{FrameCount, RunTime},
         scene::{CurrentScene, Scene, SceneManager, SceneBuilder},
         util::entity_factory::EntityFactory,
+        loading::IsLoading,
         Game,
         sdl2::ttf::GlyphMetrics,
     };

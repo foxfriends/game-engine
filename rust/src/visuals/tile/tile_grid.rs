@@ -44,7 +44,7 @@ impl TileGrid {
     }
 
     /// Whether this [`TileGrid`] has been changed since it was last rendered
-    pub(crate) fn dirty(&self) -> bool {
+    pub(crate) fn is_dirty(&self) -> bool {
         self.dirty
     }
 
@@ -58,11 +58,13 @@ impl TileGrid {
         self.offset
     }
 
-    /// Retrieves all the tiles from this [`TileGrid`], marking it as clean now that someone has
-    /// observed it.
-    pub(crate) fn tiles(&mut self) -> impl Iterator<Item = &Option<Tile>> {
+    pub(crate) fn set_clean(&mut self) {
         self.dirty = false;
-        self.grid.iter()
+    }
+
+    /// Retrieves all the tiles from this [`TileGrid`].
+    pub(crate) fn tiles(&self) -> Vec<Option<Tile>> {
+        self.grid.clone()
     }
 
     /// The size of the tiles in this [`TileGrid`]. Only returns `None` if there are no tiles.

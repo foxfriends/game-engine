@@ -1,13 +1,17 @@
 //! The actual implementation of the [`Visuals`] system
 use std::collections::HashMap;
+use std::thread;
+use std::path::PathBuf;
+use std::sync::{Arc, RwLock};
 
 use specs::prelude::*;
-use sdl2::render::{Texture, TextureCreator, Canvas as SDLCanvas, WindowCanvas, TextureQuery};
+use sdl2::render::{Texture, TextureCreator, WindowCanvas, TextureQuery};
+use sdl2::image::LoadSurface;
 use sdl2::video::WindowContext;
 use sdl2::surface::Surface;
 use sdl2::image::LoadTexture;
 use sdl2::ttf::{Font as SDLFont, Sdl2TtfContext};
-use sdl2::pixels::{Color as SDLColor, PixelFormatEnum};
+use sdl2::pixels::PixelFormatEnum;
 
 use camera::Camera;
 use model::shape::*;
@@ -18,6 +22,7 @@ use super::{
     color::Color,
     drawable::Drawable,
 };
+use loading::IsLoading;
 
 mod main_canvas;
 use self::main_canvas::MainCanvas;
@@ -37,16 +42,22 @@ impl<'a> ToDraw<'a> {
     }
 }
 
+#[derive(Clone, Debug)]
+enum Load {
+    Available(PathBuf),
+    Loading,
+}
+
 pub(crate) struct Visuals<'ttf> {
     size: Dimen,
     canvas: WindowCanvas,
     texture_creator: TextureCreator<WindowContext>,
     ttf_context: &'ttf Sdl2TtfContext,
     // TODO: replace this with some cache that forgets things that aren't needed anymore
-    textures: HashMap<Image, Texture>,
+    textures: HashMap<PathBuf, Result<Texture, String>>,
     // TODO: replace this with some cache that forgets things that aren't needed anymore
-    fonts: HashMap<Font, SDLFont<'ttf, 'static>>,
-    rendered_tiles: HashMap<i32, Texture>, 
+    fonts: HashMap<Font, Result<SDLFont<'ttf, 'static>, String>>,
+    rendered_tiles: Arc<RwLock<HashMap<i32, Load>>>, 
 }
 
 impl<'ttf> Visuals<'ttf> {
@@ -59,7 +70,7 @@ impl<'ttf> Visuals<'ttf> {
             ttf_context,
             textures: HashMap::new(),
             fonts: HashMap::new(),
-            rendered_tiles: HashMap::new(),
+            rendered_tiles: Arc::default(),
         }
     }
 }
@@ -69,46 +80,62 @@ impl<'ttf> Visuals<'ttf> {
         drawable.render(&mut MainCanvas::new(self, camera))
     }
 
-    fn render_tile_grid(&mut self, tile_grid: &mut TileGrid) -> ::Result<Option<Texture>> {
-        if let Some(tile_size) = tile_grid.tile_size() {
-            let size = tile_grid.size();
-            let surface = Surface::new(
-                size.width * tile_size.width, 
-                size.height * tile_size.height, 
-                PixelFormatEnum::RGBA8888,
-            )?;
-            let mut canvas = SDLCanvas::from_surface(surface)?;
-            let mut textures: HashMap<Image, Texture> = HashMap::default();
-            self.canvas.set_draw_color(SDLColor::RGBA(0, 0, 0, 0));
-            self.canvas.clear();
-            for (index, tile) in tile_grid.tiles().enumerate() {
-                if let Some(tile) = tile {
-                    let texture = textures
-                        .entry(*tile.tile_set.image())
-                        .or_insert(canvas.texture_creator().load_texture(tile.tile_set.image())?);
+    fn draw_image_at_path(&mut self, path: PathBuf, position: Point, camera: Camera) -> ::Result<()> {
+        let texture_creator = &mut self.texture_creator;
+        let texture = self.textures.entry(path.clone()).or_insert_with(|| texture_creator.load_texture(path));
+        match texture {
+            Ok(texture) => {
+                let TextureQuery { width, height, .. } = texture.query();
+                self.canvas.copy(
+                    &texture, 
+                    None, 
+                    Some(Rect::from(position, Dimen::new(width, height)).transform(camera.input, camera.output).into())
+                )?;
+                Ok(())
+            }
+            Err(error) => return Err(error.clone().into()),
+        }
+    }
+}
+
+fn render_tile_grid_to_file<'a>(path: &PathBuf, tile_size: Dimen, size: Dimen, tiles: impl Iterator<Item = &'a Option<Tile>>) -> ::Result<()> {
+    let mut surface = Surface::new(
+        size.width * tile_size.width, 
+        size.height * tile_size.height, 
+        PixelFormatEnum::RGBA8888,
+    )?;
+    let mut surfaces: HashMap<Image, Result<Surface, String>> = HashMap::default();
+    for (index, tile) in tiles.enumerate() {
+        if let Some(tile) = tile {
+            let image_surface = surfaces
+                .entry(*tile.tile_set.image())
+                .or_insert_with(|| Surface::from_file(tile.tile_set.image()));
+            match image_surface {
+                Ok(image_surface) => {
                     let frame = tile.tile_set.cell(tile.index);
                     let point = Point::new(
                         (index as u32 % size.width * tile_size.width) as i32, 
                         (index as u32 / size.width * tile_size.height) as i32,
                     );
-                    canvas.copy(
-                        &texture, 
+                    image_surface.blit(
                         Some(frame.into()), 
+                        &mut surface, 
                         Some(Rect::from(point, frame.dimen()).into()),
                     )?;
                 }
+                Err(error) => return Err(error.clone().into()),
             }
-            Ok(Some(self.texture_creator.create_texture_from_surface(canvas.surface())?))
-        } else {
-            Ok(None)
         }
     }
+    surface.save_bmp(&path)?;
+    Ok(())
 }
 
 impl<'a, 'ttf> System<'a> for Visuals<'ttf> {
-    type SystemData = (ReadStorage<'a, Box<dyn Drawable>>, Write<'a, TileLayers>, Read<'a, Camera>);
+    type SystemData = (ReadStorage<'a, Box<dyn Drawable>>, Write<'a, TileLayers>, Read<'a, Camera>, Write<'a, IsLoading>);
 
-    fn run(&mut self, (drawable, mut tile_layers, camera): Self::SystemData) {
+    fn run(&mut self, (drawable, mut tile_layers, camera, mut is_loading): Self::SystemData) {
+        is_loading.0 = false;
         self.canvas.set_draw_color(Color::rgb(0, 0, 0).into());
         self.canvas.clear();
         self.canvas.set_draw_color(Color::rgb(255, 0, 0).into());
@@ -121,32 +148,46 @@ impl<'a, 'ttf> System<'a> for Visuals<'ttf> {
             match drawable {
                 ToDraw::Drawable(drawable) => {
                     if let Err(error) = self.draw(&**drawable, *camera) {
-                        eprintln!("Failed to draw drawable: {:?}", error);
+                        panic!("Failed to draw drawable: {:?}", error);
                     }
                 }
                 ToDraw::TileGrid(tile_grid, depth) => {
-                    if tile_grid.dirty() {
-                        match self.render_tile_grid(tile_grid) {
-                            Ok(Some(texture)) => {
-                                self.rendered_tiles.insert(depth, texture);
-                            }
-                            Ok(None) => continue,
-                            Err(error) => {
-                                eprintln!("Failed to render tiles: {:?}", error);
-                                continue;
-                            }
+                    if tile_grid.is_dirty() {
+                        tile_grid.set_clean();
+                        if let Some(tile_size) = tile_grid.tile_size() {
+                            self.rendered_tiles.write().unwrap().insert(depth, Load::Loading);
+                            let rendered_tiles = self.rendered_tiles.clone();
+                            let tiles = tile_grid.tiles();
+                            let size = tile_grid.size();
+                            let mut path = tiles_dir!();
+                            path.push(format!("{}.bmp", depth));
+                            self.textures.remove(&path);
+                            let handle = thread::Builder::new()
+                                .name(format!("render_tiles:{}", depth))
+                                .spawn(move || {
+                                    match render_tile_grid_to_file(&path, tile_size, size, tiles.iter()) {
+                                        Ok(()) => {
+                                            rendered_tiles.write().unwrap().insert(depth, Load::Available(path));
+                                        }
+                                        Err(error) => {
+                                            panic!("Failed to render tiles: {:?}", error);
+                                        }
+                                    }
+                                })
+                                .unwrap();
+                            handle.join().unwrap(); // this join is stupid but it sometimes crashes without. likely due to memory issues
+                        } else {
+                            self.rendered_tiles.write().unwrap().remove(&depth);
                         }
                     }
-                    if let Some(texture) = self.rendered_tiles.get(&depth) {
-                        let TextureQuery { width, height, .. } = texture.query();
-                        let result = self.canvas.copy(
-                            &texture, 
-                            None, 
-                            Some(Rect::from(tile_grid.offset(), Dimen::new(width, height)).transform(camera.input, camera.output).into())
-                            );
-                        if let Err(error) = result {
-                            eprintln!("Failed to draw tiles: {:?}", error);
-                        }
+                    let loaded_tile_grid = self.rendered_tiles.read().unwrap().get(&depth).cloned();
+                    match loaded_tile_grid {
+                        Some(Load::Available(path)) => 
+                            if let Err(error) = self.draw_image_at_path(path.clone(), tile_grid.offset(), *camera) {
+                                panic!("Failed to draw rendered tiles: {:?}", error);
+                            }
+                        Some(Load::Loading) => is_loading.0 = true,
+                        None => (),
                     }
                 }
             }
