@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::thread;
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
+use std::sync::mpsc::{channel, Sender};
 
 use specs::prelude::*;
 use sdl2::render::{Texture, TextureCreator, WindowCanvas, TextureQuery};
@@ -48,6 +49,14 @@ enum Load {
     Loading,
 }
 
+struct BuildRequest {
+    depth: i32,
+    path: PathBuf,
+    tile_size: Dimen,
+    size: Dimen,
+    tiles: Vec<Option<Tile>>,
+}
+
 pub(crate) struct Visuals<'ttf> {
     size: Dimen,
     canvas: WindowCanvas,
@@ -58,11 +67,29 @@ pub(crate) struct Visuals<'ttf> {
     // TODO: replace this with some cache that forgets things that aren't needed anymore
     fonts: HashMap<Font, Result<SDLFont<'ttf, 'static>, String>>,
     rendered_tiles: Arc<RwLock<HashMap<i32, Load>>>, 
+    build_tile_map: Sender<BuildRequest>,
 }
 
 impl<'ttf> Visuals<'ttf> {
     pub(crate) fn new(size: Dimen, canvas: WindowCanvas, ttf_context: &'ttf Sdl2TtfContext) -> Self {
         let texture_creator = canvas.texture_creator();
+        let rendered_tiles: Arc<RwLock<HashMap<i32, Load>>> = Arc::default();
+        
+        let (sx, rx) = channel::<BuildRequest>();
+        let rendered_tiles_cp = rendered_tiles.clone();
+        thread::spawn(move || {
+            for BuildRequest { depth, path, tile_size, size, tiles } in rx.iter() {
+                match render_tile_grid_to_file(&path, tile_size, size, tiles.iter()) {
+                    Ok(()) => {
+                        rendered_tiles_cp.write().unwrap().insert(depth, Load::Available(path));
+                    }
+                    Err(error) => {
+                        panic!("Failed to render tiles: {:?}", error);
+                    }
+                }
+            }
+        });
+
         Visuals {
             size,
             canvas,
@@ -70,7 +97,8 @@ impl<'ttf> Visuals<'ttf> {
             ttf_context,
             textures: HashMap::new(),
             fonts: HashMap::new(),
-            rendered_tiles: Arc::default(),
+            rendered_tiles,
+            build_tile_map: sx,
         }
     }
 }
@@ -156,26 +184,18 @@ impl<'a, 'ttf> System<'a> for Visuals<'ttf> {
                         tile_grid.set_clean();
                         if let Some(tile_size) = tile_grid.tile_size() {
                             self.rendered_tiles.write().unwrap().insert(depth, Load::Loading);
-                            let rendered_tiles = self.rendered_tiles.clone();
                             let tiles = tile_grid.tiles();
                             let size = tile_grid.size();
                             let mut path = tiles_dir!();
                             path.push(format!("{}.bmp", depth));
                             self.textures.remove(&path);
-                            let handle = thread::Builder::new()
-                                .name(format!("render_tiles:{}", depth))
-                                .spawn(move || {
-                                    match render_tile_grid_to_file(&path, tile_size, size, tiles.iter()) {
-                                        Ok(()) => {
-                                            rendered_tiles.write().unwrap().insert(depth, Load::Available(path));
-                                        }
-                                        Err(error) => {
-                                            panic!("Failed to render tiles: {:?}", error);
-                                        }
-                                    }
-                                })
-                                .unwrap();
-                            handle.join().unwrap(); // this join is stupid but it sometimes crashes without. likely due to memory issues
+                            self.build_tile_map.send(BuildRequest {
+                                depth,
+                                path,
+                                tile_size,
+                                size,
+                                tiles,
+                            }).unwrap();
                         } else {
                             self.rendered_tiles.write().unwrap().remove(&depth);
                         }
