@@ -303,8 +303,7 @@ impl Game {
             #[cfg(feature = "perf")] let after_dispatch = Instant::now();
             #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to handle main dispatch {:?}", after_dispatch.duration_since(before_dispatch));
 
-            self.world.read_resource::<TextInput>()
-                .sync_to(&text_input);
+            self.world.read_resource::<TextInput>().sync_to(&text_input);
 
             let transition = self.world.write_resource::<CurrentScene>().transition();
             if let Some((old, new)) = transition {
