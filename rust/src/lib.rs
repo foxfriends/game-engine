@@ -64,14 +64,15 @@ use model::shape::*;
 ///
 /// Note: Highly coupled to [`specs`]... Not sure if that's avoidable or not without implementing the
 /// entire ECS system again, but this is probably ok...
-pub struct Game {
+pub struct Game<'a, 'b> {
     world: World,
     size: Dimen,
     title: &'static str,
+    dispatchers: Vec<(Box<dyn Fn(&World) -> bool>, Dispatcher<'a, 'b>)>,
     plugins: Vec<Box<dyn Fn(&mut World)>>,
 }
 
-impl Game {
+impl<'a, 'b> Game<'a, 'b> {
     /// Creates a new game builder
     pub fn new() -> Self {
         let mut world = World::new();
@@ -85,6 +86,7 @@ impl Game {
             world,
             size: Dimen::new(1024, 768),
             title: "",
+            dispatchers: vec![],
             plugins: vec![],
         }
     }
@@ -130,8 +132,22 @@ impl Game {
         self
     }
 
+    /// Create a dispatcher and add it to the game. If multiple dispatchers are created, they will
+    /// be run in the order they are defined.
+    pub fn add_dispatcher<F: FnOnce(DispatcherBuilder<'a, 'b>) -> Dispatcher<'a, 'b>>(mut self, build: F) -> Self {
+        self.dispatchers.push((Box::new(|_| true), build(DispatcherBuilder::new())));
+        self
+    }
+
+    /// Create a dispatcher and add it to the game. If multiple dispatchers are created, they will
+    /// be run in the order they are defined.
+    pub fn add_conditional_dispatcher<P: Fn(&World) -> bool + 'static, F: FnOnce(DispatcherBuilder<'a, 'b>) -> Dispatcher<'a, 'b>>(mut self, cond: P, build: F) -> Self {
+        self.dispatchers.push((Box::new(cond), build(DispatcherBuilder::new())));
+        self
+    }
+
     /// Starts the game
-    pub fn start<'a, 'b>(mut self, scene: &'static dyn Scene) -> ::Result<()> {
+    pub fn start(mut self, scene: &'static dyn Scene) -> ::Result<()> {
         // Set up the environment
         create_dir_all(tiles_dir!())?;
 
@@ -170,17 +186,11 @@ impl Game {
 
         // Finalize the systems
         let mut render = Visuals::new(self.size, canvas, &ttf_context);
+        let mut lifecycle = EntityLifecycle::default();
 
         // Play the game!
         let scene = self.world.read_resource::<CurrentScene>().current();
-        let mut dispatcher: Dispatcher<'a, 'b> = {
-            let scene_builder = SceneBuilder::new(&mut self.world);
-            Game::finish_dispatcher(
-                scene
-                    .start(scene_builder)
-                    .dispatcher()
-            )
-        };
+        scene.start(SceneBuilder::new(&mut self.world));
 
         loop {
             #[cfg(feature = "perf")] let frame_start = Instant::now();
@@ -295,7 +305,11 @@ impl Game {
             #[cfg(feature = "perf")] let before_dispatch = Instant::now();
             #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to handle plugins {:?}", before_dispatch.duration_since(before_plugins));
 
-            dispatcher.dispatch(&mut self.world.res);
+            for (cond, dispatcher) in &mut self.dispatchers {
+                if cond(&self.world) {
+                    dispatcher.dispatch(&mut self.world.res);
+                }
+            }
             if **self.world.read_resource::<Quit>() {
                 break;
             }
@@ -304,18 +318,13 @@ impl Game {
             #[cfg(feature = "perf")] eprintln!("[ENGINE] Time to handle main dispatch {:?}", after_dispatch.duration_since(before_dispatch));
 
             self.world.read_resource::<TextInput>().sync_to(&text_input);
+            lifecycle.run_now(&mut self.world.res);
 
             let transition = self.world.write_resource::<CurrentScene>().transition();
             if let Some((old, new)) = transition {
                 old.end(SceneBuilder::new(&mut self.world));
                 self.world.maintain();
-                dispatcher = {
-                    let scene_builder = SceneBuilder::new(&mut self.world);
-                    Game::finish_dispatcher(
-                        new.start(scene_builder)
-                            .dispatcher()
-                    )
-                };
+                new.start(SceneBuilder::new(&mut self.world));
             }
 
             self.world.maintain();
@@ -333,13 +342,6 @@ impl Game {
         }
         remove_dir_all(tiles_dir!())?;
         Ok(())
-    }
-
-    fn finish_dispatcher<'a, 'b>(dispatcher_builder: DispatcherBuilder<'a, 'b>) -> Dispatcher<'a, 'b> {
-        dispatcher_builder
-            .with_barrier()
-            .with(EntityLifecycle::default(), "entity_lifecycle", &[])
-            .build()
     }
 }
 

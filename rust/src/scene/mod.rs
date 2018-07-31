@@ -69,30 +69,19 @@ impl<'a> SceneManager<'a> {
 }
 
 /// Provides methods to handle the creation of a Scene
-pub struct SceneBuilder<'a, 'b, 'c> {
+pub struct SceneBuilder<'a> {
     world: &'a mut World,
-    dispatcher: DispatcherBuilder<'b, 'c>,
 }
 
-impl<'a, 'b, 'c> SceneBuilder<'a, 'b, 'c> {
+impl<'a> SceneBuilder<'a> {
     pub(crate) fn new(world: &'a mut World) -> Self {
-        SceneBuilder {
-            world,
-            dispatcher: DispatcherBuilder::new(),
-        }
-    }
-
-    /// Adds a system to the scene. This system will stop being run when the scene ends
-    pub fn add_system<S>(mut self, system: S, name: &str, dependencies: &[&str]) -> Self
-    where S: for<'d> System<'d> + Send + 'b {
-        self.dispatcher.add(system, name, dependencies);
-        self
+        SceneBuilder { world }
     }
 
     /// Runs a system immediately as part of the setup process. This system will not be used as
-    /// part of the main dispatch
+    /// part of any dispatcher
     pub fn run_now<S>(self, mut system: S) -> Self
-    where S: for<'d> System<'d> + Send + 'b {
+    where S: for<'d> System<'d> + Send {
         system.run_now(&mut self.world.res);
         self
     }
@@ -129,20 +118,16 @@ impl<'a, 'b, 'c> SceneBuilder<'a, 'b, 'c> {
     pub fn pipe(self, f: impl Fn(Self) -> Self) -> Self {
         f(self)
     }
-
-    /// Consumes this [`SceneBuilder`] to retrieve the [`DispatcherBuilder`] inside
-    pub(crate) fn dispatcher(self) -> DispatcherBuilder<'b, 'c> {
-        self.dispatcher
-    }
 }
 
 /// Defines a Scene
 pub trait Scene: Sync {
     /// Called when a scene is started. It is expected to create entities, add systems, and perform
     /// other setup required for this scene.
-    fn start<'a, 'b, 'c>(&self, builder: SceneBuilder<'a, 'b, 'c>) -> SceneBuilder<'a, 'b, 'c>;
+    fn start<'a>(&self, builder: SceneBuilder<'a>);
 
     /// Called when a scene is ended. It is expected to perform any teardown for this scene. It is
     /// *not* required to destroy any entities or remove any systems, as that is handled automatically.
-    fn end<'a, 'b, 'c>(&self, builder: SceneBuilder<'a, 'b, 'c>) -> SceneBuilder<'a, 'b, 'c> { builder }
+    #[allow(unused_variables)]
+    fn end<'a>(&self, builder: SceneBuilder<'a>) {}
 }

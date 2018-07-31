@@ -10,20 +10,15 @@ macro_rules! scene {
             entities: [
                 $($entity:expr),*
                 $(,)?
-            ],
-            systems: [
-                $(($system:expr, $sysname:expr, $sysdeps:expr)),*
-                $(,)?
             ]
         } => |$builder:ident| $body:block
     ) => (
         struct SceneStruct;
 
         impl $crate::scene::Scene for SceneStruct {
-            fn start<'a, 'b, 'c>(&self, $builder: $crate::scene::SceneBuilder<'a, 'b, 'c>) -> $crate::scene::SceneBuilder<'a, 'b, 'c> {
+            fn start<'a>(&self, $builder: $crate::scene::SceneBuilder<'a>) {
                 let $builder = $builder
-                    $(.add_entity($entity))*
-                    $(.add_system($system, $sysname, $sysdeps))*;
+                    $(.add_entity($entity))*;
                 $body
             }
         }
@@ -38,20 +33,15 @@ macro_rules! scene {
             entities: [
                 $($entity:expr),*
                 $(,)?
-            ],
-            systems: [
-                $(($system:expr, $sysname:expr, $sysdeps:expr)),*
-                $(,)?
             ]
         } => |$builder:ident| $body:block
     ) => (
         struct SceneStruct;
 
         impl $crate::scene::Scene for SceneStruct {
-            fn start<'a, 'b, 'c>(&self, $builder: $crate::scene::SceneBuilder<'a, 'b, 'c>) -> $crate::scene::SceneBuilder<'a, 'b, 'c> {
+            fn start<'a>(&self, $builder: $crate::scene::SceneBuilder<'a>) {
                 let $builder = $builder
-                    $(.add_entity($entity))*
-                    $(.add_system($system, $sysname, $sysdeps))*;
+                    $(.add_entity($entity))*;
                 $body
             }
         }
@@ -66,20 +56,15 @@ macro_rules! scene {
             entities: [
                 $($entity:expr),*
                 $(,)?
-            ],
-            systems: [
-                $(($system:expr, $sysname:expr, $sysdeps:expr)),*
-                $(,)?
             ]
         }
     ) => (
         struct SceneStruct;
 
         impl $crate::scene::Scene for SceneStruct {
-            fn start<'a, 'b, 'c>(&self, builder: $crate::scene::SceneBuilder<'a, 'b, 'c>) -> $crate::scene::SceneBuilder<'a, 'b, 'c> {
+            fn start<'a>(&self, builder: $crate::scene::SceneBuilder<'a>) {
                 builder
-                    $(.add_entity($entity))*
-                    $(.add_system($system, $sysname, $sysdeps))*
+                    $(.add_entity($entity))*;
             }
         }
         #[allow(non_upper_case_globals)]
@@ -93,20 +78,15 @@ macro_rules! scene {
             entities: [
                 $($entity:expr),*
                 $(,)?
-            ],
-            systems: [
-                $(($system:expr, $sysname:expr, $sysdeps:expr)),*
-                $(,)?
             ]
         }
     ) => (
         struct SceneStruct;
 
         impl $crate::scene::Scene for SceneStruct {
-            fn start<'a, 'b, 'c>(&self, builder: $crate::scene::SceneBuilder<'a, 'b, 'c>) -> $crate::scene::SceneBuilder<'a, 'b, 'c> {
+            fn start<'a>(&self, builder: $crate::scene::SceneBuilder<'a>) -> $crate::scene::SceneBuilder<'a> {
                 builder
-                    $(.add_entity($entity))*
-                    $(.add_system($system, $sysname, $sysdeps))*
+                    $(.add_entity($entity))*;
             }
         }
         #[allow(non_upper_case_globals)]
