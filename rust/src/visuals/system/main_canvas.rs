@@ -4,8 +4,8 @@ use sdl2::{
     ttf::GlyphMetrics,
 };
 
-use camera::Camera;
-use model::shape::*;
+use crate::camera::Camera;
+use crate::model::shape::*;
 use super::{
     super::{
         canvas::Canvas,
@@ -25,10 +25,10 @@ pub(super) struct MainCanvas<'a, 'ttf: 'a> {
 }
 
 impl<'a, 'ttf: 'a> MainCanvas<'a, 'ttf> {
-    pub fn new(visuals: &'a mut Visuals<'ttf>, camera: Camera) -> Self {
+    pub(super) fn new(visuals: &'a mut Visuals<'ttf>, camera: Camera) -> Self {
         visuals.canvas.set_draw_color(Color::default().into());
-        MainCanvas { 
-            visuals, 
+        MainCanvas {
+            visuals,
             color: Color::default(),
             font: None,
             camera,
@@ -54,19 +54,19 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         self.camera = Camera::new(input, output);
     }
 
-    fn draw_rect(&mut self, rect: Rect) -> ::Result<()> {
+    fn draw_rect(&mut self, rect: Rect) -> crate::Result<()> {
         let rect = rect.transform(self.camera.input, self.camera.output);
         self.visuals.canvas.draw_rect(rect.into())?;
         Ok(())
     }
 
-    fn draw_rect_filled(&mut self, rect: Rect) -> ::Result<()> {
+    fn draw_rect_filled(&mut self, rect: Rect) -> crate::Result<()> {
         let rect = rect.transform(self.camera.input, self.camera.output);
         self.visuals.canvas.fill_rect(Some(rect.into()))?;
         Ok(())
     }
 
-    fn draw_image(&mut self, point: Point, image: Image) -> ::Result<()> {
+    fn draw_image(&mut self, point: Point, image: Image) -> crate::Result<()> {
         let texture_creator = &mut self.visuals.texture_creator;
         let texture = self.visuals.textures.entry(image.path_buf()).or_insert_with(|| texture_creator.load_texture(image));
         match texture {
@@ -79,7 +79,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn draw_sprite(&mut self, point: Point, frame: usize, sprite: Sprite) -> ::Result<()> {
+    fn draw_sprite(&mut self, point: Point, frame: usize, sprite: Sprite) -> crate::Result<()> {
         let texture_creator = &mut self.visuals.texture_creator;
         let texture = self.visuals.textures.entry(sprite.image().path_buf()).or_insert_with(|| texture_creator.load_texture(sprite.image()));
         match texture {
@@ -94,7 +94,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn draw_text(&mut self, point: Point, ref text: String) -> ::Result<()> {
+    fn draw_text(&mut self, point: Point, ref text: String) -> crate::Result<()> {
         if let Some(font) = self.font {
             // TODO: not the most efficient... try and optimize for static vs dynamic text
             let ttf_context = self.visuals.ttf_context;
@@ -114,7 +114,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn measure_text(&mut self, ref text: String) -> ::Result<Dimen> {
+    fn measure_text(&mut self, ref text: String) -> crate::Result<Dimen> {
         if let Some(font) = self.font {
             let ttf_context = self.visuals.ttf_context;
             let font = self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size()));
@@ -130,7 +130,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn line_spacing(&mut self) -> ::Result<i32> {
+    fn line_spacing(&mut self) -> crate::Result<i32> {
         if let Some(font) = self.font {
             let ttf_context = self.visuals.ttf_context;
             match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
@@ -142,7 +142,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn glyph_metrics(&mut self, ch: char) -> ::Result<Option<GlyphMetrics>> {
+    fn glyph_metrics(&mut self, ch: char) -> crate::Result<Option<GlyphMetrics>> {
         if let Some(font) = self.font {
             let ttf_context = self.visuals.ttf_context;
             match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
@@ -154,7 +154,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn font_ascent(&mut self) -> ::Result<i32> {
+    fn font_ascent(&mut self) -> crate::Result<i32> {
         if let Some(font) = self.font {
             let ttf_context = self.visuals.ttf_context;
             match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {
@@ -166,7 +166,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn font_descent(&mut self) -> ::Result<i32> {
+    fn font_descent(&mut self) -> crate::Result<i32> {
         if let Some(font) = self.font {
             let ttf_context = self.visuals.ttf_context;
             match self.visuals.fonts.entry(font).or_insert_with(|| ttf_context.load_font(font.path(), font.size())) {

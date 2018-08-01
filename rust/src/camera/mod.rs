@@ -1,5 +1,5 @@
 //! A resource that defines the current visible region of the game
-use model::shape::{Rect, Point};
+use crate::model::shape::{Rect, Point};
 
 /// A resource that defines the current visible region of the game
 #[derive(Copy, Clone, Eq, PartialEq, Default, Debug)]

@@ -1,4 +1,5 @@
 //! Dimensions
+use serde_derive::{Serialize, Deserialize};
 
 /// A dimension
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Serialize, Deserialize, Default)]

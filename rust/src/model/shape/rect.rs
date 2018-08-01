@@ -1,5 +1,6 @@
 //! Rectangles
 
+use serde_derive::{Serialize, Deserialize};
 use sdl2::rect as sdl;
 use super::{Point, Dimen};
 

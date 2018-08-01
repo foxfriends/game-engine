@@ -3,9 +3,10 @@
 
 use shred::{Fetch, FetchMut};
 use specs::prelude::*;
+use shred_derive::SystemData;
 
-use common::{SceneMember, Delete};
-use util::entity_factory::EntityFactory;
+use crate::common::{SceneMember, Delete};
+use crate::util::entity_factory::EntityFactory;
 
 /// A resource that tracks the current scene (if any). Internal use only.
 pub struct CurrentScene(&'static dyn Scene, Option<&'static dyn Scene>);
@@ -105,12 +106,12 @@ impl<'a> SceneBuilder<'a> {
     }
 
     /// Gets a resource from the world immutably
-    pub fn get_resource<T: 'static + Sync + Send>(&self) -> Fetch<T> {
+    pub fn get_resource<T: 'static + Sync + Send>(&self) -> Fetch<'_, T> {
         self.world.read_resource()
     }
 
     /// Gets a resource from the world mutably
-    pub fn get_resource_mut<T: 'static + Sync + Send>(&self) -> FetchMut<T> {
+    pub fn get_resource_mut<T: 'static + Sync + Send>(&self) -> FetchMut<'_, T> {
         self.world.write_resource()
     }
 

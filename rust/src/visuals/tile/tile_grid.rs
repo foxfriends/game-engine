@@ -1,4 +1,4 @@
-use model::shape::{Point, Dimen};
+use crate::model::shape::{Point, Dimen};
 use super::Tile;
 
 /// Defines an arrangement of [`Tile`]s

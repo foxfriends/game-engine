@@ -2,7 +2,7 @@ use super::{
     super::image::Image,
     Tile,
 };
-use model::shape::*;
+use crate::model::shape::*;
 
 /// A [`TileSet`] defines a grid of tiles which are optimized for being drawn statically at runtime.
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]

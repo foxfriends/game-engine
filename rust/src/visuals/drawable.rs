@@ -9,7 +9,7 @@ pub trait Drawable: Any + Sync + Send {
     fn depth(&self) -> i32;
 
     /// Actually draw this [`Drawable`] to the [`Canvas`]
-    fn render(&self, canvas: &mut dyn Canvas) -> ::Result<()>;
+    fn render(&self, canvas: &mut dyn Canvas) -> crate::Result<()>;
 
     /// Gets this [`Drawable`] as an [`Any`]
     fn as_any(&self) -> &dyn Any;

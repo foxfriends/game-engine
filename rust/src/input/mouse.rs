@@ -1,5 +1,7 @@
 //! Resources that track the mouse state
-use model::shape::Point;
+
+use serde_derive::{Serialize, Deserialize};
+use crate::model::shape::Point;
 
 /// Resource that reflects the current state of the mouse
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Default)]

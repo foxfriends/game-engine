@@ -1,6 +1,6 @@
 //! Stores information about sprite sheets
 
-use model::shape::Rect;
+use crate::model::shape::Rect;
 use super::image::Image;
 
 /// An image, which is broken up into subimages. Built in such a way that they can be defined

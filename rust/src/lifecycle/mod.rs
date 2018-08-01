@@ -1,6 +1,6 @@
 //! Manages the entity lifecycle components [`Create`] and [`Destroy`]
 
-use common::{Create, Delete};
+use crate::common::{Create, Delete};
 
 /// System that manages the entity lifecycle.
 #[derive(Default)]

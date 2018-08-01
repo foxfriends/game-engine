@@ -1,9 +1,12 @@
+cargo-features = ["edition"]
+
 [package]
 name = "game-engine"
 version = "0.1.0"
 authors = ["Cameron Eldridge <cameldridge+git@gmail.com>"]
 publish = false
 build = "build.rs"
+edition = "2018"
 
 [lib]
 name = "game_engine"

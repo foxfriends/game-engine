@@ -14,8 +14,8 @@ use sdl2::image::LoadTexture;
 use sdl2::ttf::{Font as SDLFont, Sdl2TtfContext};
 use sdl2::pixels::PixelFormatEnum;
 
-use camera::Camera;
-use model::shape::*;
+use crate::camera::Camera;
+use crate::model::shape::*;
 use super::{
     tile::*,
     image::Image,
@@ -23,7 +23,7 @@ use super::{
     color::Color,
     drawable::Drawable,
 };
-use loading::IsLoading;
+use crate::loading::IsLoading;
 
 mod main_canvas;
 use self::main_canvas::MainCanvas;
@@ -35,7 +35,7 @@ enum ToDraw<'a> {
 }
 
 impl<'a> ToDraw<'a> {
-    pub fn depth(&self) -> i32 {
+    fn depth(&self) -> i32 {
         match self {
             &ToDraw::Drawable(ref drawable) => drawable.depth(),
             &ToDraw::TileGrid(_, depth) => depth,
@@ -66,7 +66,7 @@ pub(crate) struct Visuals<'ttf> {
     textures: HashMap<PathBuf, Result<Texture, String>>,
     // TODO: replace this with some cache that forgets things that aren't needed anymore
     fonts: HashMap<Font, Result<SDLFont<'ttf, 'static>, String>>,
-    rendered_tiles: Arc<RwLock<HashMap<i32, Load>>>, 
+    rendered_tiles: Arc<RwLock<HashMap<i32, Load>>>,
     build_tile_map: Sender<BuildRequest>,
 }
 
@@ -74,7 +74,7 @@ impl<'ttf> Visuals<'ttf> {
     pub(crate) fn new(size: Dimen, canvas: WindowCanvas, ttf_context: &'ttf Sdl2TtfContext) -> Self {
         let texture_creator = canvas.texture_creator();
         let rendered_tiles: Arc<RwLock<HashMap<i32, Load>>> = Arc::default();
-        
+
         let (sx, rx) = channel::<BuildRequest>();
         let rendered_tiles_cp = rendered_tiles.clone();
         thread::spawn(move || {
@@ -104,19 +104,19 @@ impl<'ttf> Visuals<'ttf> {
 }
 
 impl<'ttf> Visuals<'ttf> {
-    fn draw(&mut self, drawable: &dyn Drawable, camera: Camera) -> ::Result<()> {
+    fn draw(&mut self, drawable: &dyn Drawable, camera: Camera) -> crate::Result<()> {
         drawable.render(&mut MainCanvas::new(self, camera))
     }
 
-    fn draw_image_at_path(&mut self, path: PathBuf, position: Point, camera: Camera) -> ::Result<()> {
+    fn draw_image_at_path(&mut self, path: PathBuf, position: Point, camera: Camera) -> crate::Result<()> {
         let texture_creator = &mut self.texture_creator;
         let texture = self.textures.entry(path.clone()).or_insert_with(|| texture_creator.load_texture(path));
         match texture {
             Ok(texture) => {
                 let TextureQuery { width, height, .. } = texture.query();
                 self.canvas.copy(
-                    &texture, 
-                    None, 
+                    &texture,
+                    None,
                     Some(Rect::from(position, Dimen::new(width, height)).transform(camera.input, camera.output).into())
                 )?;
                 Ok(())
@@ -126,13 +126,13 @@ impl<'ttf> Visuals<'ttf> {
     }
 }
 
-fn render_tile_grid_to_file<'a>(path: &PathBuf, tile_size: Dimen, size: Dimen, tiles: impl Iterator<Item = &'a Option<Tile>>) -> ::Result<()> {
+fn render_tile_grid_to_file<'a>(path: &PathBuf, tile_size: Dimen, size: Dimen, tiles: impl Iterator<Item = &'a Option<Tile>>) -> crate::Result<()> {
     let mut surface = Surface::new(
-        size.width * tile_size.width, 
-        size.height * tile_size.height, 
+        size.width * tile_size.width,
+        size.height * tile_size.height,
         PixelFormatEnum::RGBA8888,
     )?;
-    let mut surfaces: HashMap<Image, Result<Surface, String>> = HashMap::default();
+    let mut surfaces: HashMap<Image, Result<Surface<'_>, String>> = HashMap::default();
     for (index, tile) in tiles.enumerate() {
         if let Some(tile) = tile {
             let image_surface = surfaces
@@ -142,12 +142,12 @@ fn render_tile_grid_to_file<'a>(path: &PathBuf, tile_size: Dimen, size: Dimen, t
                 Ok(image_surface) => {
                     let frame = tile.tile_set.cell(tile.index);
                     let point = Point::new(
-                        (index as u32 % size.width * tile_size.width) as i32, 
+                        (index as u32 % size.width * tile_size.width) as i32,
                         (index as u32 / size.width * tile_size.height) as i32,
                     );
                     image_surface.blit(
-                        Some(frame.into()), 
-                        &mut surface, 
+                        Some(frame.into()),
+                        &mut surface,
                         Some(Rect::from(point, frame.dimen()).into()),
                     )?;
                 }
@@ -202,7 +202,7 @@ impl<'a, 'ttf> System<'a> for Visuals<'ttf> {
                     }
                     let loaded_tile_grid = self.rendered_tiles.read().unwrap().get(&depth).cloned();
                     match loaded_tile_grid {
-                        Some(Load::Available(path)) => 
+                        Some(Load::Available(path)) =>
                             if let Err(error) = self.draw_image_at_path(path.clone(), tile_grid.offset(), *camera) {
                                 panic!("Failed to draw rendered tiles: {:?}", error);
                             }

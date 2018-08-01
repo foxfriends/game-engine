@@ -1,16 +1,8 @@
 //! A game engine!
 
-#![warn(missing_docs)]
+#![warn(missing_docs, rust_2018_idioms)]
 #![deny(bare_trait_objects)]
-#![feature(const_fn, macro_at_most_once_rep)]
-
-extern crate sdl2;
-extern crate specs;
-extern crate shred;
-extern crate serde;
-#[macro_use] extern crate serde_derive;
-#[macro_use] extern crate specs_derive;
-#[macro_use] extern crate shred_derive;
+#![feature(const_fn, macro_at_most_once_rep, rust_2018_preview)]
 
 use std::fs::{create_dir_all, remove_dir_all};
 
@@ -42,22 +34,22 @@ pub mod quit;
 pub mod scene;
 pub mod timing;
 
-pub use error::Error;
+pub use crate::error::Error;
 #[allow(missing_docs)]
 pub type Result<T> = ::std::result::Result<T, Error>;
 
-use quit::Quit;
-use camera::Camera;
-use input::text::{TextInput, TextInputEvents, TextInputEvent};
-use input::keyboard::{KeyboardEvents, KeyboardEvent, KeyboardState};
-use input::mouse::{MouseEvents, MouseEvent, MouseButton, MouseState};
-use loading::IsLoading;
-use visuals::{Visuals, Drawable, TileLayers};
-use common::{Create, Delete, SceneMember};
-use timing::{FrameCount, RunTime};
-use lifecycle::EntityLifecycle;
-use scene::{CurrentScene, Scene, SceneBuilder};
-use model::shape::*;
+use crate::quit::Quit;
+use crate::camera::Camera;
+use crate::input::text::{TextInput, TextInputEvents, TextInputEvent};
+use crate::input::keyboard::{KeyboardEvents, KeyboardEvent, KeyboardState};
+use crate::input::mouse::{MouseEvents, MouseEvent, MouseButton, MouseState};
+use crate::loading::IsLoading;
+use crate::visuals::{Visuals, Drawable, TileLayers};
+use crate::common::{Create, Delete, SceneMember};
+use crate::timing::{FrameCount, RunTime};
+use crate::lifecycle::EntityLifecycle;
+use crate::scene::{CurrentScene, Scene, SceneBuilder};
+use crate::model::shape::*;
 
 const TARGET_FRAME_DURATION: Duration = Duration::from_millis(1000/60);
 
@@ -148,7 +140,7 @@ impl<'a, 'b> Game<'a, 'b> {
     }
 
     /// Starts the game
-    pub fn start(mut self, scene: &'static dyn Scene) -> ::Result<()> {
+    pub fn start(mut self, scene: &'static dyn Scene) -> crate::Result<()> {
         // Set up the environment
         create_dir_all(tiles_dir!())?;
 
@@ -394,7 +386,8 @@ pub mod prelude {
         util::entity_factory::EntityFactory,
         loading::IsLoading,
         Game,
-        sdl2::ttf::GlyphMetrics,
     };
+
+    pub use sdl2::ttf::GlyphMetrics;
     pub use specs::prelude::*;
 }
