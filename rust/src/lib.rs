@@ -18,8 +18,7 @@ use specs::prelude::*;
 use sdl2::event::Event;
 use shred::Resource;
 
-#[cfg(feature = "perf")]
-use std::time::Instant;
+use std::time::{Instant, Duration};
 
 macro_rules! tiles_dir {
     () => ({
@@ -59,6 +58,8 @@ use timing::{FrameCount, RunTime};
 use lifecycle::EntityLifecycle;
 use scene::{CurrentScene, Scene, SceneBuilder};
 use model::shape::*;
+
+const TARGET_FRAME_DURATION: Duration = Duration::from_millis(1000/60);
 
 /// A game builder, which can be [`start`](Game::start)ed once everything is set up.
 ///
@@ -193,7 +194,7 @@ impl<'a, 'b> Game<'a, 'b> {
         scene.start(SceneBuilder::new(&mut self.world));
 
         loop {
-            #[cfg(feature = "perf")] let frame_start = Instant::now();
+            let frame_start = Instant::now();
             // Reset previous state
             self.world.write_resource::<MouseEvents>().clear();
             self.world.write_resource::<KeyboardEvents>().clear();
@@ -338,7 +339,11 @@ impl<'a, 'b> Game<'a, 'b> {
 
             self.world.write_resource::<FrameCount>().next();
             // TODO: a real delay??
-            std::thread::sleep(std::time::Duration::from_millis(1000/60));
+
+            let frame_time = frame_start.elapsed();
+            if frame_time < TARGET_FRAME_DURATION {
+                std::thread::sleep(TARGET_FRAME_DURATION - frame_time);
+            }
         }
         remove_dir_all(tiles_dir!())?;
         Ok(())
