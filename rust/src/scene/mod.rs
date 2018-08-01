@@ -81,14 +81,14 @@ impl<'a> SceneBuilder<'a> {
 
     /// Runs a system immediately as part of the setup process. This system will not be used as
     /// part of any dispatcher
-    pub fn run_now<S>(self, mut system: S) -> Self
+    pub fn run_now<S>(&mut self, mut system: S) -> &mut Self
     where S: for<'d> System<'d> + Send {
         system.run_now(&mut self.world.res);
         self
     }
 
     /// Builds an entity, adding it to the scene.
-    pub fn add_entity<E: EntityFactory>(self, factory: E) -> Self {
+    pub fn add_entity<E: EntityFactory>(&mut self, factory: E) -> &mut Self {
         factory
             .build(self.world.create_entity())
             .with(SceneMember::default())
@@ -98,7 +98,7 @@ impl<'a> SceneBuilder<'a> {
 
     /// Builds an entity, but does not associate it with the scene. At the end of the scene, this
     /// entity will not be destroyed automatically.
-    pub fn add_to_world<E: EntityFactory>(self, factory: E) -> Self {
+    pub fn add_to_world<E: EntityFactory>(&mut self, factory: E) -> &mut Self {
         factory
             .build(self.world.create_entity())
             .build();
@@ -116,8 +116,9 @@ impl<'a> SceneBuilder<'a> {
     }
 
     /// Pipes the builder through a function
-    pub fn pipe(self, f: impl Fn(Self) -> Self) -> Self {
-        f(self)
+    pub fn pipe(&mut self, f: impl Fn(&mut Self)) -> &mut Self {
+        f(self);
+        self
     }
 }
 
