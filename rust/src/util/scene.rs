@@ -9,7 +9,7 @@ macro_rules! scene {
         $name:ident {
             entities: [
                 $($entity:expr),*
-                $(,)?
+                $(,)*
             ]
         } => |$builder:ident| $body:block
     ) => (
@@ -32,7 +32,7 @@ macro_rules! scene {
         pub $name:ident {
             entities: [
                 $($entity:expr),*
-                $(,)?
+                $(,)*
             ]
         } => |$builder:ident| $body:block
     ) => (
@@ -55,7 +55,7 @@ macro_rules! scene {
         pub $name:ident {
             entities: [
                 $($entity:expr),*
-                $(,)?
+                $(,)*
             ]
         }
     ) => (
@@ -77,7 +77,7 @@ macro_rules! scene {
         $name:ident {
             entities: [
                 $($entity:expr),*
-                $(,)?
+                $(,)*
             ]
         }
     ) => (
