@@ -165,3 +165,20 @@ impl Into<sdl::Color> for Color {
         }
     }
 }
+
+impl From<u32> for Color {
+    fn from(hex: u32) -> Self {
+        Color::rgba(
+            ((hex & 0xff000000) >> 24) as u8,
+            ((hex & 0x00ff0000) >> 16) as u8,
+            ((hex & 0x0000ff00) >> 8) as u8,
+            (hex & 0x000000ff) as u8,
+        )
+    }
+}
+
+impl Into<u32> for Color {
+    fn into(self) -> u32 {
+        ((self.red as u32) << 24) & ((self.green as u32) << 16) & ((self.blue as u32) << 8) & self.alpha as u32
+    }
+}
