@@ -51,8 +51,6 @@ use crate::lifecycle::EntityLifecycle;
 use crate::scene::{CurrentScene, Scene, SceneBuilder};
 use crate::model::shape::*;
 
-const TARGET_FRAME_DURATION: Duration = Duration::from_millis(1000/60);
-
 /// A game builder, which can be [`start`](Game::start)ed once everything is set up.
 ///
 /// Note: Highly coupled to [`specs`]... Not sure if that's avoidable or not without implementing the
@@ -63,6 +61,7 @@ pub struct Game<'a, 'b> {
     title: &'static str,
     dispatchers: Vec<(Box<dyn Fn(&World) -> bool>, Dispatcher<'a, 'b>)>,
     plugins: Vec<Box<dyn Fn(&mut World)>>,
+    target_fps: Duration
 }
 
 impl<'a, 'b> Game<'a, 'b> {
@@ -81,6 +80,7 @@ impl<'a, 'b> Game<'a, 'b> {
             title: "",
             dispatchers: vec![],
             plugins: vec![],
+            target_fps: Duration::from_millis(1000 / 60),
         }
     }
 
@@ -92,8 +92,17 @@ impl<'a, 'b> Game<'a, 'b> {
         }
     }
 
+    /// Sets the target FPS of the Game. It will not go above this speed, but if too much is
+    /// happening the game may run at less than the target speed.
+    pub fn target_fps(self, fps: u64) -> Self {
+        Self {
+            target_fps: Duration::from_millis(1000 / fps),
+            ..self
+        }
+    }
+
     /// Sets the initial size of the window
-    pub fn set_size(self, width: u32, height: u32) -> Self {
+    pub fn sized(self, width: u32, height: u32) -> Self {
         Self {
             size: Dimen::new(width, height),
             ..self
@@ -333,8 +342,8 @@ impl<'a, 'b> Game<'a, 'b> {
             // TODO: a real delay??
 
             let frame_time = frame_start.elapsed();
-            if frame_time < TARGET_FRAME_DURATION {
-                std::thread::sleep(TARGET_FRAME_DURATION - frame_time);
+            if frame_time < self.target_fps {
+                std::thread::sleep(self.target_fps - frame_time);
             }
         }
         remove_dir_all(tiles_dir!())?;
