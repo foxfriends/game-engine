@@ -35,8 +35,8 @@ impl CurrentScene {
         }
     }
 
-    /// Starts the scene
-    pub(crate) fn current(&self) -> &'static dyn Scene {
+    /// The [`Scene`] that is currently active
+    pub fn current(&self) -> &'static dyn Scene {
         self.0
     }
 
@@ -132,4 +132,7 @@ pub trait Scene: Sync {
     /// *not* required to destroy any entities or remove any systems, as that is handled automatically.
     #[allow(unused_variables)]
     fn end<'a>(&self, builder: SceneBuilder<'a>) {}
+
+    /// The size of this Scene
+    fn bounds(&self) -> crate::model::shape::Rect;
 }

@@ -7,6 +7,7 @@ macro_rules! scene {
     (
         $(#[$attr:meta])*
         $name:ident {
+            bounds: $bounds:expr,
             entities: [
                 $($entity:expr),*
                 $(,)*
@@ -20,6 +21,10 @@ macro_rules! scene {
                 let $builder = $builder
                     $(.add_entity($entity))*;
                 $body
+            }
+
+            fn bounds(&self) -> Rect {
+                $bounds
             }
         }
         #[allow(non_upper_case_globals)]
@@ -30,6 +35,7 @@ macro_rules! scene {
     (
         $(#[$attr:meta])*
         pub $name:ident {
+            bounds: $bounds:expr,
             entities: [
                 $($entity:expr),*
                 $(,)*
@@ -44,6 +50,10 @@ macro_rules! scene {
                     $(.add_entity($entity))*;
                 $body
             }
+
+            fn bounds(&self) -> Rect {
+                $bounds
+            }
         }
         #[allow(non_upper_case_globals)]
         $(#[$attr])*
@@ -53,6 +63,7 @@ macro_rules! scene {
     (
         $(#[$attr:meta])*
         pub $name:ident {
+            bounds: $bounds:expr,
             entities: [
                 $($entity:expr),*
                 $(,)*
@@ -66,6 +77,10 @@ macro_rules! scene {
                 builder
                     $(.add_entity($entity))*;
             }
+
+            fn bounds(&self) -> Rect {
+                $bounds
+            }
         }
         #[allow(non_upper_case_globals)]
         $(#[$attr])*
@@ -75,6 +90,7 @@ macro_rules! scene {
     (
         $(#[$attr:meta])*
         $name:ident {
+            bounds: $bounds:expr,
             entities: [
                 $($entity:expr),*
                 $(,)*
@@ -87,6 +103,10 @@ macro_rules! scene {
             fn start<'a>(&self, mut builder: $crate::scene::SceneBuilder<'a>) -> $crate::scene::SceneBuilder<'a> {
                 builder
                     $(.add_entity($entity))*;
+            }
+
+            fn bounds(&self) -> Rect {
+                $bounds
             }
         }
         #[allow(non_upper_case_globals)]

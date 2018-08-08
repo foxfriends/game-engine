@@ -53,8 +53,8 @@ use crate::model::shape::*;
 
 /// A game builder, which can be [`start`](Game::start)ed once everything is set up.
 ///
-/// Note: Highly coupled to [`specs`]... Not sure if that's avoidable or not without implementing the
-/// entire ECS system again, but this is probably ok...
+/// Note: Highly coupled to [`specs`]... Not sure if that's avoidable or not without implementing
+/// the entire ECS system again, but this is probably ok...
 pub struct Game<'a, 'b> {
     world: World,
     size: Dimen,
