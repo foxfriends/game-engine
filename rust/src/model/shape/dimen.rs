@@ -15,4 +15,12 @@ impl Dimen {
     pub const fn new(width: u32, height: u32) -> Self {
         Self { width, height }
     }
+
+    /// Extends both dimensions of the [`Dimen`] by adding another
+    pub fn extend(self, other: Dimen) -> Dimen {
+        Self {
+            width: self.width + other.width,
+            height: self.height + other.height,
+        }
+    }
 }
