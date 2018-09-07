@@ -18,8 +18,7 @@ macro_rules! scene {
 
         impl $crate::scene::Scene for SceneStruct {
             fn start<'a>(&self, mut $builder: $crate::scene::SceneBuilder<'a>) {
-                let $builder = $builder
-                    $(.add_entity($entity))*;
+                $($builder.add_entity($entity);)*
                 $body
             }
 
@@ -46,8 +45,7 @@ macro_rules! scene {
 
         impl $crate::scene::Scene for SceneStruct {
             fn start<'a>(&self, mut $builder: $crate::scene::SceneBuilder<'a>) {
-                let $builder = $builder
-                    $(.add_entity($entity))*;
+                $($builder.add_entity($entity);)*
                 $body
             }
 

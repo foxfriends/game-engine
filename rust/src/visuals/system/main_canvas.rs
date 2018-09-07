@@ -66,7 +66,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         Ok(())
     }
 
-    fn draw_image(&mut self, point: Point, image: Image) -> crate::Result<()> {
+    fn draw_image(&mut self, point: Point, image: &Image) -> crate::Result<()> {
         let texture_creator = &mut self.visuals.texture_creator;
         let texture = self.visuals.textures.entry(image.path_buf()).or_insert_with(|| texture_creator.load_texture(image));
         match texture {
@@ -79,7 +79,7 @@ impl<'a, 'ttf: 'a> Canvas for MainCanvas<'a, 'ttf> {
         }
     }
 
-    fn draw_sprite(&mut self, point: Point, frame: usize, sprite: Sprite) -> crate::Result<()> {
+    fn draw_sprite(&mut self, point: Point, frame: usize, sprite: &Sprite) -> crate::Result<()> {
         let texture_creator = &mut self.visuals.texture_creator;
         let texture = self.visuals.textures.entry(sprite.image().path_buf()).or_insert_with(|| texture_creator.load_texture(sprite.image()));
         match texture {

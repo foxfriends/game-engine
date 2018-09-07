@@ -5,7 +5,7 @@ use super::image::Image;
 
 /// An image, which is broken up into subimages. Built in such a way that they can be defined
 /// statically
-#[derive(Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub struct Sprite {
     image: Image,
     frames: &'static [Rect],

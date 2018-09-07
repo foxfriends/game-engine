@@ -19,6 +19,12 @@ impl Camera {
         }
     }
 
+    /// Moves this [`Camera`] so that its top-left corner is as specified.
+    pub fn set_origin(&mut self, origin: Point) -> &mut Self {
+        self.input = Rect::from(origin, self.input.dimen());
+        self
+    }
+
     /// Moves this [`Camera`] so its center is over a given Point.
     pub fn center_on(&mut self, center: Point) -> &mut Self {
         let point = Point::new(

@@ -19,9 +19,9 @@ pub trait Canvas {
     fn set_transform(&mut self, input: Rect, output: Rect);
 
     /// Draws an entire image at a location
-    fn draw_image(&mut self, position: Point, image: Image) -> crate::Result<()>;
+    fn draw_image(&mut self, position: Point, image: &Image) -> crate::Result<()>;
     /// Draws a single frame of a sprite at a location
-    fn draw_sprite(&mut self, position: Point, frame: usize, sprite: Sprite) -> crate::Result<()>;
+    fn draw_sprite(&mut self, position: Point, frame: usize, sprite: &Sprite) -> crate::Result<()>;
 
     /// Draws a rectangle (outline)
     fn draw_rect(&mut self, rect: Rect) -> crate::Result<()>;
