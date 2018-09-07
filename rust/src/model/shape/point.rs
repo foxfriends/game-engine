@@ -20,6 +20,13 @@ impl<T> Point<T> {
     }
 }
 
+impl Point<i32> {
+    /// The pixel distance between two points
+    pub fn distance_from(&self, other: &Point) -> u32 {
+        ((self.x - other.x).abs() + (self.y - other.y).abs()) as u32
+    }
+}
+
 impl Point<f32> {
     /// The magnitude of this point, as if it were a vector sqrt(x * x + y * y)
     pub fn magnitude(&self) -> f32 {
