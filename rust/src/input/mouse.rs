@@ -80,7 +80,7 @@ impl MouseState {
     }
 
     /// The corrent position of the cursor
-    pub fn position(&self) -> (i32, i32) {
-        (self.x, self.y)
+    pub fn position(&self) -> Point {
+        Point::new(self.x, self.y)
     }
 }

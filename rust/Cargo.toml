@@ -14,14 +14,14 @@ path = "src/lib.rs"
 perf = []
 
 [dependencies]
-specs = "0.12"
+specs = "0.14"
 shred = { version = "0.7", features = ["nightly"] }
 shred-derive = "0.5"
-specs-derive = "0.2"
+specs-derive = "0.3"
 serde = "1.0"
 serde_derive = "1.0"
 
 [dependencies.sdl2]
 version = "0.31"
 default-features = false
-features = ["bundled", "image", "mixer", "ttf", "unsafe_textures"]
+features = ["image", "mixer", "ttf", "unsafe_textures"]

@@ -2,7 +2,6 @@
 
 #![warn(missing_docs, rust_2018_idioms)]
 #![deny(bare_trait_objects)]
-#![feature(const_fn, macro_at_most_once_rep, in_band_lifetimes)]
 
 use std::fs::{create_dir_all, remove_dir_all};
 
