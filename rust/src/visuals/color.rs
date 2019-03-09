@@ -1,10 +1,10 @@
-//! RGBA colors
+//! RGBA colours
 
 use std::ops::{Add, Sub, Mul, Div};
 
 use sdl2::pixels as sdl;
 
-/// An RGBA color. Implements some basic operators as their respective blend modes. Other blend
+/// An RGBA colour. Implements some basic operators as their respective blend modes. Other blend
 /// modes are just methods.
 #[derive(Copy, Clone, Eq, Debug)]
 pub struct Color {
@@ -38,7 +38,7 @@ impl PartialEq for Color {
 }
 
 impl Color {
-    /// Tranpsarent color
+    /// Transparent
     pub const TRANSPARENT: Self = Color::rgba(0, 0, 0, 0);
     /// Pure opaque red
     pub const RED: Self = Color::rgb(255, 0, 0);
@@ -51,8 +51,8 @@ impl Color {
     /// Pure opaque black
     pub const BLACK: Self = Color::rgb(0, 0, 0);
 
-    /// Creates a new opaque color
-    pub const fn rgb(red: u8, green: u8, blue: u8) -> Self {
+    /// Creates a new opaque colour
+    pub const fn rgb(red: u8, green: u8, blue: u8) -> Color {
         Self::rgba(red, green, blue, 255)
     }
 
@@ -100,9 +100,9 @@ impl Add for Color {
 
     fn add(self, other: Self) -> Self {
         Self {
-            red: self.red.saturating_add((other.red as f32 * other.alphaf()) as u8),
+            red:   self.red.saturating_add((other.red as f32 * other.alphaf()) as u8),
             green: self.green.saturating_add((other.green as f32 * other.alphaf()) as u8),
-            blue: self.blue.saturating_add((other.blue as f32 * other.alphaf()) as u8),
+            blue:  self.blue.saturating_add((other.blue as f32 * other.alphaf()) as u8),
             alpha: self.alpha + other.alpha,
         }
     }
@@ -113,9 +113,9 @@ impl Sub for Color {
 
     fn sub(self, other: Self) -> Self {
         Self {
-            red: self.red.saturating_sub(other.red),
+            red:   self.red.saturating_sub(other.red),
             green: self.green.saturating_sub(other.green),
-            blue: self.blue.saturating_sub(other.blue),
+            blue:  self.blue.saturating_sub(other.blue),
             alpha: self.alpha.saturating_sub(other.alpha),
         }
     }
@@ -126,9 +126,9 @@ impl Mul for Color {
 
     fn mul(self, other: Self) -> Self {
         Self {
-            red: (self.redf() * other.redf() * 255.) as u8,
+            red:   (self.redf() * other.redf() * 255.) as u8,
             green: (self.greenf() * other.greenf() * 255.) as u8,
-            blue: (self.bluef() * other.bluef() * 255.) as u8,
+            blue:  (self.bluef() * other.bluef() * 255.) as u8,
             alpha: (self.alphaf() * other.alphaf() * 255.) as u8,
         }
     }
@@ -140,16 +140,16 @@ impl Div for Color {
     fn div(self, other: Self) -> Self {
         if other.alpha == 0 {
             Self {
-                red: (self.redf() / other.redf() * 255.) as u8,
+                red:   (self.redf() / other.redf() * 255.) as u8,
                 green: (self.greenf() / other.greenf() * 255.) as u8,
-                blue: (self.bluef() / other.bluef() * 255.) as u8,
+                blue:  (self.bluef() / other.bluef() * 255.) as u8,
                 alpha: 255,
             }
         } else {
             Self {
-                red: (self.redf() / other.redf() * 255.) as u8,
+                red:   (self.redf() / other.redf() * 255.) as u8,
                 green: (self.greenf() / other.greenf() * 255.) as u8,
-                blue: (self.bluef() / other.bluef() * 255.) as u8,
+                blue:  (self.bluef() / other.bluef() * 255.) as u8,
                 alpha: (self.alphaf() / other.alphaf() * 255.) as u8,
             }
         }
@@ -171,8 +171,8 @@ impl From<u32> for Color {
         Color::rgba(
             ((hex & 0xff000000) >> 24) as u8,
             ((hex & 0x00ff0000) >> 16) as u8,
-            ((hex & 0x0000ff00) >> 8) as u8,
-            (hex & 0x000000ff) as u8,
+            ((hex & 0x0000ff00) >> 8 ) as u8,
+             (hex & 0x000000ff)        as u8,
         )
     }
 }

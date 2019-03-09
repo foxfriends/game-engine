@@ -1,6 +1,6 @@
 //! Points
 
-use serde_derive::{Serialize, Deserialize};
+use serde::{Serialize, Deserialize};
 use sdl2::rect as sdl;
 use std::ops;
 

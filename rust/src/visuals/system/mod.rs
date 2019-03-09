@@ -164,9 +164,9 @@ impl<'a, 'ttf> System<'a> for Visuals<'ttf> {
 
     fn run(&mut self, (drawable, mut tile_layers, camera, mut is_loading): Self::SystemData) {
         is_loading.0 = false;
-        self.canvas.set_draw_color(Color::rgb(0, 0, 0).into());
+        self.canvas.set_draw_color(Color::rgb(0, 0, 0));
         self.canvas.clear();
-        self.canvas.set_draw_color(Color::rgb(255, 0, 0).into());
+        self.canvas.set_draw_color(Color::rgb(255, 0, 0));
         let mut to_draw: Vec<_> = drawable.join()
             .map(|it| ToDraw::Drawable(it))
             .chain(tile_layers.iter_mut().map(|(depth, tiles)| ToDraw::TileGrid(tiles, *depth)))

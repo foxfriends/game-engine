@@ -15,13 +15,12 @@ perf = []
 
 [dependencies]
 specs = "0.14"
-shred = { version = "0.7", features = ["nightly"] }
+shred = "0.7"
 shred-derive = "0.5"
-specs-derive = "0.3"
-serde = "1.0"
-serde_derive = "1.0"
+specs-derive = "0.4"
+serde = { version = "1.0", features = ["derive"] }
 
 [dependencies.sdl2]
-version = "0.31"
+version = "0.32.1"
 default-features = false
 features = ["image", "mixer", "ttf", "unsafe_textures"]

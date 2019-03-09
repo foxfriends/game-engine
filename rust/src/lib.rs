@@ -1,6 +1,6 @@
 //! A game engine!
 
-#![warn(missing_docs, rust_2018_idioms)]
+#![warn(missing_docs)]
 #![deny(bare_trait_objects)]
 
 use std::fs::{create_dir_all, remove_dir_all};
@@ -54,6 +54,9 @@ use crate::model::shape::*;
 ///
 /// Note: Highly coupled to [`specs`]... Not sure if that's avoidable or not without implementing
 /// the entire ECS system again, but this is probably ok...
+///
+/// The other option is to not provide the ECS as part of the game engine, and instead have
+/// integration with an ECS be part of client code. Maybe this will be a direction for future.
 pub struct Game<'a, 'b> {
     world: World,
     size: Dimen,
@@ -154,7 +157,7 @@ impl<'a, 'b> Game<'a, 'b> {
 
         // Set up SDL
         let sdl_context = sdl2::init()?;
-        let _image_context = sdl2::image::init(sdl2::image::INIT_PNG)?;
+        let _image_context = sdl2::image::init(sdl2::image::InitFlag::PNG)?;
         let ttf_context = sdl2::ttf::init()?;
         let video = sdl_context.video()?;
 
